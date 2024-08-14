@@ -1,0 +1,51 @@
+[gd_scene load_steps=6 format=3 uid="uid://hmt035h6sxel"]
+
+[ext_resource type="Texture2D" uid="uid://cc35sv25ejsrv" path="res://placeholder.png" id="1_ul57f"]
+[ext_resource type="PackedScene" uid="uid://qqmmrmnqbudh" path="res://model.tscn" id="2_e67y2"]
+[ext_resource type="Script" path="res://assets/camera_controller.gd" id="3_i5v55"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_q73ef"]
+albedo_color = Color(0.918308, 0.905436, 0.896871, 1)
+albedo_texture = ExtResource("1_ul57f")
+uv1_triplanar = true
+uv1_world_triplanar = true
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_y2tno"]
+radius = 0.839578
+height = 4.61406
+
+[node name="MainScene" type="Node3D"]
+
+[node name="FLOOR" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0328484, -0.0518284, 0.134491)
+material_override = SubResource("StandardMaterial3D_q73ef")
+use_collision = true
+size = Vector3(40.0092, 0.155884, 38.4526)
+
+[node name="Brick" type="CSGBox3D" parent="FLOOR"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.43481, 1.81678, 0.208614)
+material_override = SubResource("StandardMaterial3D_q73ef")
+use_collision = true
+size = Vector3(5.02672, 3.67415, 14.9149)
+
+[node name="Player" type="CharacterBody3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Player"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.26617, 0)
+shape = SubResource("CapsuleShape3D_y2tno")
+
+[node name="MeshRoot" type="Node3D" parent="Player"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1632, 0)
+
+[node name="model" parent="Player/MeshRoot" instance=ExtResource("2_e67y2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.28175, 0)
+
+[node name="CameraRoot" type="Node3D" parent="Player"]
+transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, 5.25932, -3.77405)
+script = ExtResource("3_i5v55")
+
+[node name="CamYaw" type="Node3D" parent="Player/CameraRoot"]
+
+[node name="CamPitch" type="Node3D" parent="Player/CameraRoot/CamYaw"]
+
+[node name="Camera3D" type="Camera3D" parent="Player/CameraRoot/CamYaw/CamPitch"]
