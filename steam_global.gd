@@ -1,6 +1,6 @@
 extends Node
 
-var APP_ID: int = 480  # TODO: replace with real app id once we get it
+var APP_ID: int = 3174650
 
 var is_on_steam_deck: bool = false
 var is_online: bool = false
@@ -13,6 +13,8 @@ var player_one: int = -1
 var inGameControlsHandle: int = -1
 var movementHandle: int = -1
 var cameraHandle: int = -1
+var menuControlsHandle: int = -1
+var jumpHandle: int = -1
 
 func _ready() -> void:
 	initialize_steam()
@@ -24,9 +26,6 @@ func _process(_delta: float) -> void:
 	if player_one == -1 and controllers.size() > 0:
 		player_one = controllers[0]
 		Steam.activateActionSet(player_one, inGameControlsHandle)
-	
-	
-	var menuControlsHandle := Steam.getActionSetHandle("MenuControls")
 
 func initialize_steam() -> void:
 	var initialize_response: Dictionary = Steam.steamInitEx(true, APP_ID)
@@ -46,5 +45,7 @@ func initialize_steam() -> void:
 	var inputInitialized := Steam.inputInit()
 	Steam.runFrame()
 	inGameControlsHandle = Steam.getActionSetHandle("InGameControls")
+	menuControlsHandle = Steam.getActionSetHandle("MenuControls")
 	movementHandle = Steam.getAnalogActionHandle("Move")
 	cameraHandle = Steam.getAnalogActionHandle("Camera")
+	jumpHandle = Steam.getDigitalActionHandle("Jump")
