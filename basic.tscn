@@ -1,9 +1,10 @@
-[gd_scene load_steps=8 format=3 uid="uid://hmt035h6sxel"]
+[gd_scene load_steps=12 format=3 uid="uid://hmt035h6sxel"]
 
 [ext_resource type="Texture2D" uid="uid://cc35sv25ejsrv" path="res://placeholder.png" id="1_ul57f"]
 [ext_resource type="PackedScene" uid="uid://qqmmrmnqbudh" path="res://model.tscn" id="2_e67y2"]
 [ext_resource type="Script" path="res://player.gd" id="2_q6h3y"]
 [ext_resource type="Script" path="res://assets/camera_controller.gd" id="3_i5v55"]
+[ext_resource type="Texture2D" uid="uid://gws7doqk7654" path="res://assets/skies/sky.png" id="5_culq0"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_q73ef"]
 albedo_color = Color(0.918308, 0.905436, 0.896871, 1)
@@ -16,21 +17,34 @@ radius = 0.839578
 height = 4.61406
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_j47j4"]
-radius = 0.07
+radius = 0.2
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_tpcud"]
+panorama = ExtResource("5_culq0")
+
+[sub_resource type="Sky" id="Sky_4ws1p"]
+sky_material = SubResource("PanoramaSkyMaterial_tpcud")
+
+[sub_resource type="Environment" id="Environment_vah5s"]
+background_mode = 2
+sky = SubResource("Sky_4ws1p")
+ambient_light_source = 3
+ambient_light_color = Color(0.856067, 0.856067, 0.856067, 1)
+ambient_light_energy = 8.0
 
 [node name="MainScene" type="Node3D"]
 
 [node name="FLOOR" type="CSGBox3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0501442, -0.0518274, 0.131397)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.369, -0.0518274, -1.79104)
 material_override = SubResource("StandardMaterial3D_q73ef")
 use_collision = true
-size = Vector3(40.0092, 0.155884, 38.4526)
+size = Vector3(174.71, 0.155884, 160.123)
 
 [node name="Brick" type="CSGBox3D" parent="FLOOR"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.43481, 1.81678, 0.208614)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.43481, 4.515, 1.7006)
 material_override = SubResource("StandardMaterial3D_q73ef")
 use_collision = true
-size = Vector3(5.02672, 3.67415, 14.9149)
+size = Vector3(5.02672, 9.0706, 28.9605)
 
 [node name="Player" type="CharacterBody3D" parent="."]
 script = ExtResource("2_q6h3y")
@@ -56,7 +70,13 @@ script = ExtResource("3_i5v55")
 [node name="CamPitch" type="Node3D" parent="Player/CamRig/CameraRoot/CamYaw"]
 
 [node name="SpringArm3D" type="SpringArm3D" parent="Player/CamRig/CameraRoot/CamYaw/CamPitch"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.405, 0, 2.74)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.405, -0.619611, 1.75552)
 shape = SubResource("SphereShape3D_j47j4")
 
 [node name="Camera3D" type="Camera3D" parent="Player/CamRig/CameraRoot/CamYaw/CamPitch/SpringArm3D"]
+
+[node name="ICallThisEnemyTheSun" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -0.690769, 0.723076, 0, -0.723076, -0.690769, 0, 0, 0.114616)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_vah5s")
