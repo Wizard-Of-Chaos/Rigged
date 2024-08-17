@@ -32,8 +32,8 @@ func _physics_process(delta: float) -> void:
 		var axis := Vector3.MODEL_FRONT.cross(basis.z).normalized()
 		direction = direction.rotated(axis, Vector3.MODEL_FRONT.angle_to(basis.z))
 	
-	target_velocity.x = move_toward(velocity.x, direction.x * speed, accel * delta)
-	target_velocity.z = move_toward(velocity.z, direction.z * speed, accel * delta)
+	target_velocity.x = move_toward(target_velocity.x, direction.x * speed, accel * delta)
+	target_velocity.z = move_toward(target_velocity.z, direction.z * speed, accel * delta)
 	
 	if not is_on_floor():
 		target_velocity.y = target_velocity.y - (fall_acceleration * delta)
