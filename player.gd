@@ -1,6 +1,7 @@
 extends CharacterBody3D
 
 @export var speed: float = 14
+@export var accel: float = 80
 @export var fall_acceleration: float = 75
 @export var jump_impulse: float = 40
 
@@ -31,8 +32,8 @@ func _physics_process(delta: float) -> void:
 		var axis := Vector3.MODEL_FRONT.cross(basis.z).normalized()
 		direction = direction.rotated(axis, Vector3.MODEL_FRONT.angle_to(basis.z))
 	
-	target_velocity.x = direction.x * speed
-	target_velocity.z = direction.z * speed
+	target_velocity.x = move_toward(velocity.x, direction.x * speed, accel * delta)
+	target_velocity.z = move_toward(velocity.z, direction.z * speed, accel * delta)
 	
 	if not is_on_floor():
 		target_velocity.y = target_velocity.y - (fall_acceleration * delta)
