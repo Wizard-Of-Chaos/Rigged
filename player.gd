@@ -8,6 +8,10 @@ extends CharacterBody3D
 @onready var camera_root: Node3D = $CamRig/CameraRoot
 
 var target_velocity := Vector3.ZERO
+var cam_offset: Vector3
+
+func _ready() -> void:
+	cam_offset = camera_root.position
 
 func _physics_process(delta: float) -> void:
 	var direction := Vector3.ZERO
@@ -39,4 +43,4 @@ func _physics_process(delta: float) -> void:
 	if target_velocity.is_zero_approx():
 		return
 	move_and_slide()
-	camera_root.position = position + Vector3(0, 5.259, 0)
+	camera_root.position = position + cam_offset
