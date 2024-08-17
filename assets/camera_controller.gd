@@ -15,6 +15,10 @@ var pitch_acceleration : float = 15
 
 var pitch_max : float = 75
 var pitch_min : float = -55
+
+var yaw_max : float = 50
+var yaw_min : float = -50
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
@@ -29,5 +33,6 @@ func _input(event):
 
 func _physics_process(delta):
 	pitch = clamp(pitch, pitch_min, pitch_max)
+	yaw = clamp(yaw, yaw_min, yaw_max)
 	yaw_node.rotation_degrees.y = lerp(yaw_node.rotation_degrees.y, yaw, yaw_acceleration * delta)
 	pitch_node.rotation_degrees.x = lerp(yaw_node.rotation_degrees.x, pitch, pitch_acceleration * delta)

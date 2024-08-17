@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://hmt035h6sxel"]
+[gd_scene load_steps=8 format=3 uid="uid://hmt035h6sxel"]
 
 [ext_resource type="Texture2D" uid="uid://cc35sv25ejsrv" path="res://placeholder.png" id="1_ul57f"]
 [ext_resource type="PackedScene" uid="uid://qqmmrmnqbudh" path="res://model.tscn" id="2_e67y2"]
@@ -14,6 +14,9 @@ uv1_world_triplanar = true
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_y2tno"]
 radius = 0.839578
 height = 4.61406
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_j47j4"]
+radius = 0.07
 
 [node name="MainScene" type="Node3D"]
 
@@ -50,4 +53,8 @@ script = ExtResource("3_i5v55")
 
 [node name="CamPitch" type="Node3D" parent="Player/CameraRoot/CamYaw"]
 
-[node name="Camera3D" type="Camera3D" parent="Player/CameraRoot/CamYaw/CamPitch"]
+[node name="SpringArm3D" type="SpringArm3D" parent="Player/CameraRoot/CamYaw/CamPitch"]
+shape = SubResource("SphereShape3D_j47j4")
+spring_length = 3.0
+
+[node name="Camera3D" type="Camera3D" parent="Player/CameraRoot/CamYaw/CamPitch/SpringArm3D"]
