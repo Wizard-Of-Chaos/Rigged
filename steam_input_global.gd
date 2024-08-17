@@ -51,6 +51,7 @@ var controllers: Array = []
 
 func _ready() -> void:
 	Steam.runFrame()
+
 	for actionName in steamInputMapping:
 		var action: Action = steamInputMapping[actionName]
 		if action is AnalogAction:
@@ -58,6 +59,9 @@ func _ready() -> void:
 		else:
 			action.handle = Steam.getDigitalActionHandle(actionName)
 	controllers = Steam.getConnectedControllers()
+	Steam.input_device_connected.connect(_on_input_device_connected)
+	Steam.input_device_disconnected.connect(_on_input_device_disconnected)
+	Steam.input_gamepad_slot_change.connect(_on_input_gamepad_slot_change)
 
 func _process(_delta: float) -> void:
 	for actionName in steamInputMapping:
@@ -76,7 +80,7 @@ func translate_digital_input(p_steam_input: Dictionary, action: DigitalAction) -
 	action.was_pressed_last = p_steam_input.state
 	var ev := InputEventAction.new()
 	ev.pressed = p_steam_input.state
-	ev.action = action.godot_equiv
+	ev.action = action.godot_equivc
 	Input.parse_input_event(ev)
 	
 func translate_analog_input(p_steam_input: Dictionary, p_action: AnalogAction) -> void:
@@ -106,3 +110,12 @@ func translate_analog_input(p_steam_input: Dictionary, p_action: AnalogAction) -
 	elif p_action.neg_y_was_pressed_last and InputMap.has_action(p_action.neg_y_equiv):
 		Input.action_release(p_action.neg_y_equiv)
 		p_action.neg_y_was_pressed_last = false
+
+func _on_input_device_connected(p_input_handle: int):
+	pass
+
+func _on_input_device_disconnected(p_input_handle: int):
+	pass
+
+func _on_input_gamepad_slot_change(p_app_id: int, p_device_handle: int, p_deivce_type: int, p_old_gamepad_slot: int, p_new_gamepad_slot: int):
+	pass

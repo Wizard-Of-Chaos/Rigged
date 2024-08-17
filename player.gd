@@ -7,6 +7,7 @@ extends CharacterBody3D
 
 @onready var camera_yaw: Node3D = $CamRig/CameraRoot/CamYaw
 @onready var camera_root: Node3D = $CamRig/CameraRoot
+@onready var model_anim: AnimationPlayer = $MeshRoot/model/AnimationPlayer
 
 var target_velocity := Vector3.ZERO
 var cam_offset: Vector3
@@ -31,7 +32,10 @@ func _physics_process(delta: float) -> void:
 	if not basis.z.is_equal_approx(Vector3.MODEL_FRONT):
 		var axis := Vector3.MODEL_FRONT.cross(basis.z).normalized()
 		direction = direction.rotated(axis, Vector3.MODEL_FRONT.angle_to(basis.z))
-	
+	if not direction.is_zero_approx():
+		model_anim.play("Armature|mixamo_com|Layer0")
+	else:
+		model_anim.stop()
 	target_velocity.x = move_toward(target_velocity.x, direction.x * speed, accel * delta)
 	target_velocity.z = move_toward(target_velocity.z, direction.z * speed, accel * delta)
 	
