@@ -42,7 +42,7 @@ func initialize_steam() -> void:
 	steam_id = Steam.getSteamID()
 	steam_username = Steam.getPersonaName()
 	
-	var inputInitialized := Steam.inputInit()
+	Steam.inputInit()
 	Steam.runFrame()
 	inGameControlsHandle = Steam.getActionSetHandle("InGameControls")
 	menuControlsHandle = Steam.getActionSetHandle("MenuControls")

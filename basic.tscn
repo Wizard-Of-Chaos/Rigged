@@ -55,9 +55,8 @@ script = ExtResource("3_i5v55")
 
 [node name="CamPitch" type="Node3D" parent="Player/CamRig/CameraRoot/CamYaw"]
 
-[node name="SpringArm3D" type="SpringArm3D" parent="Player/CameraRoot/CamYaw/CamPitch"]
+[node name="SpringArm3D" type="SpringArm3D" parent="Player/CamRig/CameraRoot/CamYaw/CamPitch"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.405, 0, 2.74)
 shape = SubResource("SphereShape3D_j47j4")
-spring_length = 3.0
 
-[node name="Camera3D" type="Camera3D" parent="Player/CameraRoot/CamYaw/CamPitch/SpringArm3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 2.865)
+[node name="Camera3D" type="Camera3D" parent="Player/CamRig/CameraRoot/CamYaw/CamPitch/SpringArm3D"]

@@ -59,7 +59,7 @@ func _ready() -> void:
 			action.handle = Steam.getDigitalActionHandle(actionName)
 	controllers = Steam.getConnectedControllers()
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	for actionName in steamInputMapping:
 		var action: Action = steamInputMapping[actionName]
 		for controller in controllers:
