@@ -4,7 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://qqmmrmnqbudh" path="res://model.tscn" id="2_e67y2"]
 [ext_resource type="Script" path="res://player.gd" id="2_q6h3y"]
 [ext_resource type="Script" path="res://assets/camera_controller.gd" id="3_i5v55"]
-[ext_resource type="Texture2D" uid="uid://gws7doqk7654" path="res://assets/skies/sky.png" id="5_culq0"]
+[ext_resource type="Texture2D" uid="uid://ctp4itiqnj44y" path="res://assets/skies/comet_base.png" id="5_btfkd"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_q73ef"]
 albedo_color = Color(0.918308, 0.905436, 0.896871, 1)
@@ -20,7 +20,7 @@ height = 4.61406
 radius = 0.2
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_tpcud"]
-panorama = ExtResource("5_culq0")
+panorama = ExtResource("5_btfkd")
 
 [sub_resource type="Sky" id="Sky_4ws1p"]
 sky_material = SubResource("PanoramaSkyMaterial_tpcud")
