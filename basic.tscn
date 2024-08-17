@@ -48,7 +48,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.28175, 0)
 [node name="CamRig" type="Node" parent="Player"]
 
 [node name="CameraRoot" type="Node3D" parent="Player/CamRig"]
-transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, 5.259, 0)
+transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, 4.65702, 0)
 script = ExtResource("3_i5v55")
 
 [node name="CamYaw" type="Node3D" parent="Player/CamRig/CameraRoot"]
