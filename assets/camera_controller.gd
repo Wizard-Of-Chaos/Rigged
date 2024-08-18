@@ -1,5 +1,7 @@
 extends Node
 
+signal set_cam_rotation(_cam_rotation : float)
+
 @onready var yaw_node: Node3D = $CamYaw
 @onready var pitch_node: Node3D = $CamYaw/CamPitch
 @onready var camera: Camera3D = $CamYaw/CamPitch/SpringArm3D/Camera3D
@@ -29,3 +31,5 @@ func _physics_process(delta):
 	#yaw = clamp(yaw, yaw_min, yaw_max)
 	yaw_node.rotation_degrees.y = lerp(yaw_node.rotation_degrees.y, yaw, yaw_acceleration * delta)
 	pitch_node.rotation_degrees.x = lerp(yaw_node.rotation_degrees.x, pitch, pitch_acceleration * delta)
+	
+	set_cam_rotation.emit(yaw_node.rotation.y)

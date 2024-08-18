@@ -1,53 +1,30 @@
 extends CharacterBody3D
 
-@export var speed: float = 14
-@export var accel: float = 80
-@export var fall_acceleration: float = 75
-@export var jump_impulse: float = 40
+signal set_movestate(_movestate : MoveState)
+signal set_movedir(_movedir : Vector3)
 
-@onready var camera_yaw: Node3D = $CamRig/CameraRoot/CamYaw
-@onready var camera_root: Node3D = $CamRig/CameraRoot
-@onready var model_anim: AnimationPlayer = $MeshRoot/model/AnimationPlayer
+@export var movestates : Dictionary
 
-var target_velocity := Vector3.ZERO
-var cam_offset: Vector3
+func _ready():
+	set_movestate.emit(movestates["idle"])
 
-func _ready() -> void:
-	cam_offset = camera_root.position
+var move_direction : Vector3
 
-func _physics_process(delta: float) -> void:
-	var direction := Vector3.ZERO
-	if Input.is_action_pressed("move_left"):
-		direction.x += Input.get_action_strength("move_left")
-	if Input.is_action_pressed("move_right"):
-		direction.x -= Input.get_action_strength("move_right")
-	if Input.is_action_pressed("move_forward"):
-		direction.z += Input.get_action_strength("move_forward")
-	if Input.is_action_pressed("move_back"):
-		direction.z -= Input.get_action_strength("move_back")
-	var jump := Input.is_action_pressed("jump")
-	if direction.length_squared() > 1:
-		direction = direction.normalized()
-	basis = camera_yaw.basis
-	if not basis.z.is_equal_approx(Vector3.MODEL_FRONT):
-		var axis := Vector3.MODEL_FRONT.cross(basis.z).normalized()
-		direction = direction.rotated(axis, Vector3.MODEL_FRONT.angle_to(basis.z))
-	if not direction.is_zero_approx():
-		model_anim.play("Armature|mixamo_com|Layer0")
+func moving() -> bool:
+	return abs(move_direction.x) > 0 or abs(move_direction.y) > 0 or abs(move_direction.z) > 0
+
+func _input(event):
+	move_direction = Vector3.ZERO
+	move_direction.x = Input.get_action_strength("move_left") - Input.get_action_strength("move_right")
+	move_direction.z = Input.get_action_strength("move_forward") - Input.get_action_strength("move_back")
+	if moving():
+		if Input.is_action_pressed("sprint"):
+			set_movestate.emit(movestates["sprint"])
+		else:
+			set_movestate.emit(movestates["run"])
 	else:
-		model_anim.stop()
-	#target_velocity.x = direction.x * speed
-	#target_velocity.z = direction.z * speed
-	target_velocity.x = move_toward(target_velocity.x, direction.x * speed, accel * delta)
-	target_velocity.z = move_toward(target_velocity.z, direction.z * speed, accel * delta)
-	
-	if not is_on_floor():
-		target_velocity.y = target_velocity.y - (fall_acceleration * delta)
-	elif jump:
-		target_velocity.y = jump_impulse
-	
-	velocity = target_velocity
-	if target_velocity.is_zero_approx():
-		return
-	move_and_slide()
-	camera_root.position = position + cam_offset
+		set_movestate.emit(movestates["idle"])
+		
+func _physics_process(delta):
+	if moving():
+		set_movedir.emit(move_direction)

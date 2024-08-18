@@ -1,10 +1,15 @@
-[gd_scene load_steps=12 format=3 uid="uid://hmt035h6sxel"]
+[gd_scene load_steps=16 format=3 uid="uid://hmt035h6sxel"]
 
 [ext_resource type="Texture2D" uid="uid://cc35sv25ejsrv" path="res://placeholder.png" id="1_ul57f"]
 [ext_resource type="PackedScene" uid="uid://dlrsqmxrlb4t" path="res://model.tscn" id="2_e67y2"]
 [ext_resource type="Script" path="res://player.gd" id="2_q6h3y"]
 [ext_resource type="Script" path="res://assets/camera_controller.gd" id="3_i5v55"]
+[ext_resource type="Resource" uid="uid://sy1amvuhsyeo" path="res://scripts/idle.tres" id="3_ll8ib"]
+[ext_resource type="Resource" uid="uid://rp04ot2ba6yt" path="res://scripts/run.tres" id="4_vo3l8"]
 [ext_resource type="Texture2D" uid="uid://ctp4itiqnj44y" path="res://assets/skies/comet_base.png" id="5_btfkd"]
+[ext_resource type="Resource" uid="uid://cnxmsfayuy712" path="res://scripts/sprint.tres" id="5_r3ltx"]
+[ext_resource type="Resource" uid="uid://d1lfycc21uw" path="res://scripts/jump.tres" id="6_c3mpu"]
+[ext_resource type="Script" path="res://scripts/move_controller.gd" id="9_dueeo"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_q73ef"]
 albedo_color = Color(0.918308, 0.905436, 0.896871, 1)
@@ -15,9 +20,6 @@ uv1_world_triplanar = true
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_y2tno"]
 radius = 0.839578
 height = 4.61406
-
-[sub_resource type="SphereShape3D" id="SphereShape3D_j47j4"]
-radius = 0.2
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_tpcud"]
 panorama = ExtResource("5_btfkd")
@@ -48,33 +50,43 @@ size = Vector3(5.02672, 9.0706, 28.9605)
 
 [node name="Player" type="CharacterBody3D" parent="."]
 script = ExtResource("2_q6h3y")
+movestates = {
+"idle": ExtResource("3_ll8ib"),
+"jump": ExtResource("6_c3mpu"),
+"run": ExtResource("4_vo3l8"),
+"sprint": ExtResource("5_r3ltx")
+}
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Player"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.26617, 0)
 shape = SubResource("CapsuleShape3D_y2tno")
 
-[node name="CamRig" type="Node" parent="Player"]
-
-[node name="CameraRoot" type="Node3D" parent="Player/CamRig"]
-transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, 4.65702, 0)
-script = ExtResource("3_i5v55")
-
-[node name="CamYaw" type="Node3D" parent="Player/CamRig/CameraRoot"]
-
-[node name="CamPitch" type="Node3D" parent="Player/CamRig/CameraRoot/CamYaw"]
-
-[node name="SpringArm3D" type="SpringArm3D" parent="Player/CamRig/CameraRoot/CamYaw/CamPitch"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.405, -0.619611, 1.75552)
-shape = SubResource("SphereShape3D_j47j4")
-
-[node name="Camera3D" type="Camera3D" parent="Player/CamRig/CameraRoot/CamYaw/CamPitch/SpringArm3D"]
-
 [node name="MeshRoot" type="Node3D" parent="Player"]
 
 [node name="model" parent="Player/MeshRoot" instance=ExtResource("2_e67y2")]
+
+[node name="MoveController" type="Node" parent="Player" node_paths=PackedStringArray("player", "mesh_root")]
+script = ExtResource("9_dueeo")
+player = NodePath("..")
+mesh_root = NodePath("../MeshRoot")
+
+[node name="CameraRoot" type="Node3D" parent="Player"]
+transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, 4.65702, 0)
+script = ExtResource("3_i5v55")
+
+[node name="CamYaw" type="Node3D" parent="Player/CameraRoot"]
+
+[node name="CamPitch" type="Node3D" parent="Player/CameraRoot/CamYaw"]
+
+[node name="Camera3D" type="Camera3D" parent="Player/CameraRoot/CamYaw/CamPitch"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.405, -0.619611, 1.75552)
 
 [node name="ICallThisEnemyTheSun" type="DirectionalLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, -0.690769, 0.723076, 0, -0.723076, -0.690769, 0, 0, 0.114616)
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_vah5s")
+
+[connection signal="set_movedir" from="Player" to="Player/MoveController" method="_on_set_movedir"]
+[connection signal="set_movestate" from="Player" to="Player/MoveController" method="_on_set_movestate"]
+[connection signal="set_cam_rotation" from="Player/CameraRoot" to="Player/MoveController" method="_on_set_cam_rotation"]
