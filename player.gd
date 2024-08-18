@@ -21,10 +21,10 @@ func _physics_process(delta: float) -> void:
 		direction.x += Input.get_action_strength("move_left")
 	if Input.is_action_pressed("move_right"):
 		direction.x -= Input.get_action_strength("move_right")
-	if Input.is_action_pressed("move_up"):
-		direction.z += Input.get_action_strength("move_up")
-	if Input.is_action_pressed("move_down"):
-		direction.z -= Input.get_action_strength("move_down")
+	if Input.is_action_pressed("move_forward"):
+		direction.z += Input.get_action_strength("move_forward")
+	if Input.is_action_pressed("move_back"):
+		direction.z -= Input.get_action_strength("move_back")
 	var jump := Input.is_action_pressed("jump")
 	if direction.length_squared() > 1:
 		direction = direction.normalized()
