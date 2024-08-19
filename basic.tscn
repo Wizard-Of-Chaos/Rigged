@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://hmt035h6sxel"]
+[gd_scene load_steps=15 format=3 uid="uid://hmt035h6sxel"]
 
 [ext_resource type="Texture2D" uid="uid://cc35sv25ejsrv" path="res://placeholder.png" id="1_ul57f"]
 [ext_resource type="PackedScene" uid="uid://dlrsqmxrlb4t" path="res://model.tscn" id="2_e67y2"]
@@ -9,7 +9,6 @@
 [ext_resource type="Texture2D" uid="uid://ctp4itiqnj44y" path="res://assets/skies/comet_base.png" id="5_btfkd"]
 [ext_resource type="Resource" uid="uid://cnxmsfayuy712" path="res://scripts/sprint.tres" id="5_r3ltx"]
 [ext_resource type="Resource" uid="uid://d1lfycc21uw" path="res://scripts/jump.tres" id="6_c3mpu"]
-[ext_resource type="Script" path="res://scripts/move_controller.gd" id="9_dueeo"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_q73ef"]
 albedo_color = Color(0.918308, 0.905436, 0.896871, 1)
@@ -65,11 +64,6 @@ shape = SubResource("CapsuleShape3D_y2tno")
 
 [node name="model" parent="Player/MeshRoot" instance=ExtResource("2_e67y2")]
 
-[node name="MoveController" type="Node" parent="Player" node_paths=PackedStringArray("player", "mesh_root")]
-script = ExtResource("9_dueeo")
-player = NodePath("..")
-mesh_root = NodePath("../MeshRoot")
-
 [node name="CameraRoot" type="Node3D" parent="Player"]
 transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, 4.65702, 0)
 script = ExtResource("3_i5v55")
@@ -87,6 +81,4 @@ transform = Transform3D(1, 0, 0, 0, -0.690769, 0.723076, 0, -0.723076, -0.690769
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_vah5s")
 
-[connection signal="set_movedir" from="Player" to="Player/MoveController" method="_on_set_movedir"]
-[connection signal="set_movestate" from="Player" to="Player/MoveController" method="_on_set_movestate"]
-[connection signal="set_cam_rotation" from="Player/CameraRoot" to="Player/MoveController" method="_on_set_cam_rotation"]
+[connection signal="set_cam_rotation" from="Player/CameraRoot" to="Player" method="_on_camera_root_set_cam_rotation"]

@@ -50,8 +50,8 @@ class ActionSet:
 
 var steamInputMapping: Dictionary = {
 	# InGameControls
-	"move": AnalogAction.new("move_right", "move_left", "move_up", "move_down"),
-	"camera": AnalogAction.new("", "", "", ""),
+	"move": AnalogAction.new("move_right", "move_left", "move_forward", "move_back"),
+	"camera": MouseLikeAction.new(),
 	"aim": DigitalAction.new(""),
 	"fire": DigitalAction.new(""),
 	"jump": DigitalAction.new("jump"),
@@ -119,10 +119,12 @@ func translate_digital_input(p_steam_input: Dictionary, action: DigitalAction) -
 	
 	var ev := InputEventAction.new()
 	ev.pressed = p_steam_input.state
-	ev.action = action.godot_equivc
+	ev.action = action.godot_equiv
 	Input.parse_input_event(ev)
 	
 func translate_analog_input(p_steam_input: Dictionary, p_action: AnalogAction) -> void:
+	if p_steam_input.y != 0.0:
+		pass
 	if clampf(p_steam_input.x, 0.0, 1.0) != p_action.pos_x_last_val and InputMap.has_action(p_action.pos_x_equiv):
 		var ev := InputEventAction.new()
 		ev.action = p_action.pos_x_equiv
@@ -136,10 +138,11 @@ func translate_analog_input(p_steam_input: Dictionary, p_action: AnalogAction) -
 			ev.strength = 0.0
 		Input.parse_input_event(ev)
 		p_action.pos_x_last_val = clampf(p_steam_input.x, 0.0, 1.0)
+
 	if clampf(p_steam_input.x, -1.0, 0.0) != p_action.neg_x_last_val and InputMap.has_action(p_action.neg_x_equiv):
 		var ev := InputEventAction.new()
 		ev.action = p_action.neg_x_equiv
-		if p_steam_input.x < 0:
+		if p_steam_input.x < 0.0:
 			Input.action_press(p_action.neg_x_equiv, -p_steam_input.x)
 			ev.pressed = true
 			ev.strength = -p_steam_input.x
@@ -149,6 +152,7 @@ func translate_analog_input(p_steam_input: Dictionary, p_action: AnalogAction) -
 			ev.strength = 0.0
 		Input.parse_input_event(ev)
 		p_action.neg_x_last_val = clampf(p_steam_input.x, -1.0, 0.0)
+
 	if clampf(p_steam_input.y, 0.0, 1.0) != p_action.pos_y_last_val and InputMap.has_action(p_action.pos_y_equiv):
 		var ev := InputEventAction.new()
 		ev.action = p_action.pos_y_equiv
@@ -163,7 +167,7 @@ func translate_analog_input(p_steam_input: Dictionary, p_action: AnalogAction) -
 		Input.parse_input_event(ev)
 		p_action.pos_y_last_val = clampf(p_steam_input.y, 0.0, 1.0)
 	
-	if clampf(p_steam_input.y, -1.0, 0.0) != p_action.neg_y_last_val and InputMap.has_action(p_action.pos_y_equiv):
+	if clampf(p_steam_input.y, -1.0, 0.0) != p_action.neg_y_last_val and InputMap.has_action(p_action.neg_y_equiv):
 		var ev := InputEventAction.new()
 		ev.action = p_action.neg_y_equiv
 		if p_steam_input.y < 0.0:
@@ -192,7 +196,13 @@ func translate_trigger_input(p_steam_input: Dictionary, p_action: TriggerAction)
 		Input.parse_input_event(ev)
 
 func translate_mouse_like_input(p_steam_input: Dictionary, action: MouseLikeAction) -> void:
-	pass
+	if p_steam_input.x == 0 and p_steam_input.y == 0:
+		return
+	var ev := InputEventMouseMotion.new()
+	# TODO: properly caculate relative
+	ev.screen_relative = Vector2(p_steam_input.x, p_steam_input.y)
+	ev.relative = Vector2(p_steam_input.x, p_steam_input.y)
+	Input.parse_input_event(ev)
 
 func _on_input_device_connected(p_input_handle: int):
 	# INFO: handles are only available once at least one controller has connected
