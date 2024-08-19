@@ -25,6 +25,6 @@ func _input(event):
 	else:
 		set_movestate.emit(movestates["idle"])
 		
-func _physics_process(delta):
+func _physics_process(_delta):
 	if moving():
 		set_movedir.emit(move_direction)

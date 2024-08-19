@@ -4,7 +4,7 @@ signal set_cam_rotation(_cam_rotation : float)
 
 @onready var yaw_node: Node3D = $CamYaw
 @onready var pitch_node: Node3D = $CamYaw/CamPitch
-@onready var camera: Camera3D = $CamYaw/CamPitch/SpringArm3D/Camera3D
+@onready var camera: Camera3D = $CamYaw/CamPitch/Camera3D
 
 @export var yaw_sensitivity: float = 0.07
 @export var pitch_sensitivity: float = 0.07
