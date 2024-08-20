@@ -1,6 +1,8 @@
 extends Resource
 class_name MoveState
 
+#ID
+@export var id: int
 #Movement speed
 @export var speed : float
 #Acceleration speed

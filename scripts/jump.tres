@@ -4,7 +4,7 @@
 
 [resource]
 script = ExtResource("1_uv6vc")
-id = 2
+id = 3
 speed = 21.0
 acceleration = 9.0
 fov = 90.0

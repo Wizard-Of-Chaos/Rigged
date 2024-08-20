@@ -4,7 +4,7 @@ extends CharacterBody3D
 @onready var mesh_root: Node3D = $MeshRoot
 @onready var camera_root: CameraController = $CameraRoot
 var move_controller: MoveController = MoveController.new()
-
+var anim_controller: AnimationController = AnimationController.new()
 func _ready():
 	move_controller.set_movestate(movestates["idle"])
 	move_controller.movestate_set.connect(camera_root._on_set_movestate)
