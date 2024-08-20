@@ -2,7 +2,7 @@ extends CharacterBody3D
 
 @export var movestates: Dictionary
 @onready var mesh_root: Node3D = $MeshRoot
-@onready var camera_root: Node3D = $CameraRoot
+@onready var camera_root: CameraController = $CameraRoot
 var move_controller: MoveController = MoveController.new()
 
 func _ready():
@@ -35,6 +35,8 @@ func _input(event: InputEvent):
 		_left_strength = event.get_action_strength("move_left")
 	elif event.is_action("sprint"):
 		_sprinting = event.is_action_pressed("sprint")
+	elif event.is_action_pressed("pause_menu"):
+		SteamInputGlobal.show_binding_panel(event.device)
 
 func _physics_process(delta):
 	if moving():

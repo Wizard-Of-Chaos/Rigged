@@ -1,6 +1,7 @@
-extends Node
+extends Node3D
+class_name CameraController
 
-signal set_cam_rotation(_cam_rotation : float)
+signal set_cam_rotation(_cam_rotation: float)
 
 @onready var yaw_node: Node3D = $CamYaw
 @onready var pitch_node: Node3D = $CamYaw/CamPitch
@@ -22,11 +23,11 @@ var tween : Tween
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 
-func _on_set_movestate(_movestate : MoveState):
+func _on_set_movestate(movestate: MoveState):
 	if tween:
 		tween.kill() #I FUCKING HATE PEOPLE AGED 10-12
 	tween = create_tween() #BUT NOT ENOUGH TO STOP THEIR EXISTENCE
-	tween.tween_property(camera, "fov", _movestate.fov, .5).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	tween.tween_property(camera, "fov", movestate.fov, .5).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
 
 func _input(event):
 	if event is InputEventMouseMotion:

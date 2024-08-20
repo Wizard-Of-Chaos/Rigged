@@ -21,10 +21,6 @@ func set_move_dir(p_direction: Vector3):
 func set_rotation(p_rotation: float):
 	rotation = p_rotation
 
-func _physics_process():
-	velocity.x = speed * direction.normalized().x
-	velocity.z = speed * direction.normalized().z
-
 func get_velocity():
 	var res: Vector3 = direction
 	if not res.is_zero_approx() and res.length_squared() > 1:
