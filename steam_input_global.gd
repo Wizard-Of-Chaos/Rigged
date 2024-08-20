@@ -99,13 +99,13 @@ func _process(_delta: float) -> void:
 				continue
 			if action is AnalogAction:
 				var res := Steam.getAnalogActionData(controller, action.handle)
-				translate_analog_input(res, action)
+				translate_analog_input(res, action, controller)
 			elif action is TriggerAction:
 				var res := Steam.getAnalogActionData(controller, action.handle)
-				translate_trigger_input(res, action)
+				translate_trigger_input(res, action, controller)
 			elif action is MouseLikeAction:
 				var res := Steam.getAnalogActionData(controller, action.handle)
-				translate_mouse_like_input(res, action)
+				translate_mouse_like_input(res, action, controller)
 			else:
 				var res := Steam.getDigitalActionData(controller, action.handle)
 				translate_digital_input(res, action, controller)
@@ -143,12 +143,11 @@ func translate_digital_input(p_steam_input: Dictionary, p_action: DigitalAction,
 	Input.parse_input_event(ev)
 
 
-func translate_analog_input(p_steam_input: Dictionary, p_action: AnalogAction) -> void:
-	if p_steam_input.y != 0.0:
-		pass
+func translate_analog_input(p_steam_input: Dictionary, p_action: AnalogAction, p_device_handle: int) -> void:
 	if clampf(p_steam_input.x, 0.0, 1.0) != p_action.pos_x_last_val and InputMap.has_action(p_action.pos_x_equiv):
 		var ev := InputEventAction.new()
 		ev.action = p_action.pos_x_equiv
+		ev.device = get_virtual_device_id(p_device_handle)
 		if p_steam_input.x > 0.0:
 			Input.action_press(p_action.pos_x_equiv, p_steam_input.x)
 			ev.pressed = true
@@ -163,6 +162,7 @@ func translate_analog_input(p_steam_input: Dictionary, p_action: AnalogAction) -
 	if clampf(p_steam_input.x, -1.0, 0.0) != p_action.neg_x_last_val and InputMap.has_action(p_action.neg_x_equiv):
 		var ev := InputEventAction.new()
 		ev.action = p_action.neg_x_equiv
+		ev.device = get_virtual_device_id(p_device_handle)
 		if p_steam_input.x < 0.0:
 			Input.action_press(p_action.neg_x_equiv, -p_steam_input.x)
 			ev.pressed = true
@@ -177,6 +177,7 @@ func translate_analog_input(p_steam_input: Dictionary, p_action: AnalogAction) -
 	if clampf(p_steam_input.y, 0.0, 1.0) != p_action.pos_y_last_val and InputMap.has_action(p_action.pos_y_equiv):
 		var ev := InputEventAction.new()
 		ev.action = p_action.pos_y_equiv
+		ev.device = get_virtual_device_id(p_device_handle)
 		if p_steam_input.y > 0.0:
 			Input.action_press(p_action.pos_y_equiv, p_steam_input.y)
 			ev.pressed = true
@@ -191,6 +192,7 @@ func translate_analog_input(p_steam_input: Dictionary, p_action: AnalogAction) -
 	if clampf(p_steam_input.y, -1.0, 0.0) != p_action.neg_y_last_val and InputMap.has_action(p_action.neg_y_equiv):
 		var ev := InputEventAction.new()
 		ev.action = p_action.neg_y_equiv
+		ev.device = get_virtual_device_id(p_device_handle)
 		if p_steam_input.y < 0.0:
 			Input.action_press(p_action.neg_y_equiv, -p_steam_input.y)
 			ev.pressed = true
@@ -203,10 +205,11 @@ func translate_analog_input(p_steam_input: Dictionary, p_action: AnalogAction) -
 		p_action.neg_y_last_val = clampf(p_steam_input.y, -1.0, 0.0)
 
 
-func translate_trigger_input(p_steam_input: Dictionary, p_action: TriggerAction) -> void:
+func translate_trigger_input(p_steam_input: Dictionary, p_action: TriggerAction, p_device_handle: int) -> void:
 	if p_steam_input.x != p_action.last_val and InputMap.has_action(p_action.godot_equiv):
 		var ev := InputEventAction.new()
 		ev.action = p_action.godot_equiv
+		ev.device = get_virtual_device_id(p_device_handle)
 		if p_steam_input.x > 0.0:
 			Input.action_press(p_action.godot_equiv)
 			ev.pressed = true
@@ -218,18 +221,18 @@ func translate_trigger_input(p_steam_input: Dictionary, p_action: TriggerAction)
 		Input.parse_input_event(ev)
 
 
-func translate_mouse_like_input(p_steam_input: Dictionary, action: MouseLikeAction) -> void:
+func translate_mouse_like_input(p_steam_input: Dictionary, action: MouseLikeAction, p_device_handle: int) -> void:
 	if p_steam_input.x == 0 and p_steam_input.y == 0:
 		return
 	var ev := InputEventMouseMotion.new()
 	# TODO: properly caculate relative
 	ev.screen_relative = Vector2(p_steam_input.x, p_steam_input.y)
 	ev.relative = Vector2(p_steam_input.x, p_steam_input.y)
+	ev.device = get_virtual_device_id(p_device_handle)
 	Input.parse_input_event(ev)
 
 
 func _on_input_device_connected(p_input_handle: int):
-	print("controller connect!")
 	# INFO: handles are only available once at least one controller has connected
 	if not _got_action_handles:
 		_get_action_handles()
@@ -238,7 +241,6 @@ func _on_input_device_connected(p_input_handle: int):
 	_controllers[free_slot] = p_input_handle
 
 func _on_input_device_disconnected(p_input_handle: int):
-	print("device disconnected!")
 	var controller_slot := _controllers.find(p_input_handle)
 	_controllers[controller_slot] = 0
 
@@ -249,7 +251,6 @@ func _on_input_gamepad_slot_change(p_app_id: int, p_device_handle: int, p_device
 
 func show_binding_panel(p_virtual_device: int):
 	var controller: int = _controllers[p_virtual_device - VIRTUAL_DEVICE_OFFSET]
-	print("Showing binding panel for virtual device: %s real controller: %s" % [p_virtual_device, controller])
 	Steam.showBindingPanel(controller)
 
 func get_virtual_device_id(p_input_handle: int):
