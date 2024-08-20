@@ -31,9 +31,9 @@ func initialize_steam() -> void:
 	var initialize_response: Dictionary = Steam.steamInitEx(true, APP_ID)
 	print("Did Steam initialize?: %s" % initialize_response)
 
-	if initialize_response["status"] > 0:
+	if initialize_response.status > 0:
 		# INFO: may want to support non-steam platforms or otherwise handle this more gracefully
-		print("Failed to initialize Steam, shutting down: %s" % initialize_response["verbal"])
+		print("Failed to initialize Steam, shutting down: %s" % initialize_response.verbal)
 		get_tree().quit()
 	
 	is_on_steam_deck = Steam.isSteamRunningOnSteamDeck()

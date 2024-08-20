@@ -1,87 +1,15 @@
 extends Node
 
-const VIRTUAL_DEVICE_OFFSET := -18
-const MAX_CONNECTED_CONTROLLERS := 16
-
-class Action:
-	var handle: int
-	func _init() -> void:
-		self.handle = -1
-
-
-class AnalogAction extends Action:
-	var pos_x_equiv: String
-	var pos_x_last_val: Dictionary
-	var neg_x_equiv: String
-	var neg_x_last_val: Dictionary
-	var pos_y_equiv: String
-	var pos_y_last_val: Dictionary
-	var neg_y_equiv: String
-	var neg_y_last_val: Dictionary
-	func _init(p_pos_x_equiv: String, p_neg_x_equiv: String, p_pos_y_equiv: String, p_neg_y_equiv: String) -> void:
-		super()
-		self.pos_x_equiv = p_pos_x_equiv
-		self.neg_x_equiv = p_neg_x_equiv
-		self.pos_y_equiv = p_pos_y_equiv
-		self.neg_y_equiv = p_neg_y_equiv
-		self.pos_x_last_val = {}
-		self.neg_x_last_val = {}
-		self.pos_y_last_val = {}
-		self.neg_y_last_val = {}
-
-
-class TriggerAction extends Action:
-	var godot_equiv: String
-	var last_val: Dictionary
-	func _init(p_godot_equiv: String) -> void:
-		super()
-		self.godot_equiv = p_godot_equiv
-		self.last_val = {}
-
-
-class MouseLikeAction extends Action:
-	func _init() -> void:
-		super()
-
-
-class DigitalAction extends Action:
-	var godot_equiv: String
-	var was_pressed_last: Dictionary
-	func _init(p_godot_equiv: String) -> void:
-		super()
-		self.godot_equiv = p_godot_equiv
-		self.was_pressed_last = {}
-
-
-class ActionSet:
-	var actions
-	var handle: int
-
-
-var _steam_input_mapping: Dictionary = {
-	# InGameControls
-	"move": AnalogAction.new("move_right", "move_left", "move_forward", "move_back"),
-	"camera": MouseLikeAction.new(),
-	"aim": DigitalAction.new(""),
-	"fire": DigitalAction.new(""),
-	"jump": DigitalAction.new("jump"),
-	"pause_menu": DigitalAction.new("pause_menu"),
-	# MenuControls
-	"menu_up": DigitalAction.new(""),
-	"menu_down": DigitalAction.new(""),
-	"menu_left": DigitalAction.new(""),
-	"menu_right": DigitalAction.new(""),
-	"menu_select": DigitalAction.new(""),
-	"menu_cancel": DigitalAction.new(""),
-	"close_menu": DigitalAction.new(""),
-}
 
 var _controllers: Array[int] = []
 var _got_action_handles: bool = false
 
+
 func _ready() -> void:
+	Steam.inputInit()
+	Steam.enableDeviceCallbacks()
 	Steam.runFrame()
-	_controllers.resize(MAX_CONNECTED_CONTROLLERS)
+	_controllers.resize(RiggedInputUtils.MAX_CONNECTED_CONTROLLERS)
 	for controller in Steam.getConnectedControllers():
 		var free_slot := _controllers.find(0)
 		_controllers[free_slot] = controller
@@ -93,40 +21,41 @@ func _ready() -> void:
 
 
 func _process(_delta: float) -> void:
-	for actionName in _steam_input_mapping:
-		var action: Action = _steam_input_mapping[actionName]
-		for controller in _controllers:
-			if controller == 0:
-				continue
-			if action is AnalogAction:
-				var res := Steam.getAnalogActionData(controller, action.handle)
-				translate_analog_input(res, action, controller)
-			elif action is TriggerAction:
-				var res := Steam.getAnalogActionData(controller, action.handle)
-				translate_trigger_input(res, action, controller)
-			elif action is MouseLikeAction:
-				var res := Steam.getAnalogActionData(controller, action.handle)
-				translate_mouse_like_input(res, action, controller)
-			else:
-				var res := Steam.getDigitalActionData(controller, action.handle)
-				translate_digital_input(res, action, controller)
+	for action_set in RiggedInputUtils.steam_inputs:
+		for action in action_set.actions:
+			for controller in _controllers:
+				if controller == 0:
+					continue
+				if action is RiggedInputUtils.AnalogAction:
+					var res := Steam.getAnalogActionData(controller, action.handle)
+					translate_analog_input(res, action, controller)
+				elif action is RiggedInputUtils.TriggerAction:
+					var res := Steam.getAnalogActionData(controller, action.handle)
+					translate_trigger_input(res, action, controller)
+				elif action is RiggedInputUtils.MouseLikeAction:
+					var res := Steam.getAnalogActionData(controller, action.handle)
+					translate_mouse_like_input(res, action, controller)
+				else:
+					var res := Steam.getDigitalActionData(controller, action.handle)
+					translate_digital_input(res, action, controller)
 
 
 func _get_action_handles() -> void:
 	var null_handle := false
-	for action_name in _steam_input_mapping:
-		var action: Action = _steam_input_mapping[action_name]
-		if action is AnalogAction or action is TriggerAction or action is MouseLikeAction:
-			action.handle = Steam.getAnalogActionHandle(action_name)
-		else:
-			action.handle = Steam.getDigitalActionHandle(action_name)
-		if action.handle == 0:
-			null_handle = true
-			print("Got a null action handle for action %s" % action_name)
+	for action_set in RiggedInputUtils.steam_inputs:
+		for action in action_set.actions:
+			if action is RiggedInputUtils.AnalogAction or action is RiggedInputUtils.TriggerAction or action is RiggedInputUtils.MouseLikeAction:
+				action.handle = Steam.getAnalogActionHandle(action.name)
+			else:
+				action.handle = Steam.getDigitalActionHandle(action.name)
+			if action.handle == 0:
+				null_handle = true
+				print("Got a null action handle for action %s" % action.name)
 	_got_action_handles = not null_handle
 
 
-func translate_digital_input(p_steam_input: Dictionary, p_action: DigitalAction, p_device_handle: int) -> void:
+
+func translate_digital_input(p_steam_input: Dictionary, p_action: RiggedInputUtils.DigitalAction, p_device_handle: int) -> void:
 	# Only care about posedges or negedges, there's no logical xnor operator lmao
 	if p_steam_input.state and p_action.was_pressed_last.get_or_add(p_device_handle, false) or not p_steam_input.state and not p_action.was_pressed_last.get_or_add(p_device_handle, false):
 		return
@@ -144,7 +73,7 @@ func translate_digital_input(p_steam_input: Dictionary, p_action: DigitalAction,
 	Input.parse_input_event(ev)
 
 
-func translate_analog_input(p_steam_input: Dictionary, p_action: AnalogAction, p_device_handle: int) -> void:
+func translate_analog_input(p_steam_input: Dictionary, p_action: RiggedInputUtils.AnalogAction, p_device_handle: int) -> void:
 	if clampf(p_steam_input.x, 0.0, 1.0) != p_action.pos_x_last_val.get_or_add(p_device_handle, 0.0) and InputMap.has_action(p_action.pos_x_equiv):
 		var ev := InputEventAction.new()
 		ev.action = p_action.pos_x_equiv
@@ -206,7 +135,7 @@ func translate_analog_input(p_steam_input: Dictionary, p_action: AnalogAction, p
 		p_action.neg_y_last_val[p_device_handle] = clampf(p_steam_input.y, -1.0, 0.0)
 
 
-func translate_trigger_input(p_steam_input: Dictionary, p_action: TriggerAction, p_device_handle: int) -> void:
+func translate_trigger_input(p_steam_input: Dictionary, p_action: RiggedInputUtils.TriggerAction, p_device_handle: int) -> void:
 	if p_steam_input.x != p_action.last_val.get_or_add(p_device_handle, 0.0) and InputMap.has_action(p_action.godot_equiv):
 		var ev := InputEventAction.new()
 		ev.action = p_action.godot_equiv
@@ -223,7 +152,7 @@ func translate_trigger_input(p_steam_input: Dictionary, p_action: TriggerAction,
 		p_action.last_val[p_device_handle] = p_steam_input.x
 
 
-func translate_mouse_like_input(p_steam_input: Dictionary, action: MouseLikeAction, p_device_handle: int) -> void:
+func translate_mouse_like_input(p_steam_input: Dictionary, action: RiggedInputUtils.MouseLikeAction, p_device_handle: int) -> void:
 	if p_steam_input.x == 0 and p_steam_input.y == 0:
 		return
 	var ev := InputEventMouseMotion.new()
@@ -241,20 +170,22 @@ func _on_input_device_connected(p_input_handle: int):
 	var free_slot := _controllers.find(0)
 	# there should only ever be 16 controllers connected in Steam, so should be good to go
 	_controllers[free_slot] = p_input_handle
+	Steam.activateActionSet(p_input_handle, 0)
 
 func _on_input_device_disconnected(p_input_handle: int):
 	var controller_slot := _controllers.find(p_input_handle)
 	_controllers[controller_slot] = 0
-	for action in _steam_input_mapping:
-		if action is AnalogAction:
-			action.pos_y_last_val.erase(p_input_handle)
-			action.neg_x_last_val.erase(p_input_handle)
-			action.pos_y_last_val.erase(p_input_handle)
-			action.neg_y_last_val.erase(p_input_handle)
-		elif action is TriggerAction:
-			action.last_val.erase(p_input_handle)
-		elif action is DigitalAction:
-			action.was_pressed_last.erase(p_input_handle)
+	for action_set in RiggedInputUtils.steam_inputs:
+		for action in action_set.actions:
+			if action is RiggedInputUtils.AnalogAction:
+				action.pos_x_last_val.erase(p_input_handle)
+				action.neg_x_last_val.erase(p_input_handle)
+				action.pos_y_last_val.erase(p_input_handle)
+				action.neg_y_last_val.erase(p_input_handle)
+			elif action is RiggedInputUtils.TriggerAction:
+				action.last_val.erase(p_input_handle)
+			elif action is RiggedInputUtils.DigitalAction:
+				action.was_pressed_last.erase(p_input_handle)
 
 func _on_input_gamepad_slot_change(p_app_id: int, p_device_handle: int, p_device_type: int, p_old_gamepad_slot: int, p_new_gamepad_slot: int):
 	print("slot change:\n\tapp_id: %s \n\tdevice_handle: %s\n\tdevice_type: %s \n\told_slot: %s\n\tnew_slot: %s \n\t" % [p_app_id, p_device_handle, p_device_type, p_old_gamepad_slot, p_new_gamepad_slot])
@@ -262,8 +193,8 @@ func _on_input_gamepad_slot_change(p_app_id: int, p_device_handle: int, p_device
 
 
 func show_binding_panel(p_virtual_device: int):
-	var controller: int = _controllers[p_virtual_device - VIRTUAL_DEVICE_OFFSET]
+	var controller: int = _controllers[p_virtual_device - RiggedInputUtils.VIRTUAL_DEVICE_OFFSET]
 	Steam.showBindingPanel(controller)
 
 func get_virtual_device_id(p_input_handle: int):
-	return _controllers.find(p_input_handle) + VIRTUAL_DEVICE_OFFSET
+	return _controllers.find(p_input_handle) + RiggedInputUtils.VIRTUAL_DEVICE_OFFSET
