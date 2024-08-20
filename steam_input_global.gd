@@ -11,31 +11,32 @@ class Action:
 
 class AnalogAction extends Action:
 	var pos_x_equiv: String
-	var pos_x_last_val: float
+	var pos_x_last_val: Dictionary
 	var neg_x_equiv: String
-	var neg_x_last_val: float
+	var neg_x_last_val: Dictionary
 	var pos_y_equiv: String
-	var pos_y_last_val: float
+	var pos_y_last_val: Dictionary
 	var neg_y_equiv: String
-	var neg_y_last_val: float
+	var neg_y_last_val: Dictionary
 	func _init(p_pos_x_equiv: String, p_neg_x_equiv: String, p_pos_y_equiv: String, p_neg_y_equiv: String) -> void:
 		super()
 		self.pos_x_equiv = p_pos_x_equiv
 		self.neg_x_equiv = p_neg_x_equiv
 		self.pos_y_equiv = p_pos_y_equiv
 		self.neg_y_equiv = p_neg_y_equiv
-		self.pos_x_last_val = 0.0
-		self.neg_x_last_val = 0.0
-		self.pos_y_last_val = 0.0
-		self.neg_y_last_val = 0.0
+		self.pos_x_last_val = {}
+		self.neg_x_last_val = {}
+		self.pos_y_last_val = {}
+		self.neg_y_last_val = {}
 
 
 class TriggerAction extends Action:
 	var godot_equiv: String
-	var last_val: float
+	var last_val: Dictionary
 	func _init(p_godot_equiv: String) -> void:
 		super()
 		self.godot_equiv = p_godot_equiv
+		self.last_val = {}
 
 
 class MouseLikeAction extends Action:
@@ -45,11 +46,11 @@ class MouseLikeAction extends Action:
 
 class DigitalAction extends Action:
 	var godot_equiv: String
-	var was_pressed_last: bool
+	var was_pressed_last: Dictionary
 	func _init(p_godot_equiv: String) -> void:
 		super()
 		self.godot_equiv = p_godot_equiv
-		self.was_pressed_last = false
+		self.was_pressed_last = {}
 
 
 class ActionSet:
@@ -127,9 +128,9 @@ func _get_action_handles() -> void:
 
 func translate_digital_input(p_steam_input: Dictionary, p_action: DigitalAction, p_device_handle: int) -> void:
 	# Only care about posedges or negedges, there's no logical xnor operator lmao
-	if p_steam_input.state and p_action.was_pressed_last or not p_steam_input.state and not p_action.was_pressed_last:
+	if p_steam_input.state and p_action.was_pressed_last.get_or_add(p_device_handle, false) or not p_steam_input.state and not p_action.was_pressed_last.get_or_add(p_device_handle, false):
 		return
-	p_action.was_pressed_last = p_steam_input.state
+	p_action.was_pressed_last[p_device_handle] = p_steam_input.state
 	
 	if p_steam_input.state:
 		Input.action_press(p_action.godot_equiv)
@@ -144,7 +145,7 @@ func translate_digital_input(p_steam_input: Dictionary, p_action: DigitalAction,
 
 
 func translate_analog_input(p_steam_input: Dictionary, p_action: AnalogAction, p_device_handle: int) -> void:
-	if clampf(p_steam_input.x, 0.0, 1.0) != p_action.pos_x_last_val and InputMap.has_action(p_action.pos_x_equiv):
+	if clampf(p_steam_input.x, 0.0, 1.0) != p_action.pos_x_last_val.get_or_add(p_device_handle, 0.0) and InputMap.has_action(p_action.pos_x_equiv):
 		var ev := InputEventAction.new()
 		ev.action = p_action.pos_x_equiv
 		ev.device = get_virtual_device_id(p_device_handle)
@@ -157,9 +158,9 @@ func translate_analog_input(p_steam_input: Dictionary, p_action: AnalogAction, p
 			ev.pressed = false
 			ev.strength = 0.0
 		Input.parse_input_event(ev)
-		p_action.pos_x_last_val = clampf(p_steam_input.x, 0.0, 1.0)
+		p_action.pos_x_last_val[p_device_handle] = clampf(p_steam_input.x, 0.0, 1.0)
 
-	if clampf(p_steam_input.x, -1.0, 0.0) != p_action.neg_x_last_val and InputMap.has_action(p_action.neg_x_equiv):
+	if clampf(p_steam_input.x, -1.0, 0.0) != p_action.neg_x_last_val.get_or_add(p_device_handle, 0.0) and InputMap.has_action(p_action.neg_x_equiv):
 		var ev := InputEventAction.new()
 		ev.action = p_action.neg_x_equiv
 		ev.device = get_virtual_device_id(p_device_handle)
@@ -172,9 +173,9 @@ func translate_analog_input(p_steam_input: Dictionary, p_action: AnalogAction, p
 			ev.pressed = false
 			ev.strength = 0.0
 		Input.parse_input_event(ev)
-		p_action.neg_x_last_val = clampf(p_steam_input.x, -1.0, 0.0)
+		p_action.neg_x_last_val[p_device_handle] = clampf(p_steam_input.x, -1.0, 0.0)
 
-	if clampf(p_steam_input.y, 0.0, 1.0) != p_action.pos_y_last_val and InputMap.has_action(p_action.pos_y_equiv):
+	if clampf(p_steam_input.y, 0.0, 1.0) != p_action.pos_y_last_val.get_or_add(p_device_handle, 0.0) and InputMap.has_action(p_action.pos_y_equiv):
 		var ev := InputEventAction.new()
 		ev.action = p_action.pos_y_equiv
 		ev.device = get_virtual_device_id(p_device_handle)
@@ -187,9 +188,9 @@ func translate_analog_input(p_steam_input: Dictionary, p_action: AnalogAction, p
 			ev.pressed = false
 			ev.strength = 0.0
 		Input.parse_input_event(ev)
-		p_action.pos_y_last_val = clampf(p_steam_input.y, 0.0, 1.0)
+		p_action.pos_y_last_val[p_device_handle] = clampf(p_steam_input.y, 0.0, 1.0)
 	
-	if clampf(p_steam_input.y, -1.0, 0.0) != p_action.neg_y_last_val and InputMap.has_action(p_action.neg_y_equiv):
+	if clampf(p_steam_input.y, -1.0, 0.0) != p_action.neg_y_last_val.get_or_add(p_device_handle, 0.0) and InputMap.has_action(p_action.neg_y_equiv):
 		var ev := InputEventAction.new()
 		ev.action = p_action.neg_y_equiv
 		ev.device = get_virtual_device_id(p_device_handle)
@@ -202,11 +203,11 @@ func translate_analog_input(p_steam_input: Dictionary, p_action: AnalogAction, p
 			ev.pressed = false
 			ev.strength = 0.0
 		Input.parse_input_event(ev)
-		p_action.neg_y_last_val = clampf(p_steam_input.y, -1.0, 0.0)
+		p_action.neg_y_last_val[p_device_handle] = clampf(p_steam_input.y, -1.0, 0.0)
 
 
 func translate_trigger_input(p_steam_input: Dictionary, p_action: TriggerAction, p_device_handle: int) -> void:
-	if p_steam_input.x != p_action.last_val and InputMap.has_action(p_action.godot_equiv):
+	if p_steam_input.x != p_action.last_val.get_or_add(p_device_handle, 0.0) and InputMap.has_action(p_action.godot_equiv):
 		var ev := InputEventAction.new()
 		ev.action = p_action.godot_equiv
 		ev.device = get_virtual_device_id(p_device_handle)
@@ -219,6 +220,7 @@ func translate_trigger_input(p_steam_input: Dictionary, p_action: TriggerAction,
 			ev.pressed = false
 			ev.strength = p_steam_input.x
 		Input.parse_input_event(ev)
+		p_action.last_val[p_device_handle] = p_steam_input.x
 
 
 func translate_mouse_like_input(p_steam_input: Dictionary, action: MouseLikeAction, p_device_handle: int) -> void:
@@ -243,6 +245,16 @@ func _on_input_device_connected(p_input_handle: int):
 func _on_input_device_disconnected(p_input_handle: int):
 	var controller_slot := _controllers.find(p_input_handle)
 	_controllers[controller_slot] = 0
+	for action in _steam_input_mapping:
+		if action is AnalogAction:
+			action.pos_y_last_val.erase(p_input_handle)
+			action.neg_x_last_val.erase(p_input_handle)
+			action.pos_y_last_val.erase(p_input_handle)
+			action.neg_y_last_val.erase(p_input_handle)
+		elif action is TriggerAction:
+			action.last_val.erase(p_input_handle)
+		elif action is DigitalAction:
+			action.was_pressed_last.erase(p_input_handle)
 
 func _on_input_gamepad_slot_change(p_app_id: int, p_device_handle: int, p_device_type: int, p_old_gamepad_slot: int, p_new_gamepad_slot: int):
 	print("slot change:\n\tapp_id: %s \n\tdevice_handle: %s\n\tdevice_type: %s \n\told_slot: %s\n\tnew_slot: %s \n\t" % [p_app_id, p_device_handle, p_device_type, p_old_gamepad_slot, p_new_gamepad_slot])

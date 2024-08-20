@@ -35,7 +35,7 @@ func _input(event: InputEvent):
 		_left_strength = event.get_action_strength("move_left")
 	elif event.is_action("sprint"):
 		_sprinting = event.is_action_pressed("sprint")
-	elif event.is_action_pressed("pause_menu"):
+	elif event.is_action_pressed("pause_menu") and event.device < -1:
 		SteamInputGlobal.show_binding_panel(event.device)
 
 func _physics_process(delta):
