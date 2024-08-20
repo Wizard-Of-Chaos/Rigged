@@ -16,10 +16,17 @@ signal set_cam_rotation(_cam_rotation : float)
 var yaw: float = 0
 var pitch: float = 0
 
+var tween : Tween
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+
+func _on_set_movestate(_movestate : MoveState):
+	if tween:
+		tween.kill() #I FUCKING HATE PEOPLE AGED 10-12
+	tween = create_tween() #BUT NOT ENOUGH TO STOP THEIR EXISTENCE
+	tween.tween_property(camera, "fov", _movestate.fov, .5).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
 
 func _input(event):
 	if event is InputEventMouseMotion:
