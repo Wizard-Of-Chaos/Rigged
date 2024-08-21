@@ -1,7 +1,7 @@
 extends Node
 
 
-var _controllers: Array[int] = []
+var _controllers: Array[RiggedInputUtils.ControllerState] = []
 var _got_action_handles: bool = false
 
 
@@ -10,39 +10,50 @@ func _ready() -> void:
 	Steam.enableDeviceCallbacks()
 	Steam.runFrame()
 	_controllers.resize(RiggedInputUtils.MAX_CONNECTED_CONTROLLERS)
-	for controller in Steam.getConnectedControllers():
-		var free_slot := _controllers.find(0)
-		_controllers[free_slot] = controller
-	if _controllers.any(func(x): return x != 0):
+	for i in _controllers.size():
+		_controllers[i] = RiggedInputUtils.ControllerState.new()
+	for controller: int in Steam.getConnectedControllers():
+		var free_slot := _get_controller_slot_for_handle(0)
+		_controllers[free_slot].handle = controller
+	if _controllers.any(func(c: RiggedInputUtils.ControllerState): return c.handle != 0):
 		_get_action_handles()
 	Steam.input_device_connected.connect(_on_input_device_connected)
 	Steam.input_device_disconnected.connect(_on_input_device_disconnected)
 	Steam.input_gamepad_slot_change.connect(_on_input_gamepad_slot_change)
 
 
+func _get_controller_slot_for_handle(p_handle: int) -> int:
+	for i in _controllers.size():
+		if _controllers[i].handle == p_handle:
+			return i
+	return -1
+
+
 func _process(_delta: float) -> void:
-	for action_set in RiggedInputUtils.steam_inputs:
-		for action in action_set.actions:
-			for controller in _controllers:
-				if controller == 0:
-					continue
-				if action is RiggedInputUtils.AnalogAction:
-					var res := Steam.getAnalogActionData(controller, action.handle)
-					translate_analog_input(res, action, controller)
-				elif action is RiggedInputUtils.TriggerAction:
-					var res := Steam.getAnalogActionData(controller, action.handle)
-					translate_trigger_input(res, action, controller)
-				elif action is RiggedInputUtils.MouseLikeAction:
-					var res := Steam.getAnalogActionData(controller, action.handle)
-					translate_mouse_like_input(res, action, controller)
-				else:
-					var res := Steam.getDigitalActionData(controller, action.handle)
-					translate_digital_input(res, action, controller)
+	for controller in _controllers:
+		if controller.handle == 0 or controller.active_action_set == null:
+			continue
+		for action in controller.active_action_set.actions:
+			if action is RiggedInputUtils.AnalogAction:
+				var res := Steam.getAnalogActionData(controller.handle, action.handle)
+				translate_analog_input(res, action, controller.handle)
+			elif action is RiggedInputUtils.TriggerAction:
+				var res := Steam.getAnalogActionData(controller.handle, action.handle)
+				translate_trigger_input(res, action, controller.handle)
+			elif action is RiggedInputUtils.MouseLikeAction:
+				var res := Steam.getAnalogActionData(controller.handle, action.handle)
+				translate_mouse_like_input(res, action, controller.handle)
+			elif action is RiggedInputUtils.DigitalAction:
+				var res := Steam.getDigitalActionData(controller.handle, action.handle)
+				translate_digital_input(res, action, controller.handle)
+			else:
+				printerr("Unknown action: %s" % action)
 
 
 func _get_action_handles() -> void:
 	var null_handle := false
 	for action_set in RiggedInputUtils.steam_inputs:
+		action_set.handle = Steam.getActionSetHandle(action_set.name)
 		for action in action_set.actions:
 			if action is RiggedInputUtils.AnalogAction or action is RiggedInputUtils.TriggerAction or action is RiggedInputUtils.MouseLikeAction:
 				action.handle = Steam.getAnalogActionHandle(action.name)
@@ -163,18 +174,22 @@ func translate_mouse_like_input(p_steam_input: Dictionary, action: RiggedInputUt
 	Input.parse_input_event(ev)
 
 
-func _on_input_device_connected(p_input_handle: int):
+func _on_input_device_connected(p_input_handle: int) -> void:
 	# INFO: handles are only available once at least one controller has connected
 	if not _got_action_handles:
 		_get_action_handles()
-	var free_slot := _controllers.find(0)
+	var free_slot := _get_controller_slot_for_handle(0)
 	# there should only ever be 16 controllers connected in Steam, so should be good to go
-	_controllers[free_slot] = p_input_handle
-	Steam.activateActionSet(p_input_handle, 0)
+	_controllers[free_slot].handle = p_input_handle
+	var action_set := RiggedInputUtils.get_action_set(RiggedInputUtils.ACTION_SET_IN_GAME_CONTROLS)
+	if action_set != null and action_set.handle != 0:
+		Steam.activateActionSet(p_input_handle, action_set.handle)
+		_controllers[free_slot].active_action_set = action_set
 
-func _on_input_device_disconnected(p_input_handle: int):
-	var controller_slot := _controllers.find(p_input_handle)
-	_controllers[controller_slot] = 0
+func _on_input_device_disconnected(p_input_handle: int) -> void:
+	var controller_slot := _get_controller_slot_for_handle(p_input_handle)
+	_controllers[controller_slot].handle = 0
+	_controllers[controller_slot].active_action_set = null
 	for action_set in RiggedInputUtils.steam_inputs:
 		for action in action_set.actions:
 			if action is RiggedInputUtils.AnalogAction:
@@ -187,14 +202,24 @@ func _on_input_device_disconnected(p_input_handle: int):
 			elif action is RiggedInputUtils.DigitalAction:
 				action.was_pressed_last.erase(p_input_handle)
 
+
 func _on_input_gamepad_slot_change(p_app_id: int, p_device_handle: int, p_device_type: int, p_old_gamepad_slot: int, p_new_gamepad_slot: int):
 	print("slot change:\n\tapp_id: %s \n\tdevice_handle: %s\n\tdevice_type: %s \n\told_slot: %s\n\tnew_slot: %s \n\t" % [p_app_id, p_device_handle, p_device_type, p_old_gamepad_slot, p_new_gamepad_slot])
 
 
-
-func show_binding_panel(p_virtual_device: int):
-	var controller: int = _controllers[p_virtual_device - RiggedInputUtils.VIRTUAL_DEVICE_OFFSET]
+func show_binding_panel(p_virtual_device: int) -> void:
+	var controller: int = get_controller_handle(p_virtual_device)
 	Steam.showBindingPanel(controller)
 
-func get_virtual_device_id(p_input_handle: int):
-	return _controllers.find(p_input_handle) + RiggedInputUtils.VIRTUAL_DEVICE_OFFSET
+func get_virtual_device_id(p_input_handle: int) -> int:
+	return _get_controller_slot_for_handle(p_input_handle) + RiggedInputUtils.VIRTUAL_DEVICE_OFFSET
+
+func get_controller_handle(p_virtual_device: int) -> int:
+	return _controllers[p_virtual_device - RiggedInputUtils.VIRTUAL_DEVICE_OFFSET].handle
+
+func set_active_action_set(p_virtual_device: int, p_action_set: String) -> void:
+	var handle := get_controller_handle(p_virtual_device)
+	var controller_info := _controllers[_get_controller_slot_for_handle(handle)]
+	var action_set := RiggedInputUtils.get_action_set(p_action_set)
+	Steam.activateActionSet(handle, action_set.handle)
+	controller_info.active_action_set = action_set

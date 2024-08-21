@@ -5,13 +5,15 @@ class_name RiggedInputUtils
 const VIRTUAL_DEVICE_OFFSET := -18
 const MAX_CONNECTED_CONTROLLERS := 16
 
+const ACTION_SET_IN_GAME_CONTROLS: String = "InGameControls"
+const ACTION_SET_MENU_CONTROLS: String = "MenuControls"
 
 class ActionSet:
 	var handle: int = 0
 	var name: String
 	var actions: Array[Action]
 	var is_action_set_layer: bool
-	func _init(p_name: String, p_actions: Array[Action], p_is_action_set_layer: bool = false):
+	func _init(p_name: String, p_actions: Array[Action], p_is_action_set_layer: bool = false) -> void:
 		self.name = p_name
 		self.actions = p_actions
 		p_is_action_set_layer = p_is_action_set_layer
@@ -68,8 +70,17 @@ class DigitalAction extends Action:
 		self.godot_equiv = p_godot_equiv
 		self.was_pressed_last = {}
 
+
+class ControllerState:
+	var active_action_set: ActionSet
+	var handle: int
+	
+	func _init(p_handle: int = 0, p_active_action_set: ActionSet = null):
+		self.handle = p_handle
+		self.active_action_set = p_active_action_set
+
 static var steam_inputs: Array[ActionSet] = [
-	ActionSet.new("InGameControls",
+	ActionSet.new(ACTION_SET_IN_GAME_CONTROLS,
 		[
 			AnalogAction.new("move", "move_right", "move_left", "move_forward", "move_back"),
 			MouseLikeAction.new("camera"),
@@ -79,7 +90,7 @@ static var steam_inputs: Array[ActionSet] = [
 			DigitalAction.new("pause_menu", "pause_menu"),
 		]
 	),
-	ActionSet.new("MenuControls",
+	ActionSet.new(ACTION_SET_MENU_CONTROLS,
 		[
 			DigitalAction.new("menu_up", ""),
 			DigitalAction.new("menu_down", ""),
@@ -91,3 +102,9 @@ static var steam_inputs: Array[ActionSet] = [
 		]
 	)
 ]
+
+static func get_action_set(action_set: String) -> ActionSet:
+	var res := steam_inputs.filter(func(x: ActionSet): return x.name == action_set)
+	if res.size() == 0:
+		return null
+	return res[0]

@@ -42,8 +42,6 @@ func initialize_steam() -> void:
 	steam_id = Steam.getSteamID()
 	steam_username = Steam.getPersonaName()
 	
-	Steam.inputInit()
-	Steam.enableDeviceCallbacks()
 	Steam.runFrame()
 	inGameControlsHandle = Steam.getActionSetHandle("InGameControls")
 	menuControlsHandle = Steam.getActionSetHandle("MenuControls")

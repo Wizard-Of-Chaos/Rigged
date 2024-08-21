@@ -33,7 +33,7 @@ max_space = 3.0
 snap = 1.0
 
 [sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_tiawu"]
-graph_offset = Vector2(-416.181, -56.8404)
+graph_offset = Vector2(-633.019, 25.8577)
 nodes/move_anim_speed/node = SubResource("AnimationNodeTimeScale_5mmdg")
 nodes/move_anim_speed/position = Vector2(80, 80)
 nodes/move_blend/node = SubResource("AnimationNodeBlendSpace1D_ybe7i")
@@ -204,7 +204,7 @@ root_node = NodePath("../model")
 tree_root = SubResource("AnimationNodeBlendTree_tiawu")
 anim_player = NodePath("../model/AnimationPlayer")
 parameters/move_anim_speed/scale = 1.0
-parameters/move_blend/blend_position = 0.996094
+parameters/move_blend/blend_position = 1.0
 
 [node name="CameraRoot" type="Node3D" parent="Player"]
 transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, 4.65702, 0)
