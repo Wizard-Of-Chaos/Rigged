@@ -1,0 +1,63 @@
+[gd_scene load_steps=2 format=3 uid="uid://c3s2nqdpbt8rd"]
+
+[ext_resource type="Texture2D" uid="uid://cpcs2kqpjir0q" path="res://assets/ui/background.jpg" id="1_bw4ew"]
+
+[node name="menu" type="MarginContainer"]
+offset_right = 3840.0
+offset_bottom = 2160.0
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 0
+
+[node name="view" type="Camera2D" parent="."]
+position = Vector2(1920, 1080)
+zoom = Vector2(0.3, 0.3)
+
+[node name="background" type="TextureRect" parent="."]
+layout_mode = 2
+texture = ExtResource("1_bw4ew")
+
+[node name="ui" type="MarginContainer" parent="background"]
+layout_mode = 2
+offset_right = 3840.0
+offset_bottom = 2160.0
+theme_override_constants/margin_left = 120
+theme_override_constants/margin_top = 80
+theme_override_constants/margin_right = 120
+theme_override_constants/margin_bottom = 80
+
+[node name="HBoxContainer" type="HBoxContainer" parent="background/ui"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="background/ui/HBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="name" type="RichTextLabel" parent="background/ui/HBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(1200, 350)
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 150
+text = "Rigged Alpha
+"
+
+[node name="launch" type="RichTextLabel" parent="background/ui/HBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(1200, 200)
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 120
+text = "Launch"
+
+[node name="quit" type="RichTextLabel" parent="background/ui/HBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(1200, 200)
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 120
+text = "Quit"
+
+[node name="options" type="RichTextLabel" parent="background/ui/HBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(1200, 200)
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 120
+text = "Options"
+
+[node name="CenterContainer" type="CenterContainer" parent="background/ui/HBoxContainer"]
+layout_mode = 2
