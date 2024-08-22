@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://c3s2nqdpbt8rd"]
+[gd_scene load_steps=3 format=3 uid="uid://c3s2nqdpbt8rd"]
 
 [ext_resource type="Texture2D" uid="uid://cpcs2kqpjir0q" path="res://assets/ui/background.jpg" id="1_bw4ew"]
+[ext_resource type="Script" path="res://scripts/main_menu.gd" id="2_cvwnd"]
 
 [node name="menu" type="MarginContainer"]
 offset_right = 3840.0
@@ -26,6 +27,7 @@ theme_override_constants/margin_left = 120
 theme_override_constants/margin_top = 80
 theme_override_constants/margin_right = 120
 theme_override_constants/margin_bottom = 80
+script = ExtResource("2_cvwnd")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="background/ui"]
 layout_mode = 2
@@ -38,26 +40,32 @@ alignment = 1
 custom_minimum_size = Vector2(1200, 350)
 layout_mode = 2
 theme_override_font_sizes/normal_font_size = 150
-text = "Rigged Alpha
+bbcode_enabled = true
+text = "[center]Rigged Alpha[/center]
 "
 
-[node name="launch" type="RichTextLabel" parent="background/ui/HBoxContainer/VBoxContainer"]
-custom_minimum_size = Vector2(1200, 200)
+[node name="Start" type="Button" parent="background/ui/HBoxContainer/VBoxContainer"]
 layout_mode = 2
-theme_override_font_sizes/normal_font_size = 120
-text = "Launch"
+theme_override_font_sizes/font_size = 120
+text = "Start"
+alignment = 0
 
-[node name="quit" type="RichTextLabel" parent="background/ui/HBoxContainer/VBoxContainer"]
-custom_minimum_size = Vector2(1200, 200)
+[node name="Options" type="Button" parent="background/ui/HBoxContainer/VBoxContainer"]
 layout_mode = 2
-theme_override_font_sizes/normal_font_size = 120
-text = "Quit"
-
-[node name="options" type="RichTextLabel" parent="background/ui/HBoxContainer/VBoxContainer"]
-custom_minimum_size = Vector2(1200, 200)
-layout_mode = 2
-theme_override_font_sizes/normal_font_size = 120
+theme_override_font_sizes/font_size = 120
 text = "Options"
+alignment = 0
+
+[node name="Quit" type="Button" parent="background/ui/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 120
+text = "Quit
+"
+alignment = 0
 
 [node name="CenterContainer" type="CenterContainer" parent="background/ui/HBoxContainer"]
 layout_mode = 2
+
+[connection signal="pressed" from="background/ui/HBoxContainer/VBoxContainer/Start" to="background/ui" method="_onStart"]
+[connection signal="pressed" from="background/ui/HBoxContainer/VBoxContainer/Options" to="background/ui" method="_onOptions"]
+[connection signal="pressed" from="background/ui/HBoxContainer/VBoxContainer/Quit" to="background/ui" method="_onQuit"]
