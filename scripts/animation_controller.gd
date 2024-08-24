@@ -9,7 +9,6 @@ func set_tree(tree: AnimationTree):
 func _on_set_movestate(_movestate: MoveState):
 	if tween:
 		tween.kill()
-		
 	tween = anim_tree.create_tween()
 	tween.tween_property(anim_tree, "parameters/move_blend/blend_position", _movestate.id, .25)
 	tween.parallel().tween_property(anim_tree, "parameters/move_anim_speed/scale", _movestate.animation_speed, .7)

@@ -3,12 +3,16 @@ extends CharacterBody3D
 @export var movestates: Dictionary
 @onready var mesh_root: Node3D = $MeshRoot
 @onready var camera_root: CameraController = $CameraRoot
+@onready var anim_tree: AnimationTree = $MeshRoot/AnimationTree
+
 var move_controller: MoveController = MoveController.new()
 var anim_controller: AnimationController = AnimationController.new()
 func _ready():
 	move_controller.set_movestate(movestates["idle"])
 	move_controller.movestate_set.connect(camera_root._on_set_movestate)
-
+	move_controller.movestate_set.connect(anim_controller._on_set_movestate)
+	anim_controller.set_tree(anim_tree)
+	
 var move_direction: Vector3: 
 	get:
 		var dir = Vector3.ZERO
