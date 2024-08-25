@@ -1,0 +1,11 @@
+[gd_resource type="Theme" load_steps=2 format=3 uid="uid://c8ustssjawosr"]
+
+[ext_resource type="StyleBox" uid="uid://d02v861ao6e7d" path="res://main_menu_background_stylebox.tres" id="1_o0c2i"]
+
+[resource]
+MarginContainer/constants/margin_bottom = 20
+MarginContainer/constants/margin_left = 20
+MarginContainer/constants/margin_right = 20
+MarginContainer/constants/margin_top = 20
+MenuPanelContainerBackground/base_type = &"PanelContainer"
+MenuPanelContainerBackground/styles/panel = ExtResource("1_o0c2i")
