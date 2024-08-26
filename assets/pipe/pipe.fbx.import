@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://bwqnvtmoeyjbs"
-path="res://.godot/imported/pistol.fbx-8bb0838186edf7501f7e22e27495e407.scn"
+uid="uid://5crwfah5wk8r"
+path="res://.godot/imported/pipe.fbx-fd87a0e82f48199bfd00f126c2cccc27.scn"
 
 [deps]
 
-source_file="res://assets/pistol/pistol.fbx"
-dest_files=["res://.godot/imported/pistol.fbx-8bb0838186edf7501f7e22e27495e407.scn"]
+source_file="res://assets/pipe/pipe.fbx"
+dest_files=["res://.godot/imported/pipe.fbx-fd87a0e82f48199bfd00f126c2cccc27.scn"]
 
 [params]
 
