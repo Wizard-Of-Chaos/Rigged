@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://c3s2nqdpbt8rd"]
 
-[ext_resource type="Texture2D" uid="uid://cpcs2kqpjir0q" path="res://assets/ui/background.jpg" id="1_bw4ew"]
+[ext_resource type="Theme" uid="uid://c8ustssjawosr" path="res://main_theme.tres" id="2_anrgc"]
 [ext_resource type="Script" path="res://scripts/main_menu.gd" id="2_cvwnd"]
 
 [node name="menu" type="PanelContainer"]
@@ -9,20 +9,14 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("2_anrgc")
+theme_type_variation = &"MenuPanelContainerBackground"
 
 [node name="view" type="Camera2D" parent="."]
 anchor_mode = 0
 
-[node name="background" type="TextureRect" parent="."]
-layout_mode = 2
-texture = ExtResource("1_bw4ew")
-expand_mode = 1
-
 [node name="ui" type="MarginContainer" parent="."]
 layout_mode = 2
-theme_override_constants/margin_left = 20
-theme_override_constants/margin_top = 20
-theme_override_constants/margin_bottom = 20
 script = ExtResource("2_cvwnd")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="ui"]
@@ -33,7 +27,7 @@ alignment = 1
 [node name="name" type="RichTextLabel" parent="ui/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 2
-theme_override_font_sizes/normal_font_size = 90
+theme_override_font_sizes/normal_font_size = 96
 bbcode_enabled = true
 text = "[center]Rigged Alpha[/center]
 "
@@ -44,6 +38,12 @@ autowrap_mode = 0
 layout_mode = 2
 theme_override_font_sizes/font_size = 60
 text = "Start"
+alignment = 0
+
+[node name="Multiplayer" type="Button" parent="ui/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 60
+text = "Multiplayer"
 alignment = 0
 
 [node name="Options" type="Button" parent="ui/VBoxContainer"]
@@ -59,6 +59,7 @@ text = "Quit
 "
 alignment = 0
 
-[connection signal="pressed" from="ui/VBoxContainer/Start" to="ui" method="_onStart"]
-[connection signal="pressed" from="ui/VBoxContainer/Options" to="ui" method="_onOptions"]
-[connection signal="pressed" from="ui/VBoxContainer/Quit" to="ui" method="_onQuit"]
+[connection signal="pressed" from="ui/VBoxContainer/Start" to="ui" method="_on_start_pressed"]
+[connection signal="pressed" from="ui/VBoxContainer/Multiplayer" to="ui" method="_on_multiplayer_pressed"]
+[connection signal="pressed" from="ui/VBoxContainer/Options" to="ui" method="_on_options_pressed"]
+[connection signal="pressed" from="ui/VBoxContainer/Quit" to="ui" method="_on_quit_pressed"]
