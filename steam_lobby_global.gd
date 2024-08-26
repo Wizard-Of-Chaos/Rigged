@@ -1,9 +1,21 @@
-class_name SteamLobbyGlobal
 extends Node
+
+
+signal lobby_list_fetched
 
 const LOBBY_CMDLINE_ARG := "+connect_lobby"
 var lobby_id: int
 var lobby_members: Array = []
+var lobbies: Array = []
+
+
+class LobbyInfo:
+	var num_members: int
+	var lobby_id: int
+	# TODO: more info about our lobby
+	func _init(p_num_members: int, p_lobby_id: int) -> void:
+		self.num_members = p_num_members
+		self.lobby_id = p_lobby_id
 
 func _ready() -> void:
 	Steam.join_requested.connect(_on_lobby_join_requested)
@@ -11,6 +23,7 @@ func _ready() -> void:
 	Steam.lobby_created.connect(_on_lobby_created)
 	Steam.lobby_joined.connect(_on_lobby_joined)
 	Steam.persona_state_change.connect(_on_persona_change)
+	Steam.lobby_match_list.connect(_on_lobby_match_list)
 
 func check_command_line() -> void:
 	var args: PackedStringArray = OS.get_cmdline_args()
@@ -28,7 +41,7 @@ func check_command_line() -> void:
 	join_lobby(cmdline_lobby_id)
 
 func create_lobby(p_lobby_type: Steam.LobbyType, p_max_members: int) -> void:
-	# can't create a lobby if we're already in one
+	# you're already in a lobby numbnuts
 	if lobby_id != 0:
 		return
 	Steam.createLobby(p_lobby_type, p_max_members)
@@ -48,6 +61,34 @@ func get_lobby_members() -> void:
 		var member_steam_id: int = Steam.getLobbyMemberByIndex(lobby_id, member)
 		var member_steam_name: String = Steam.getFriendPersonaName(member_steam_id)
 		lobby_members.append({"steam_id": member_steam_id, "steam_name": member_steam_name})
+
+
+func leave_lobby() -> void:
+	# you're not in a lobby numbnuts
+	if lobby_id == 0:
+		return
+	Steam.leaveLobby(lobby_id)
+	lobby_id = 0
+	
+	for member in lobby_members:
+		if member['steam_id'] != SteamGlobal.steam_id:
+			Steam.closeP2PSessionWithUser(member['steam_id'])
+
+	lobby_members.clear()
+	
+	
+func get_lobby_list_info() -> Array[LobbyInfo]:
+	var res: Array[LobbyInfo] = []
+	for lobby in lobbies:
+		var lobby_info := LobbyInfo.new(Steam.getNumLobbyMembers(lobby), lobby)
+	
+	return res
+
+
+func fetch_lobbies() -> void:
+	Steam.addRequestLobbyListDistanceFilter(Steam.LOBBY_DISTANCE_FILTER_WORLDWIDE)
+	print("fetching lobbies")
+	Steam.requestLobbyList()
 
 func _on_lobby_created(p_connect: int, p_lobby_id: int) -> void:
 	if p_connect != 1:
@@ -109,15 +150,8 @@ func _on_lobby_chat_update(p_lobby_id: int, p_change_id: int, p_making_change_id
 	get_lobby_members()
 
 
-func leave_lobby() -> void:
-	# you're already in a lobby numbnuts
-	if lobby_id == 0:
-		return
-	Steam.leaveLobby(lobby_id)
-	lobby_id = 0
+func _on_lobby_match_list(p_lobbies: Array) -> void:
+	lobbies.clear()
+	lobbies.append_array(p_lobbies)
 	
-	for member in lobby_members:
-		if member['steam_id'] != SteamGlobal.steam_id:
-			Steam.closeP2PSessionWithUser(member['steam_id'])
-
-	lobby_members.clear()
+	lobby_list_fetched.emit()
