@@ -2,6 +2,9 @@ extends Node
 
 
 signal lobby_list_fetched
+signal lobby_members_fetched
+signal lobby_created
+signal lobby_joined
 
 const LOBBY_CMDLINE_ARG := "+connect_lobby"
 var lobby_id: int
@@ -61,6 +64,9 @@ func get_lobby_members() -> void:
 		var member_steam_id: int = Steam.getLobbyMemberByIndex(lobby_id, member)
 		var member_steam_name: String = Steam.getFriendPersonaName(member_steam_id)
 		lobby_members.append({"steam_id": member_steam_id, "steam_name": member_steam_name})
+	
+	lobby_members_fetched.emit()
+
 
 
 func leave_lobby() -> void:
@@ -92,12 +98,14 @@ func fetch_lobbies() -> void:
 
 func _on_lobby_created(p_connect: int, p_lobby_id: int) -> void:
 	if p_connect != 1:
+		print("lobby failed to create? %s" % p_connect)
 		return
 	lobby_id = p_lobby_id
-	print("Succesfully create a lobby: %s" % lobby_id)
+	print("Succesfully created a lobby: %s" % lobby_id)
 	Steam.setLobbyJoinable(lobby_id, true)
 	var set_relay: bool = Steam.allowP2PPacketRelay(true)
 	print("Allowing Steam to be relay backup: %s" % set_relay)
+	lobby_created.emit()
 
  
 func _on_lobby_join_requested(p_lobby_id: int, p_friend_id: int) -> void:
@@ -124,6 +132,7 @@ func _on_lobby_joined(p_lobby_id: int, _permissions: int, _locked: bool, p_respo
 		print("Failed to join lobby: %s" % fail_reason)
 		return
 	lobby_id = p_lobby_id
+	lobby_joined.emit()
 	get_lobby_members()
 
 

@@ -37,7 +37,7 @@ horizontal_scroll_mode = 0
 [node name="Lobbies" type="VBoxContainer" parent="MarginContainer/Menu/LobbyBrowser"]
 layout_mode = 2
 
-[node name="BottomRowButtons" type="BoxContainer" parent="MarginContainer/Menu"]
+[node name="BottomRowButtons" type="HBoxContainer" parent="MarginContainer/Menu"]
 layout_mode = 2
 
 [node name="Back" type="Button" parent="MarginContainer/Menu/BottomRowButtons"]
