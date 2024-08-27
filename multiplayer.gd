@@ -1,6 +1,7 @@
 extends PanelContainer
 
 @onready var lobbies: VBoxContainer = $MarginContainer/Menu/LobbyBrowser/Lobbies
+@onready var join_button: Button = $MarginContainer/Menu/BottomRowButtons/Join
 var _selected_lobby: int
 # TODO: add a timer to auto refresh every X seconds
 
@@ -36,18 +37,24 @@ func _on_refresh_pressed() -> void:
 
 func _on_lobby_button_pressed(p_lobby_id: int) -> void:
 	_selected_lobby = p_lobby_id
+	join_button.disabled = false
 
 
 func _on_lobby_list_fetched() -> void:
 	for lobby in lobbies.get_children():
 		lobby.queue_free()
 	
+	var lobby_gone := true
 	for lobby_info in SteamLobbyGlobal.get_lobby_list_info():
+		if lobby_info.lobby_id == _selected_lobby:
+			lobby_gone = false
 		var lobby_button := Button.new()
 		lobby_button.set_text("Lobby %s: %s players" % [lobby_info.lobby_id, lobby_info.num_members])
 		lobby_button.pressed.connect(_on_lobby_button_pressed.bind(lobby_info.lobby_id))
 		lobby_button.set_name("Lobby%s" % lobby_info.lobby_id)
 		lobbies.add_child(lobby_button)
+	if lobby_gone:
+		join_button.disabled = true
 
 func _on_lobby_created() -> void:
 	get_tree().change_scene_to_file("res://multiplayer_lobby.tscn")

@@ -87,6 +87,7 @@ func get_lobby_list_info() -> Array[LobbyInfo]:
 	var res: Array[LobbyInfo] = []
 	for lobby in lobbies:
 		var lobby_info := LobbyInfo.new(Steam.getNumLobbyMembers(lobby), lobby)
+		res.append(lobby_info)
 	
 	return res
 
@@ -144,6 +145,8 @@ func _on_persona_change(p_steam_id: int, _flag: int) -> void:
 
 
 func _on_lobby_chat_update(p_lobby_id: int, p_change_id: int, p_making_change_id: int, p_chat_state: int) -> void:
+	if p_lobby_id != lobby_id:
+		print("bwuh, lobby chat update from %s which is not the lobby we're in (%s)" % [p_lobby_id, lobby_id])
 	var changer_name: String = Steam.getFriendPersonaName(p_change_id)
 	var output: String
 	

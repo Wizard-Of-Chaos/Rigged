@@ -50,6 +50,7 @@ size_flags_horizontal = 3
 layout_mode = 2
 size_flags_horizontal = 8
 theme_override_font_sizes/font_size = 24
+disabled = true
 text = "Start"
 
 [connection signal="pressed" from="MarginContainer/Menu/BottomRowButtons/Leave" to="." method="_on_leave_pressed"]
