@@ -7,18 +7,11 @@ signal lobby_created
 signal lobby_joined
 
 const LOBBY_CMDLINE_ARG := "+connect_lobby"
-var lobby_id: int
+var lobby_id: int = 0
 var lobby_members: Array = []
 var lobbies: Array = []
+var is_host: bool = false
 
-
-class LobbyInfo:
-	var num_members: int
-	var lobby_id: int
-	# TODO: more info about our lobby
-	func _init(p_num_members: int, p_lobby_id: int) -> void:
-		self.num_members = p_num_members
-		self.lobby_id = p_lobby_id
 
 func _ready() -> void:
 	Steam.join_requested.connect(_on_lobby_join_requested)
@@ -42,6 +35,7 @@ func check_command_line() -> void:
 	
 	print("Command line lobby ID: %s" % cmdline_lobby_id)
 	join_lobby(cmdline_lobby_id)
+
 
 func create_lobby(p_lobby_type: Steam.LobbyType, p_max_members: int) -> void:
 	# you're already in a lobby numbnuts
@@ -68,7 +62,6 @@ func get_lobby_members() -> void:
 	lobby_members_fetched.emit()
 
 
-
 func leave_lobby() -> void:
 	# you're not in a lobby numbnuts
 	if lobby_id == 0:
@@ -81,8 +74,8 @@ func leave_lobby() -> void:
 			Steam.closeP2PSessionWithUser(member['steam_id'])
 
 	lobby_members.clear()
-	
-	
+
+
 func get_lobby_list_info() -> Array[LobbyInfo]:
 	var res: Array[LobbyInfo] = []
 	for lobby in lobbies:
@@ -167,3 +160,12 @@ func _on_lobby_match_list(p_lobbies: Array) -> void:
 	lobbies.append_array(p_lobbies)
 	
 	lobby_list_fetched.emit()
+
+
+class LobbyInfo:
+	var num_members: int
+	var lobby_id: int
+	# TODO: more info about our lobby
+	func _init(p_num_members: int, p_lobby_id: int) -> void:
+		self.num_members = p_num_members
+		self.lobby_id = p_lobby_id

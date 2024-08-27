@@ -49,7 +49,7 @@ func _on_lobby_list_fetched() -> void:
 		if lobby_info.lobby_id == _selected_lobby:
 			lobby_gone = false
 		var lobby_button := Button.new()
-		lobby_button.set_text("Lobby %s: %s players" % [lobby_info.lobby_id, lobby_info.num_members])
+		lobby_button.set_text("Lobby %s: %s player(s)" % [lobby_info.lobby_id, lobby_info.num_members])
 		lobby_button.pressed.connect(_on_lobby_button_pressed.bind(lobby_info.lobby_id))
 		lobby_button.set_name("Lobby%s" % lobby_info.lobby_id)
 		lobbies.add_child(lobby_button)
@@ -57,7 +57,8 @@ func _on_lobby_list_fetched() -> void:
 		join_button.disabled = true
 
 func _on_lobby_created() -> void:
-	get_tree().change_scene_to_file("res://multiplayer_lobby.tscn")
+	print("we created a lobby!")
+	#get_tree().change_scene_to_file("res://multiplayer_lobby.tscn")
 
 
 func _on_lobby_joined() -> void:

@@ -7,10 +7,6 @@ func _ready() -> void:
 	SteamLobbyGlobal.lobby_members_fetched.connect(_on_lobby_members_fetched)
 
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
-
 func _on_lobby_members_fetched() -> void:
 	# TODO: maybe reuse the old labels? Possibly unnecesarry optimization
 	for player in players.get_children():
