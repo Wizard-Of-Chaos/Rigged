@@ -61,7 +61,8 @@ func serialize_quaternion(p_value: Quaternion, p_info: QuaternionInfo, p_buf: Pa
 	p_bit_offset += serialize_float(p_value.w, p_info.float_info, p_buf, p_bit_offset)
 	return p_info.float_info.num_bits * 4
 
-func serialize(p_obj: Object, p_buf: PackedByteArray, p_bit_offset: int):
+func serialize(p_obj: Object, p_buf: PackedByteArray, p_bit_offset: int) -> int:
+	var initial_offset := p_bit_offset
 	for field in self.serialization_info:
 		assert(field.name in p_obj, "[ERROR] Attempted to serialize %s but failed to find field %s " % [p_obj.get_meta("name", "Unknown"), field.name])
 		match typeof(p_obj[field.name]):
@@ -81,5 +82,11 @@ func serialize(p_obj: Object, p_buf: PackedByteArray, p_bit_offset: int):
 				pass
 			TYPE_OBJECT:
 				pass
-	
-	var_to_bytes()
+	return p_bit_offset - initial_offset
+
+
+func serialized_size() -> int:
+	var res := 0
+	for info in self.serialization_info:
+		res += info._size()
+	return res

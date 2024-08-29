@@ -90,6 +90,32 @@ func fetch_lobbies() -> void:
 	print("fetching lobbies")
 	Steam.requestLobbyList()
 
+func send_p2p_packet(p_target: int, p_packet_data: Variant, p_send_type: Steam.P2PSend = Steam.P2P_SEND_RELIABLE, p_channel: int = 0) -> void:
+	var compressed_data: PackedByteArray = var_to_bytes(p_packet_data).compress(FileAccess.COMPRESSION_GZIP)
+	
+	if p_target == 0:
+		if lobby_members.size() > 1:
+			for member in lobby_members:
+				if member["steam_id"] != SteamGlobal.steam_id:
+					Steam.sendP2PPacket(member["steam_id"], compressed_data, p_send_type, p_channel)
+	else:
+		Steam.sendP2PPacket(p_target, compressed_data, p_send_type, p_channel)
+
+
+func read_p2p_packet(p_channel: int = 0) -> void:
+	var packet_size: int = Steam.getAvailableP2PPacketSize(p_channel)
+	if packet_size > 0:
+		var packet: Dictionary = Steam.readP2PPacket(packet_size, p_channel)
+		if packet == null or packet.is_empty():
+			print("WARNING: read an empty pakcet with non-zero size!")
+		
+		var packet_sender: int = packet.remote_steam_id
+		var compressed_packet_data: PackedByteArray = packet.data
+		var packet_data: Variant = bytes_to_var(compressed_packet_data.decompress_dynamic(-1, FileAccess.COMPRESSION_GZIP))
+		print("Packet: %s" % packet_data)
+		
+		# TODO: do stuff with the packet data
+
 func _on_lobby_created(p_connect: int, p_lobby_id: int) -> void:
 	if p_connect != 1:
 		print("lobby failed to create? %s" % p_connect)
