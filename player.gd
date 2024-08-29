@@ -56,3 +56,4 @@ func _physics_process(delta):
 
 func _on_camera_root_set_cam_rotation(p_cam_rotation: float) -> void:
 	move_controller.set_rotation(p_cam_rotation)
+	
