@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="AirState" load_steps=2 format=3 uid="uid://bx8xk5percaki"]
+
+[ext_resource type="Script" path="res://scripts/air_states/air_state.gd" id="1_q6vkf"]
+
+[resource]
+script = ExtResource("1_q6vkf")
+anim_name = "jump"
+max_height = 3.0
+hang_time = 0.5

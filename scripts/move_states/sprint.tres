@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="MoveState" load_steps=2 format=3 uid="uid://cnxmsfayuy712"]
 
-[ext_resource type="Script" path="res://scripts/move_state.gd" id="1_kajnf"]
+[ext_resource type="Script" path="res://scripts/move_states/move_state.gd" id="1_kajnf"]
 
 [resource]
 script = ExtResource("1_kajnf")
