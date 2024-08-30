@@ -102,17 +102,17 @@ shape = SubResource("CapsuleShape3D_y2tno")
 [node name="Skeleton3D" parent="Player/MeshRoot/guy/Armature" index="0"]
 bones/0/position = Vector3(0, 0.000757272, 0.00127686)
 bones/0/rotation = Quaternion(0.611546, -7.27596e-12, 9.09495e-13, 0.791209)
-bones/1/rotation = Quaternion(0.0881539, 1.18745e-07, 1.05065e-08, 0.996107)
-bones/2/rotation = Quaternion(0.0391312, -0.000558454, -2.18396e-05, 0.999234)
+bones/1/rotation = Quaternion(0.0881885, -0.000345854, -5.80804e-05, 0.996104)
+bones/2/rotation = Quaternion(0.0391402, -0.000197473, -7.70037e-06, 0.999234)
 bones/3/rotation = Quaternion(-3.62004e-18, 1.19209e-07, -9.52341e-19, 1)
-bones/3/scale = Vector3(1.02113, 1.02113, 1.02113)
+bones/3/scale = Vector3(1.04811, 1.04811, 1.04811)
 bones/4/rotation = Quaternion(0.161997, 1.50674e-14, 3.8623e-08, 0.986791)
-bones/4/scale = Vector3(0.979309, 0.979309, 0.979309)
-bones/5/rotation = Quaternion(-0.115557, 0.07681, -0.0163114, 0.990192)
+bones/4/scale = Vector3(0.954101, 0.954102, 0.954101)
+bones/5/rotation = Quaternion(-0.115915, -1.18406e-07, -1.38181e-08, 0.993259)
 bones/7/rotation = Quaternion(0.0861249, -0.0485453, -0.819987, 0.563779)
 bones/8/rotation = Quaternion(-0.082715, -0.0670362, -0.475744, 0.873116)
-bones/8/scale = Vector3(0.979309, 0.979309, 0.979309)
-bones/9/rotation = Quaternion(0.102398, 0.00647448, -0.0159969, 0.994594)
+bones/8/scale = Vector3(0.954101, 0.954101, 0.954101)
+bones/9/rotation = Quaternion(0.141719, -0.00138299, -0.015282, 0.989788)
 bones/10/rotation = Quaternion(-0.0391694, 0.254965, -0.137553, 0.956315)
 bones/11/position = Vector3(-0.000106522, 0.0031089, 0.000283733)
 bones/11/rotation = Quaternion(-0.0607039, 4.36358e-05, -0.0172216, 0.998007)
@@ -130,8 +130,8 @@ bones/23/rotation = Quaternion(0.153169, 0.89869, -0.161234, -0.378019)
 bones/24/rotation = Quaternion(0.016305, 0.00288393, -0.018636, 0.999689)
 bones/26/rotation = Quaternion(0.0861247, 0.0485451, 0.819987, 0.563779)
 bones/27/rotation = Quaternion(-0.0831669, 0.0668808, 0.47151, 0.875379)
-bones/27/scale = Vector3(0.979308, 0.979309, 0.979309)
-bones/28/rotation = Quaternion(0.162041, 0.00563914, 0.0149928, 0.986654)
+bones/27/scale = Vector3(0.954101, 0.954101, 0.954101)
+bones/28/rotation = Quaternion(0.141465, 0.00133067, 0.0152857, 0.989824)
 bones/29/rotation = Quaternion(-0.0441991, -0.178711, 0.123132, 0.975165)
 bones/30/position = Vector3(0.000106522, 0.0031089, 0.000283733)
 bones/30/rotation = Quaternion(-0.0607039, -4.36338e-05, 0.0172216, 0.998007)
@@ -160,7 +160,10 @@ bones/52/rotation = Quaternion(-0.0218794, -0.00270206, -0.0337067, 0.999189)
 bones/53/rotation = Quaternion(0.0684732, 0.0674308, 0.720696, 0.686558)
 
 [node name="BoneAttachment3D" parent="Player/MeshRoot/guy/Armature/Skeleton3D" index="6"]
-transform = Transform3D(-0.922912, 0.0355123, 0.383369, -0.384579, -0.132158, -0.913583, 0.0182218, -0.990592, 0.135627, -0.00667661, -0.0002883, -0.000493411)
+transform = Transform3D(-0.922522, 0.037827, 0.38409, -0.385948, -0.0899381, -0.918128, -0.000185564, -0.995231, 0.097569, -0.00676926, -0.00145693, -0.000400713)
+
+[node name="spine_ik" parent="Player/MeshRoot/guy/Armature/Skeleton3D" index="7"]
+target_node = NodePath("../../../../../CameraRoot/CamYaw/CamPitch/ik_target")
 
 [node name="AnimationTree" type="AnimationTree" parent="Player/MeshRoot"]
 root_node = NodePath("../guy")
@@ -179,6 +182,9 @@ script = ExtResource("3_i5v55")
 
 [node name="Camera3D" type="Camera3D" parent="Player/CameraRoot/CamYaw/CamPitch"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.405, -0.619611, 1.75552)
+
+[node name="ik_target" type="Marker3D" parent="Player/CameraRoot/CamYaw/CamPitch"]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
 
 [node name="ICallThisEnemyTheSun" type="DirectionalLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, -0.690769, 0.723076, 0, -0.723076, -0.690769, 0, 0, 0.114616)
