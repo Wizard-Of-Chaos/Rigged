@@ -16,7 +16,7 @@ func _ready():
 	
 var move_direction: Vector3: 
 	get:
-		var dir = Vector3.ZERO
+		var dir := Vector3.ZERO
 		dir.x = _left_strength - _right_strength
 		dir.z = _forward_strength - _back_strength
 		if(_jumped):
@@ -37,7 +37,7 @@ func moving() -> bool:
 	return abs(move_direction.x) > 0 or abs(move_direction.y) > 0 or abs(move_direction.z) > 0
 
 func _input(event: InputEvent):
-	_jumped = false
+
 	if event.is_action("move_forward"):
 		_forward_strength = event.get_action_strength("move_forward")
 	elif event.is_action("move_back"):
@@ -47,22 +47,22 @@ func _input(event: InputEvent):
 	elif event.is_action("move_left"):
 		_left_strength = event.get_action_strength("move_left")
 	elif event.is_action("sprint"):
-		_sprinting = event.is_action_pressed("sprint")
-	elif event.is_action("jump"):
-		if is_on_floor():
-			_jumped = event.is_action_pressed("jump")
+		_sprinting = event.is_action_pressed("sprint", true)
+	elif event.is_action_pressed("jump") and is_on_floor():
+		_jumped = event.is_action_pressed("jump")
 	elif event.is_action_pressed("pause_menu") and event.device < -1:
 		SteamInputGlobal.show_binding_panel(event.device)
 
-func _physics_process(delta):
+func _physics_process(delta: float):
 	if moving():
 		move_controller.set_move_dir(move_direction)
 		move_controller.set_movestate(movestates["sprint"] if _sprinting else movestates["run"])
 	else:
 		move_controller.set_movestate(movestates["idle"])
-	var target_rotation = atan2(move_controller.direction.x, move_controller.direction.z) - rotation.y
+	var target_rotation: float = atan2(move_controller.direction.x, move_controller.direction.z) - rotation.y
 	mesh_root.rotation.y = lerp_angle(mesh_root.rotation.y, target_rotation, move_controller.rotation_speed * delta)
 	velocity = velocity.lerp(move_controller.get_velocity(), move_controller.acceleration * delta)
+	_jumped = false
 	move_and_slide()
 
 
