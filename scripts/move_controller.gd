@@ -4,11 +4,16 @@ signal movestate_set(MoveState)
 
 @export var rotation_speed: float = 8
 var direction: Vector3
-var velocity: Vector3
 var acceleration: float
 var speed: float
 var rotation: float = 0
 var up: Vector3 = Vector3.UP
+var jump_speed = 90
+var fall_speed = 15
+var player: CharacterBody3D
+
+func _set_player(char: CharacterBody3D):
+	player = char
 
 func set_movestate(p_movestate: MoveState):
 	speed = p_movestate.speed
@@ -27,5 +32,9 @@ func get_velocity():
 		res = res.normalized()
 	
 	res.x *= speed
+	if not player.is_on_floor():
+		res.y *= fall_speed
+	elif direction.y > 0:
+		res.y *= jump_speed
 	res.z *= speed
 	return res
