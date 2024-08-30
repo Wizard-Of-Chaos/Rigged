@@ -8,8 +8,8 @@ var acceleration: float
 var speed: float
 var rotation: float = 0
 var up: Vector3 = Vector3.UP
-var jump_speed = 90
-var fall_speed = 15
+var jump_speed = 1200
+var fall_speed = 40
 var player: CharacterBody3D
 
 func _set_player(char: CharacterBody3D):
@@ -26,7 +26,7 @@ func set_move_dir(p_direction: Vector3):
 func set_rotation(p_rotation: float):
 	rotation = p_rotation
 
-func get_velocity():
+func get_velocity() -> Vector3:
 	var res: Vector3 = direction
 	if not res.is_zero_approx() and res.length_squared() > 1:
 		res = res.normalized()

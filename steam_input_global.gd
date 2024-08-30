@@ -71,7 +71,8 @@ func translate_digital_input(p_steam_input: Dictionary, p_action: RiggedInputUti
 	if p_steam_input.state and p_action.was_pressed_last.get_or_add(p_device_handle, false) or not p_steam_input.state and not p_action.was_pressed_last.get_or_add(p_device_handle, false):
 		return
 	p_action.was_pressed_last[p_device_handle] = p_steam_input.state
-	
+	if p_action.godot_equiv == "jump":
+		print("steam input jumping")
 	if p_steam_input.state:
 		Input.action_press(p_action.godot_equiv)
 	else:

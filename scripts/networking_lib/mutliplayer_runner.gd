@@ -18,15 +18,13 @@ func network_frame() -> void:
 	var offset = 0
 	# TODO: prio accumulator stuff
 	for node: Node in get_tree().get_nodes_in_group("serializable"):
-		assert(node.has("serializer"))
+		assert(node.has("serializer") and node.serializer is Serializable)
 		var serializer: Serializable = node.serializer
 		if offset + serializer.serialized_size() > MAX_PACKET_SIZE:
 			break
 		offset += serializer.serialize(node, packet.data, offset)
 	
 	
-	
-
 class GameUpdatePacket:
 	var data: PackedByteArray
 	func _init():
