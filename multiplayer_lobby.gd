@@ -1,10 +1,12 @@
 extends PanelContainer
 
 @onready var players: VBoxContainer = $MarginContainer/Menu/PlayersBackground/Players
+@onready var startButton: Button = $MarginContainer/Menu/BottomRowButtons/Start
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	SteamLobbyGlobal.lobby_members_fetched.connect(_on_lobby_members_fetched)
+	startButton.disabled = not SteamLobbyGlobal.is_host
 
 
 func _on_lobby_members_fetched() -> void:
@@ -17,6 +19,8 @@ func _on_lobby_members_fetched() -> void:
 		member_label.autowrap_mode = TextServer.AUTOWRAP_OFF
 		member_label.fit_content = true
 		players.add_child(member_label)
+	
+	startButton.disabled = not SteamLobbyGlobal.is_host
 
 
 func _on_leave_pressed() -> void:
@@ -25,4 +29,5 @@ func _on_leave_pressed() -> void:
 
 
 func _on_start_pressed() -> void:
+	
 	pass # Replace with function body.

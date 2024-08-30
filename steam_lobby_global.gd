@@ -20,6 +20,7 @@ func _ready() -> void:
 	Steam.lobby_joined.connect(_on_lobby_joined)
 	Steam.persona_state_change.connect(_on_persona_change)
 	Steam.lobby_match_list.connect(_on_lobby_match_list)
+	Steam.lobby_message.connect(_on_lobby_message)
 
 func check_command_line() -> void:
 	var args: PackedStringArray = OS.get_cmdline_args()
@@ -46,19 +47,25 @@ func create_lobby(p_lobby_type: Steam.LobbyType, p_max_members: int) -> void:
 
 func join_lobby(p_lobby_id: int) -> void:
 	print("Attempting to join lobby %s" % p_lobby_id)
-	
+	is_host = false
 	Steam.joinLobby(p_lobby_id)
 
 
 func get_lobby_members() -> void:
 	lobby_members.clear()
 	var num_members: int = Steam.getNumLobbyMembers(lobby_id)
+	var lobby_owner: int = Steam.getLobbyOwner(lobby_id)
 	
 	for member in range(0, num_members):
 		var member_steam_id: int = Steam.getLobbyMemberByIndex(lobby_id, member)
 		var member_steam_name: String = Steam.getFriendPersonaName(member_steam_id)
-		lobby_members.append({"steam_id": member_steam_id, "steam_name": member_steam_name})
-	
+		
+		lobby_members.append({
+				"steam_id": member_steam_id, 
+				"steam_name": member_steam_name, 
+				"is_owner": member_steam_id == lobby_owner,
+		})
+	is_host = lobby_owner == SteamGlobal.steam_id
 	lobby_members_fetched.emit()
 
 
@@ -92,12 +99,11 @@ func fetch_lobbies() -> void:
 
 func send_p2p_packet(p_target: int, p_packet_data: Variant, p_send_type: Steam.P2PSend = Steam.P2P_SEND_RELIABLE, p_channel: int = 0) -> void:
 	var compressed_data: PackedByteArray = var_to_bytes(p_packet_data).compress(FileAccess.COMPRESSION_GZIP)
-	
 	if p_target == 0:
 		if lobby_members.size() > 1:
 			for member in lobby_members:
-				if member["steam_id"] != SteamGlobal.steam_id:
-					Steam.sendP2PPacket(member["steam_id"], compressed_data, p_send_type, p_channel)
+				if member.steam_id != SteamGlobal.steam_id:
+					Steam.sendP2PPacket(member.steam_id, compressed_data, p_send_type, p_channel)
 	else:
 		Steam.sendP2PPacket(p_target, compressed_data, p_send_type, p_channel)
 
@@ -116,6 +122,14 @@ func read_p2p_packet(p_channel: int = 0) -> void:
 		
 		# TODO: do stuff with the packet data
 
+
+func send_lobby_msg(p_chat_message_type: LobbyChatMessageType, message: String) -> void:
+	var prefix: String
+	match p_chat_message_type:
+		LobbyChatMessageType.CHAT: "[CHAT]"
+		LobbyChatMessageType.COMMAND: "[COMMAND]"
+	Steam.sendLobbyChatMsg(lobby_id, "%s%s" % [p_chat_message_type, message])
+
 func _on_lobby_created(p_connect: int, p_lobby_id: int) -> void:
 	if p_connect != 1:
 		print("lobby failed to create? %s" % p_connect)
@@ -125,6 +139,7 @@ func _on_lobby_created(p_connect: int, p_lobby_id: int) -> void:
 	Steam.setLobbyJoinable(lobby_id, true)
 	var set_relay: bool = Steam.allowP2PPacketRelay(true)
 	print("Allowing Steam to be relay backup: %s" % set_relay)
+	is_host = true
 	lobby_created.emit()
 
  
@@ -167,15 +182,15 @@ func _on_lobby_chat_update(p_lobby_id: int, p_change_id: int, p_making_change_id
 	if p_lobby_id != lobby_id:
 		print("bwuh, lobby chat update from %s which is not the lobby we're in (%s)" % [p_lobby_id, lobby_id])
 	var changer_name: String = Steam.getFriendPersonaName(p_change_id)
+	var changing_name: String = Steam.getFriendPersonaName(p_making_change_id)
 	var output: String
 	
 	match p_chat_state:
 		Steam.CHAT_MEMBER_STATE_CHANGE_ENTERED: output = "%s has joined the lobby." % changer_name
 		Steam.CHAT_MEMBER_STATE_CHANGE_LEFT: output = "%s has left the lobby." % changer_name
-		Steam.CHAT_MEMBER_STATE_CHANGE_KICKED: output = "%s has been kicked from the lobby." % changer_name
-		Steam.CHAT_MEMBER_STATE_CHANGE_BANNED: output = "%s has been banned from the lobby." % changer_name
+		Steam.CHAT_MEMBER_STATE_CHANGE_KICKED: output = "%s has been kicked from the lobby by %s." % [changer_name, changing_name]
+		Steam.CHAT_MEMBER_STATE_CHANGE_BANNED: output = "%s has been banned from the lobby by %s." % [changer_name, changing_name]
 		_: output = "%s did something??" % changer_name
-	
 	print(output)
 	
 	get_lobby_members()
@@ -188,6 +203,11 @@ func _on_lobby_match_list(p_lobbies: Array) -> void:
 	lobby_list_fetched.emit()
 
 
+# TODO: implement
+func _on_lobby_message(p_lobby_id: int, p_user_id: int, p_message: String, _chat_type: int) -> void:
+	pass
+
+
 class LobbyInfo:
 	var num_members: int
 	var lobby_id: int
@@ -195,3 +215,9 @@ class LobbyInfo:
 	func _init(p_num_members: int, p_lobby_id: int) -> void:
 		self.num_members = p_num_members
 		self.lobby_id = p_lobby_id
+
+
+enum LobbyChatMessageType {
+	CHAT,
+	COMMAND
+}

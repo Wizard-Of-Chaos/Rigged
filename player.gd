@@ -37,7 +37,6 @@ func moving() -> bool:
 	return abs(move_direction.x) > 0 or abs(move_direction.y) > 0 or abs(move_direction.z) > 0
 
 func _input(event: InputEvent):
-
 	if event.is_action("move_forward"):
 		_forward_strength = event.get_action_strength("move_forward")
 	elif event.is_action("move_back"):
