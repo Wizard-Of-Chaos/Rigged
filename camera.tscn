@@ -1,0 +1,17 @@
+[gd_scene load_steps=2 format=3 uid="uid://boxg40g8f3eji"]
+
+[ext_resource type="Script" path="res://assets/camera_controller.gd" id="1_dphn5"]
+
+[node name="CameraRoot" type="Node3D"]
+transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, 4.65702, 0)
+script = ExtResource("1_dphn5")
+
+[node name="CamYaw" type="Node3D" parent="."]
+
+[node name="CamPitch" type="Node3D" parent="CamYaw"]
+
+[node name="Camera3D" type="Camera3D" parent="CamYaw/CamPitch"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.405, -0.619611, 1.75552)
+
+[node name="IKTarget" type="Marker3D" parent="CamYaw/CamPitch"]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)

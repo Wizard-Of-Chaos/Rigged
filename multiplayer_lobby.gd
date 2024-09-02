@@ -29,5 +29,10 @@ func _on_leave_pressed() -> void:
 
 
 func _on_start_pressed() -> void:
-	
-	pass # Replace with function body.
+	# clients should not be here
+	assert(multiplayer.is_server())
+	start_game.rpc()
+
+@rpc("call_local", "any_peer", "reliable")
+func start_game():
+	get_tree().change_scene_to_file("res://basic.tscn")

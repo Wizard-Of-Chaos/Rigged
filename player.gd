@@ -2,18 +2,23 @@ extends CharacterBody3D
 
 @export var movestates: Dictionary
 @onready var mesh_root: Node3D = $MeshRoot
-@onready var camera_root: CameraController = $CameraRoot
-@onready var anim_tree: AnimationTree = $MeshRoot/AnimationTree
+@onready var anim_tree: AnimationTree = $MeshRoot/Guy/AnimationTree
+var camera_root: CameraController
 
 var move_controller: MoveController = MoveController.new()
 var anim_controller: AnimationController = AnimationController.new()
 func _ready():
 	move_controller.set_movestate(movestates["idle"])
 	move_controller._set_player(self)
-	move_controller.movestate_set.connect(camera_root._on_set_movestate)
 	move_controller.movestate_set.connect(anim_controller._on_set_movestate)
 	anim_controller.set_tree(anim_tree)
-	
+
+	if camera_root != null:
+		move_controller.movestate_set.connect(camera_root._on_set_movestate)
+		camera_root.set_cam_rotation.connect(_on_camera_root_set_cam_rotation)
+		var spine_ik: SkeletonIK3D = $MeshRoot/Guy/Armature/Skeleton3D/SpineIK
+		spine_ik.target_node = camera_root.ik_target.get_path()
+
 var move_direction: Vector3: 
 	get:
 		var dir := Vector3.ZERO
@@ -37,6 +42,7 @@ func moving() -> bool:
 	return abs(move_direction.x) > 0 or abs(move_direction.y) > 0 or abs(move_direction.z) > 0
 
 func _input(event: InputEvent):
+	
 	if event.is_action("move_forward"):
 		_forward_strength = event.get_action_strength("move_forward")
 	elif event.is_action("move_back"):

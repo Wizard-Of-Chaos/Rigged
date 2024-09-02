@@ -97,31 +97,6 @@ func fetch_lobbies() -> void:
 	print("fetching lobbies")
 	Steam.requestLobbyList()
 
-func send_p2p_packet(p_target: int, p_packet_data: Variant, p_send_type: Steam.P2PSend = Steam.P2P_SEND_RELIABLE, p_channel: int = 0) -> void:
-	var compressed_data: PackedByteArray = var_to_bytes(p_packet_data).compress(FileAccess.COMPRESSION_GZIP)
-	if p_target == 0:
-		if lobby_members.size() > 1:
-			for member in lobby_members:
-				if member.steam_id != SteamGlobal.steam_id:
-					Steam.sendP2PPacket(member.steam_id, compressed_data, p_send_type, p_channel)
-	else:
-		Steam.sendP2PPacket(p_target, compressed_data, p_send_type, p_channel)
-
-
-func read_p2p_packet(p_channel: int = 0) -> void:
-	var packet_size: int = Steam.getAvailableP2PPacketSize(p_channel)
-	if packet_size > 0:
-		var packet: Dictionary = Steam.readP2PPacket(packet_size, p_channel)
-		if packet == null or packet.is_empty():
-			print("WARNING: read an empty pakcet with non-zero size!")
-		
-		var packet_sender: int = packet.remote_steam_id
-		var compressed_packet_data: PackedByteArray = packet.data
-		var packet_data: Variant = bytes_to_var(compressed_packet_data.decompress_dynamic(-1, FileAccess.COMPRESSION_GZIP))
-		print("Packet: %s" % packet_data)
-		
-		# TODO: do stuff with the packet data
-
 
 func send_lobby_msg(p_chat_message_type: LobbyChatMessageType, message: String) -> void:
 	var prefix: String
@@ -131,7 +106,7 @@ func send_lobby_msg(p_chat_message_type: LobbyChatMessageType, message: String) 
 	Steam.sendLobbyChatMsg(lobby_id, "%s%s" % [p_chat_message_type, message])
 
 func _on_lobby_created(p_connect: int, p_lobby_id: int) -> void:
-	if p_connect != 1:
+	if p_connect != Steam.RESULT_OK:
 		print("lobby failed to create? %s" % p_connect)
 		return
 	lobby_id = p_lobby_id
@@ -140,6 +115,10 @@ func _on_lobby_created(p_connect: int, p_lobby_id: int) -> void:
 	var set_relay: bool = Steam.allowP2PPacketRelay(true)
 	print("Allowing Steam to be relay backup: %s" % set_relay)
 	is_host = true
+	
+	var peer := SteamMultiplayerPeer.new()
+	peer.create_host(0)
+	multiplayer.multiplayer_peer = peer
 	lobby_created.emit()
 
  
@@ -147,6 +126,9 @@ func _on_lobby_join_requested(p_lobby_id: int, p_friend_id: int) -> void:
 	var owner_name: String = Steam.getFriendPersonaName(p_friend_id)
 	print("Joining %s's lobby..." % owner_name)
 	
+	var peer := SteamMultiplayerPeer.new()
+	peer.create_client(p_friend_id, 0)
+	multiplayer.multiplayer_peer = peer
 	join_lobby(p_lobby_id)
  
 
@@ -205,7 +187,10 @@ func _on_lobby_match_list(p_lobbies: Array) -> void:
 
 # TODO: implement
 func _on_lobby_message(p_lobby_id: int, p_user_id: int, p_message: String, _chat_type: int) -> void:
-	pass
+	if p_lobby_id != lobby_id:
+		print("got message from lobby %s but we're in lobby %s" % [p_lobby_id, lobby_id])
+		return
+	
 
 
 class LobbyInfo:

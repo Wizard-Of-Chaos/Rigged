@@ -7,6 +7,7 @@ func _on_start_pressed():
 	get_tree().change_scene_to_file("res://basic.tscn")
 	
 func _on_options_pressed():
+	grab_focus()
 	#you change scene to show the options menu
 	#looks like:
 	#var options = load("scene").instance()

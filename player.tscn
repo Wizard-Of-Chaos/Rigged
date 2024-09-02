@@ -1,0 +1,55 @@
+[gd_scene load_steps=9 format=3 uid="uid://j0585521habw"]
+
+[ext_resource type="Script" path="res://player.gd" id="1_83kd4"]
+[ext_resource type="Resource" uid="uid://sy1amvuhsyeo" path="res://scripts/move_states/idle.tres" id="2_tc54y"]
+[ext_resource type="Resource" uid="uid://d1lfycc21uw" path="res://scripts/move_states/jump.tres" id="3_n2ijg"]
+[ext_resource type="Resource" uid="uid://rp04ot2ba6yt" path="res://scripts/move_states/run.tres" id="4_xv0kn"]
+[ext_resource type="Resource" uid="uid://cnxmsfayuy712" path="res://scripts/move_states/sprint.tres" id="5_8og6d"]
+[ext_resource type="PackedScene" uid="uid://bk4a64oc4mjar" path="res://guy.tscn" id="6_mbrvk"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_y2tno"]
+radius = 0.839578
+height = 4.61406
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_iy1fq"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath(".:rotation")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+
+[node name="Player" type="CharacterBody3D"]
+script = ExtResource("1_83kd4")
+movestates = {
+"idle": ExtResource("2_tc54y"),
+"jump": ExtResource("3_n2ijg"),
+"run": ExtResource("4_xv0kn"),
+"sprint": ExtResource("5_8og6d")
+}
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.26617, 0)
+shape = SubResource("CapsuleShape3D_y2tno")
+
+[node name="MeshRoot" type="Node3D" parent="."]
+
+[node name="Guy" parent="MeshRoot" instance=ExtResource("6_mbrvk")]
+
+[node name="Skeleton3D" parent="MeshRoot/Guy/Armature" index="0"]
+bones/1/rotation = Quaternion(0.0882906, -0.00114563, -0.000192369, 0.996094)
+bones/2/rotation = Quaternion(0.0391959, -0.000653693, -2.5512e-05, 0.999231)
+bones/3/scale = Vector3(1.00229, 1.00229, 1.00229)
+bones/4/scale = Vector3(0.997713, 0.997713, 0.997713)
+bones/8/scale = Vector3(0.997713, 0.997713, 0.997713)
+bones/9/rotation = Quaternion(0.142021, -0.00145085, -0.0152903, 0.989745)
+bones/27/scale = Vector3(0.997713, 0.997713, 0.997713)
+bones/28/rotation = Quaternion(0.141179, 0.00127754, 0.0153027, 0.989865)
+
+[node name="BoneAttachment3D" parent="MeshRoot/Guy/Armature/Skeleton3D" index="6"]
+transform = Transform3D(-0.92392, 0.0352244, 0.380964, -0.382585, -0.0890306, -0.919622, 0.00152446, -0.995407, 0.0957334, -0.00661182, 3.08593e-05, -0.000615065)
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_iy1fq")
+
+[editable path="MeshRoot/Guy"]

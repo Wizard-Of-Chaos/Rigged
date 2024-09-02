@@ -1,17 +1,19 @@
-[gd_scene load_steps=4 format=3 uid="uid://bk4a64oc4mjar"]
+[gd_scene load_steps=5 format=3 uid="uid://bk4a64oc4mjar"]
 
 [ext_resource type="PackedScene" uid="uid://c8h7s7uu4j5rf" path="res://assets/guy.fbx" id="1_esxoy"]
 [ext_resource type="PackedScene" uid="uid://bwqnvtmoeyjbs" path="res://assets/pistol/pistol.fbx" id="2_x2vpn"]
 [ext_resource type="Script" path="res://scripts/ik_skeltal.gd" id="3_mu5i5"]
+[ext_resource type="AnimationNodeBlendTree" uid="uid://ce6bvshi5lig2" path="res://player_anim_tree.tres" id="4_p38ux"]
 
-[node name="guy" instance=ExtResource("1_esxoy")]
+[node name="Guy" instance=ExtResource("1_esxoy")]
 
 [node name="Skeleton3D" parent="Armature" index="0"]
-bones/0/position = Vector3(0, 0.000757272, 0.00127686)
-bones/0/rotation = Quaternion(0.611546, -7.27596e-12, 9.09495e-13, 0.791209)
+bones/0/position = Vector3(0, 0.000757271, 0.00127686)
+bones/0/rotation = Quaternion(0.611546, 7.82165e-11, 0, 0.791209)
 bones/1/rotation = Quaternion(0.0881443, 1.18745e-07, 1.05076e-08, 0.996108)
 bones/2/rotation = Quaternion(0.0391161, -1.19118e-07, 4.66301e-09, 0.999235)
 bones/3/rotation = Quaternion(-3.62004e-18, 1.19209e-07, -9.52341e-19, 1)
+bones/3/scale = Vector3(1, 1, 1)
 bones/4/rotation = Quaternion(0.161997, 1.50674e-14, 3.8623e-08, 0.986791)
 bones/4/scale = Vector3(1, 1, 1)
 bones/5/rotation = Quaternion(-0.115915, -1.18406e-07, -1.38181e-08, 0.993259)
@@ -54,13 +56,13 @@ bones/40/rotation = Quaternion(-0.00657247, 0.000334981, -0.00428673, 0.999969)
 bones/42/position = Vector3(-0.000370919, 0.00271756, -0.000896968)
 bones/42/rotation = Quaternion(-0.153169, 0.89869, -0.161233, 0.378019)
 bones/43/rotation = Quaternion(0.0163051, -0.00288392, 0.0186361, 0.999689)
-bones/45/position = Vector3(0, 0.000665837, 0.00127686)
-bones/45/rotation = Quaternion(-0.267533, 0.224904, -0.717181, 0.602906)
+bones/45/position = Vector3(0, 0.000665838, 0.00127686)
+bones/45/rotation = Quaternion(0.267533, -0.224904, 0.717181, -0.602906)
 bones/46/rotation = Quaternion(-0.412053, -0.0219237, 0.108667, 0.904391)
 bones/47/rotation = Quaternion(-0.0218794, 0.00270206, 0.0337067, 0.999189)
 bones/48/rotation = Quaternion(0.054233, -0.0495397, -0.721669, 0.68833)
-bones/50/position = Vector3(0, 0.000665837, 0.00127686)
-bones/50/rotation = Quaternion(-0.267533, -0.224904, 0.717181, 0.602906)
+bones/50/position = Vector3(0, 0.000665838, 0.00127686)
+bones/50/rotation = Quaternion(-0.267532, -0.224904, 0.717181, 0.602906)
 bones/51/rotation = Quaternion(-0.412053, 0.0219237, -0.108667, 0.904391)
 bones/52/rotation = Quaternion(-0.0218794, -0.00270206, -0.0337067, 0.999189)
 bones/53/rotation = Quaternion(0.0684732, 0.0674308, 0.720696, 0.686558)
@@ -69,14 +71,20 @@ bones/53/rotation = Quaternion(0.0684732, 0.0674308, 0.720696, 0.686558)
 transform = Transform3D(1, -2.77556e-17, -4.82794e-17, 5.55112e-17, 1, 0, -2.32831e-10, 0, 1, 0, 0, 0)
 
 [node name="BoneAttachment3D" type="BoneAttachment3D" parent="Armature/Skeleton3D" index="6"]
-transform = Transform3D(-0.922517, 0.0355128, 0.38432, -0.385952, -0.0901906, -0.918099, 0.00205795, -0.995291, 0.0969084, -0.0065975, 5.3551e-09, -0.000618697)
+transform = Transform3D(-0.922516, 0.0355133, 0.38432, -0.385952, -0.090191, -0.9181, 0.0020576, -0.995291, 0.0969093, -0.0065975, -6.8685e-09, -0.000618706)
 bone_name = "Hand.r"
 bone_idx = 29
 
-[node name="pistol" parent="Armature/Skeleton3D/BoneAttachment3D" index="0" instance=ExtResource("2_x2vpn")]
+[node name="Pistol" parent="Armature/Skeleton3D/BoneAttachment3D" index="0" instance=ExtResource("2_x2vpn")]
 transform = Transform3D(-0.0096162, 0.00270956, 0.000432631, 0.000296041, -0.00054297, 0.00998086, 0.00272787, 0.00961059, 0.000441913, -0.000743501, 0.00375409, -0.000696427)
 
-[node name="spine_ik" type="SkeletonIK3D" parent="Armature/Skeleton3D" index="7"]
+[node name="SpineIK" type="SkeletonIK3D" parent="Armature/Skeleton3D" index="7"]
 root_bone = &"Spine0"
 tip_bone = &"Spine3"
 script = ExtResource("3_mu5i5")
+
+[node name="AnimationTree" type="AnimationTree" parent="." index="5"]
+tree_root = ExtResource("4_p38ux")
+anim_player = NodePath("../AnimationPlayer")
+parameters/move_anim_speed/scale = 1.0
+parameters/move_blend/blend_position = 0

@@ -6,6 +6,7 @@ signal set_cam_rotation(_cam_rotation: float)
 @onready var yaw_node: Node3D = $CamYaw
 @onready var pitch_node: Node3D = $CamYaw/CamPitch
 @onready var camera: Camera3D = $CamYaw/CamPitch/Camera3D
+@onready var ik_target: Node3D = $CamYaw/CamPitch/IKTarget
 
 @export var yaw_sensitivity: float = 0.07
 @export var pitch_sensitivity: float = 0.07
@@ -17,7 +18,7 @@ signal set_cam_rotation(_cam_rotation: float)
 var yaw: float = 0
 var pitch: float = 0
 
-var tween : Tween
+var tween: Tween
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
