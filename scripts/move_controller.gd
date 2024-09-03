@@ -1,19 +1,17 @@
 class_name MoveController
+extends Node
 
 signal movestate_set(MoveState)
 
 @export var rotation_speed: float = 8
-var direction: Vector3
-var acceleration: float
-var speed: float
-var rotation: float = 0
+@export var direction: Vector3
+@export var acceleration: float
+@export var speed: float
+@export var rotation: float = 0
 var up: Vector3 = Vector3.UP
 var jump_speed = 1200
 var fall_speed = 40
-var player: CharacterBody3D
 
-func _set_player(p_char: CharacterBody3D):
-	player = p_char
 
 func set_movestate(p_movestate: MoveState):
 	speed = p_movestate.speed
@@ -27,13 +25,13 @@ func set_move_dir(p_direction: Vector3):
 func set_rotation(p_rotation: float):
 	rotation = p_rotation
 
-func get_velocity() -> Vector3:
+func get_velocity(is_on_floor: bool) -> Vector3:
 	var res: Vector3 = direction
 	if not res.is_zero_approx() and res.length_squared() > 1:
 		res = res.normalized()
 	
 	res.x *= speed
-	if not player.is_on_floor():
+	if not is_on_floor:
 		res.y *= fall_speed
 	elif direction.y > 0:
 		res.y *= jump_speed

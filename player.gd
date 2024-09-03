@@ -3,13 +3,13 @@ extends CharacterBody3D
 @export var movestates: Dictionary
 @onready var mesh_root: Node3D = $MeshRoot
 @onready var anim_tree: AnimationTree = $MeshRoot/Guy/AnimationTree
-var camera_root: CameraController
+@onready var move_controller: MoveController = $MoveController
 
-var move_controller: MoveController = MoveController.new()
+var camera_root: CameraController
 var anim_controller: AnimationController = AnimationController.new()
+
 func _ready():
 	move_controller.set_movestate(movestates["idle"])
-	move_controller._set_player(self)
 	move_controller.movestate_set.connect(anim_controller._on_set_movestate)
 	anim_controller.set_tree(anim_tree)
 
@@ -47,7 +47,6 @@ func set_up(authority_id: int) -> void:
 		camera_root = camera
 		move_controller.movestate_set.connect(camera_root._on_set_movestate)
 		anim_controller.set_tree(anim_tree)
-		move_controller.movestate_set.connect(anim_controller._on_set_movestate)
 		camera_root.set_cam_rotation.connect(_on_camera_root_set_cam_rotation)
 		var spine_ik: SkeletonIK3D = $MeshRoot/Guy/Armature/Skeleton3D/SpineIK
 		spine_ik.target_node = camera_root.ik_target.get_path()
@@ -78,7 +77,7 @@ func _physics_process(delta: float):
 		move_controller.set_movestate(movestates["idle"])
 	var target_rotation: float = atan2(move_controller.direction.x, move_controller.direction.z) - rotation.y
 	mesh_root.rotation.y = lerp_angle(mesh_root.rotation.y, target_rotation, move_controller.rotation_speed * delta)
-	velocity = velocity.lerp(move_controller.get_velocity(), move_controller.acceleration * delta)
+	velocity = velocity.lerp(move_controller.get_velocity(is_on_floor()), move_controller.acceleration * delta)
 	_jumped = false
 	move_and_slide()
 
