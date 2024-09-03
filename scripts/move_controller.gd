@@ -18,6 +18,7 @@ func _set_player(char: CharacterBody3D):
 func set_movestate(p_movestate: MoveState):
 	speed = p_movestate.speed
 	acceleration = p_movestate.acceleration
+	rotation_speed = p_movestate.rotation_speed
 	movestate_set.emit(p_movestate)
 
 func set_move_dir(p_direction: Vector3):
