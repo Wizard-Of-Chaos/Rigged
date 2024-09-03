@@ -51,7 +51,8 @@ func set_up(authority_id: int) -> void:
 		spine_ik.target_node = camera_root.ik_target.get_path()
 
 func _input(event: InputEvent):
-	
+	if not is_multiplayer_authority():
+		return
 	if event.is_action("move_forward"):
 		_forward_strength = event.get_action_strength("move_forward")
 	elif event.is_action("move_back"):

@@ -7,6 +7,14 @@ func _ready() -> void:
 	if multiplayer.is_server():
 		var player_scene := preload("res://player.tscn")
 		print(SteamLobbyGlobal.players)
+		if SteamLobbyGlobal.players.size() == 0:
+			var player := player_scene.instantiate()
+			player.name = "Player"
+			player.position.x = randi_range(-60, 60)
+			player.position.z = randi_range(-60, 60)
+			player.position.y = 10
+			players.add_child(player, true)
+			player.set_up.rpc(1)
 		for peer_id in SteamLobbyGlobal.players:
 			print("Setting up peer %s" % peer_id)
 			print("PEER ID: %s" % peer_id)

@@ -188,8 +188,6 @@ func _on_persona_change(p_steam_id: int, _flag: int) -> void:
 	if lobby_id == 0:
 		return
 	print("A user (%s) had information change, updating the lobby list" % p_steam_id)
-	var lobby_member_idx := find_lobby_member(p_steam_id)
-	
 	get_lobby_members()
 
 
