@@ -9,6 +9,6 @@ speed = 14.0
 acceleration = 6.0
 rotation_speed = 8.0
 fov = 85.0
-animation_speed = 1.0
+animation_speed = 1.4
 grounded = true
 controllable = true

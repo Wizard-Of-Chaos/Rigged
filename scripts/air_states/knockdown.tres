@@ -1,9 +1,0 @@
-[gd_resource type="Resource" script_class="AirState" load_steps=2 format=3 uid="uid://of1odx2y4hjm"]
-
-[ext_resource type="Script" path="res://scripts/air_states/air_state.gd" id="1_s78fk"]
-
-[resource]
-script = ExtResource("1_s78fk")
-anim_name = "knockdown"
-max_height = 1.0
-hang_time = 0.15

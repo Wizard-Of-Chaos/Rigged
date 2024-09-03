@@ -12,4 +12,3 @@ func _on_set_movestate(_movestate: MoveState):
 	tween = anim_tree.create_tween()
 	tween.tween_property(anim_tree, "parameters/move_blend/blend_position", _movestate.id, .25)
 	tween.parallel().tween_property(anim_tree, "parameters/move_anim_speed/scale", _movestate.animation_speed, .7)
-	

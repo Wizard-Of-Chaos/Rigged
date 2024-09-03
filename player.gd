@@ -46,6 +46,8 @@ func set_up(authority_id: int) -> void:
 		add_child(camera)
 		camera_root = camera
 		move_controller.movestate_set.connect(camera_root._on_set_movestate)
+		anim_controller.set_tree(anim_tree)
+		move_controller.movestate_set.connect(anim_controller._on_set_movestate)
 		camera_root.set_cam_rotation.connect(_on_camera_root_set_cam_rotation)
 		var spine_ik: SkeletonIK3D = $MeshRoot/Guy/Armature/Skeleton3D/SpineIK
 		spine_ik.target_node = camera_root.ik_target.get_path()

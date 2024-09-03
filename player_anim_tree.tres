@@ -12,7 +12,7 @@ animation = &"Armature|Run"
 animation = &"Armature|pistol_run"
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_4rwq0"]
-animation = &"Armature|Run"
+animation = &"Armature|sprint"
 
 [sub_resource type="AnimationNodeBlendSpace1D" id="AnimationNodeBlendSpace1D_ybe7i"]
 blend_point_0/node = SubResource("AnimationNodeAnimation_82c46")
@@ -28,7 +28,7 @@ max_space = 3.0
 snap = 1.0
 
 [resource]
-graph_offset = Vector2(-633.549, 0)
+graph_offset = Vector2(-305.232, 0)
 nodes/move_anim_speed/node = SubResource("AnimationNodeTimeScale_5mmdg")
 nodes/move_anim_speed/position = Vector2(80, 80)
 nodes/move_blend/node = SubResource("AnimationNodeBlendSpace1D_ybe7i")
