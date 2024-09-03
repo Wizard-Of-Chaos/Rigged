@@ -4,6 +4,7 @@ extends CharacterBody3D
 @onready var mesh_root: Node3D = $MeshRoot
 @onready var anim_tree: AnimationTree = $MeshRoot/Guy/AnimationTree
 @onready var move_controller: MoveController = $MoveController
+@onready var ik_target: Marker3D = $IKTarget
 
 var camera_root: CameraController
 var anim_controller: AnimationController = AnimationController.new()
@@ -43,13 +44,15 @@ func set_up(authority_id: int) -> void:
 		print("omg setting up camera")
 		var camera := preload("res://camera.tscn").instantiate()
 		camera.name = "CameraRoot"
+		print(ik_target.get_path())
 		add_child(camera)
+		camera.remote_transform.remote_path = ik_target.get_path()
 		camera_root = camera
 		move_controller.movestate_set.connect(camera_root._on_set_movestate)
 		anim_controller.set_tree(anim_tree)
 		camera_root.set_cam_rotation.connect(_on_camera_root_set_cam_rotation)
-		var spine_ik: SkeletonIK3D = $MeshRoot/Guy/Armature/Skeleton3D/SpineIK
-		spine_ik.target_node = camera_root.ik_target.get_path()
+		#var spine_ik: SkeletonIK3D = $MeshRoot/Guy/Armature/Skeleton3D/SpineIK
+		#spine_ik.target_node = camera_root.ik_target.get_path()
 
 func _input(event: InputEvent):
 	if not is_multiplayer_authority():

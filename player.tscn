@@ -34,6 +34,18 @@ properties/5/replication_mode = 1
 properties/6/path = NodePath("MoveController:rotation")
 properties/6/spawn = true
 properties/6/replication_mode = 1
+properties/7/path = NodePath("MeshRoot/Guy/AnimationTree:parameters/move_anim_speed/scale")
+properties/7/spawn = true
+properties/7/replication_mode = 1
+properties/8/path = NodePath("MeshRoot/Guy/AnimationTree:parameters/move_blend/blend_position")
+properties/8/spawn = true
+properties/8/replication_mode = 1
+properties/9/path = NodePath("IKTarget:position")
+properties/9/spawn = true
+properties/9/replication_mode = 1
+properties/10/path = NodePath("IKTarget:rotation")
+properties/10/spawn = true
+properties/10/replication_mode = 1
 
 [node name="Player" type="CharacterBody3D"]
 script = ExtResource("1_83kd4")
@@ -53,19 +65,19 @@ shape = SubResource("CapsuleShape3D_y2tno")
 [node name="Guy" parent="MeshRoot" instance=ExtResource("6_mbrvk")]
 
 [node name="Skeleton3D" parent="MeshRoot/Guy/Armature" index="0"]
-bones/0/position = Vector3(1.02813e-05, 0.000757274, -0.0031334)
-bones/0/rotation = Quaternion(0.791041, -7.52317e-05, -9.73336e-05, 0.611764)
+bones/0/position = Vector3(4.20186e-06, 0.000757274, 0.000442666)
+bones/0/rotation = Quaternion(0.791041, -0.000279849, -0.000362064, 0.611764)
 bones/1/rotation = Quaternion(0.0881443, 1.18716e-07, 1.0522e-08, 0.996108)
 bones/2/rotation = Quaternion(0.0391161, -1.19184e-07, 4.6711e-09, 0.999235)
 bones/3/rotation = Quaternion(-7.46805e-09, 1.19177e-07, 7.27596e-12, 1)
 bones/3/scale = Vector3(1, 1, 1)
-bones/4/rotation = Quaternion(0.140871, -4.88039e-05, 8.04554e-06, 0.990028)
+bones/4/rotation = Quaternion(0.139012, -5.30889e-05, 8.74857e-06, 0.990291)
 bones/4/scale = Vector3(1, 1, 1)
-bones/5/rotation = Quaternion(-0.236681, -0.000277339, 5.88431e-05, 0.971587)
+bones/5/rotation = Quaternion(-0.293425, -0.000124025, 2.6279e-05, 0.955982)
 bones/7/rotation = Quaternion(0.0861249, -0.0485453, -0.819987, 0.563779)
-bones/8/rotation = Quaternion(-0.283104, 0.143009, -0.39234, 0.863406)
+bones/8/rotation = Quaternion(0.057157, -0.216287, -0.36288, 0.904583)
 bones/8/scale = Vector3(1, 1, 1)
-bones/9/rotation = Quaternion(0.716017, -0.12252, -0.0661747, 0.684054)
+bones/9/rotation = Quaternion(0.65252, -0.0565041, -0.111189, 0.747437)
 bones/10/rotation = Quaternion(-0.0645376, 0.0114437, 0.067398, 0.995571)
 bones/11/position = Vector3(-0.000106522, 0.0031089, 0.000283734)
 bones/11/rotation = Quaternion(-0.0607039, 4.36381e-05, -0.0172216, 0.998007)
@@ -82,9 +94,9 @@ bones/23/position = Vector3(0.000370919, 0.00271756, -0.000896967)
 bones/23/rotation = Quaternion(0.153169, 0.89869, -0.161234, -0.378019)
 bones/24/rotation = Quaternion(0.016305, 0.00288394, -0.018636, 0.999689)
 bones/26/rotation = Quaternion(0.0861247, 0.0485451, 0.819987, 0.563779)
-bones/27/rotation = Quaternion(-0.12701, 0.0260313, 0.390753, 0.911319)
+bones/27/rotation = Quaternion(-0.35072, -0.221215, 0.385565, 0.824257)
 bones/27/scale = Vector3(1, 1, 1)
-bones/28/rotation = Quaternion(0.454125, -0.0417198, 0.205864, 0.865823)
+bones/28/rotation = Quaternion(0.346986, -0.0453722, 0.199335, 0.915318)
 bones/29/rotation = Quaternion(-0.0645376, -0.0114437, -0.067398, 0.995571)
 bones/30/position = Vector3(0.000106522, 0.0031089, 0.000283733)
 bones/30/rotation = Quaternion(-0.0607039, -4.36355e-05, 0.0172216, 0.998007)
@@ -101,19 +113,22 @@ bones/40/rotation = Quaternion(-0.00657247, 0.000334972, -0.00428672, 0.999969)
 bones/42/position = Vector3(-0.00037092, 0.00271756, -0.000896967)
 bones/42/rotation = Quaternion(-0.153169, 0.89869, -0.161234, 0.378019)
 bones/43/rotation = Quaternion(0.0163051, -0.00288392, 0.0186361, 0.999689)
-bones/45/position = Vector3(1.02663e-05, 0.000665838, -0.0031334)
-bones/45/rotation = Quaternion(-0.204295, 0.291662, -0.685062, 0.635521)
-bones/46/rotation = Quaternion(-0.391432, -0.158992, -0.195272, 0.885083)
-bones/47/rotation = Quaternion(-0.0022194, -0.0196126, 0.83591, 0.548511)
-bones/48/rotation = Quaternion(-0.00254761, 0.0139151, -0.779234, 0.626574)
-bones/50/position = Vector3(1.02662e-05, 0.000665838, -0.0031334)
-bones/50/rotation = Quaternion(-0.205011, -0.302011, 0.695874, 0.618481)
-bones/51/rotation = Quaternion(-0.376125, 0.179823, 0.234823, 0.878096)
-bones/52/rotation = Quaternion(-0.0125415, 0.00212577, -0.555066, 0.831709)
-bones/53/rotation = Quaternion(-0.0397801, -0.0719107, 0.884276, 0.459677)
+bones/45/position = Vector3(3.89081e-06, 0.000665838, 0.000442666)
+bones/45/rotation = Quaternion(-0.204515, 0.294704, -0.688261, 0.630571)
+bones/46/rotation = Quaternion(-0.324419, -0.270727, -0.460069, 0.780894)
+bones/47/rotation = Quaternion(-0.0112767, -0.0129965, 0.730998, 0.682163)
+bones/48/rotation = Quaternion(0.000359788, 0.0121283, -0.762829, 0.646487)
+bones/50/position = Vector3(3.89089e-06, 0.000665838, 0.000442666)
+bones/50/rotation = Quaternion(-0.204812, -0.299, 0.692749, 0.623498)
+bones/51/rotation = Quaternion(-0.417936, 0.0229135, -0.121534, 0.900019)
+bones/52/rotation = Quaternion(-0.0129674, -0.00186183, -0.305562, 0.952082)
+bones/53/rotation = Quaternion(-0.0307216, -0.0425842, 0.659813, 0.749593)
 
 [node name="BoneAttachment3D" parent="MeshRoot/Guy/Armature/Skeleton3D" index="6"]
-transform = Transform3D(-0.972909, -0.0151667, 0.23069, -0.226693, -0.133241, -0.964809, 0.0453704, -0.990968, 0.126193, -0.00558752, -0.00208402, -0.00450542)
+transform = Transform3D(-0.973845, -0.0784519, 0.213242, -0.205267, 0.706187, -0.677617, -0.0974286, -0.703665, -0.70382, -0.00604135, 0.00631642, 0.00433655)
+
+[node name="SpineIK" parent="MeshRoot/Guy/Armature/Skeleton3D" index="7"]
+target_node = NodePath("../../../../../IKTarget")
 
 [node name="AnimationTree" parent="MeshRoot/Guy" index="5"]
 parameters/move_blend/blend_position = 2.0
@@ -123,5 +138,8 @@ script = ExtResource("7_u66cd")
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_iy1fq")
+
+[node name="IKTarget" type="Marker3D" parent="."]
+transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, 0, 0)
 
 [editable path="MeshRoot/Guy"]
