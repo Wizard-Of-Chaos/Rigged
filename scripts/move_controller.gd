@@ -12,8 +12,8 @@ var jump_speed = 1200
 var fall_speed = 40
 var player: CharacterBody3D
 
-func _set_player(char: CharacterBody3D):
-	player = char
+func _set_player(p_char: CharacterBody3D):
+	player = p_char
 
 func set_movestate(p_movestate: MoveState):
 	speed = p_movestate.speed

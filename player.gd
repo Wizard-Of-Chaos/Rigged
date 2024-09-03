@@ -13,12 +13,6 @@ func _ready():
 	move_controller.movestate_set.connect(anim_controller._on_set_movestate)
 	anim_controller.set_tree(anim_tree)
 
-	if camera_root != null:
-		move_controller.movestate_set.connect(camera_root._on_set_movestate)
-		camera_root.set_cam_rotation.connect(_on_camera_root_set_cam_rotation)
-		var spine_ik: SkeletonIK3D = $MeshRoot/Guy/Armature/Skeleton3D/SpineIK
-		spine_ik.target_node = camera_root.ik_target.get_path()
-
 var move_direction: Vector3: 
 	get:
 		var dir := Vector3.ZERO
@@ -38,8 +32,23 @@ var _back_strength: float = 0.0
 var _sprinting: bool = false
 var _jumped: bool = false
 
+
 func moving() -> bool:
 	return abs(move_direction.x) > 0 or abs(move_direction.y) > 0 or abs(move_direction.z) > 0
+
+@rpc("any_peer", "call_local", "reliable")
+func set_up(authority_id: int) -> void:
+	set_multiplayer_authority(authority_id)
+	if authority_id == multiplayer.get_unique_id():
+		print("omg setting up camera")
+		var camera := preload("res://camera.tscn").instantiate()
+		camera.name = "CameraRoot"
+		add_child(camera)
+		camera_root = camera
+		move_controller.movestate_set.connect(camera_root._on_set_movestate)
+		camera_root.set_cam_rotation.connect(_on_camera_root_set_cam_rotation)
+		var spine_ik: SkeletonIK3D = $MeshRoot/Guy/Armature/Skeleton3D/SpineIK
+		spine_ik.target_node = camera_root.ik_target.get_path()
 
 func _input(event: InputEvent):
 	

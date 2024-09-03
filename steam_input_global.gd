@@ -162,7 +162,7 @@ func translate_trigger_input(p_steam_input: Dictionary, p_action: RiggedInputUti
 		p_action.last_val[p_device_handle] = p_steam_input.x
 
 
-func translate_mouse_like_input(p_steam_input: Dictionary, action: RiggedInputUtils.MouseLikeAction, p_device_handle: int) -> void:
+func translate_mouse_like_input(p_steam_input: Dictionary, _action: RiggedInputUtils.MouseLikeAction, p_device_handle: int) -> void:
 	if p_steam_input.x == 0 and p_steam_input.y == 0:
 		return
 	var ev := InputEventMouseMotion.new()

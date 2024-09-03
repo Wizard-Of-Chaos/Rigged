@@ -10,6 +10,7 @@ const LOBBY_CMDLINE_ARG := "+connect_lobby"
 var lobby_id: int = 0
 var lobby_members: Array = []
 var lobbies: Array = []
+var players: Dictionary = {}
 var is_host: bool = false
 
 
@@ -20,7 +21,11 @@ func _ready() -> void:
 	Steam.lobby_joined.connect(_on_lobby_joined)
 	Steam.persona_state_change.connect(_on_persona_change)
 	Steam.lobby_match_list.connect(_on_lobby_match_list)
-	Steam.lobby_message.connect(_on_lobby_message)
+	Steam.join_game_requested.connect(_on_join_game_requested)
+	multiplayer.peer_connected.connect(_on_multiplayer_peer_connected)
+	multiplayer.peer_disconnected.connect(_on_multiplayer_peer_disconnected)
+	multiplayer.connection_failed.connect(on_multiplayer_connection_failed)
+	check_command_line()
 
 func check_command_line() -> void:
 	var args: PackedStringArray = OS.get_cmdline_args()
@@ -28,8 +33,8 @@ func check_command_line() -> void:
 	if connect_lobby_idx < 0:
 		return
 	var cmdline_lobby_id := 0
-	if args.size() > connect_lobby_idx + 2 and args[connect_lobby_idx].is_valid_int():
-		cmdline_lobby_id = int(args[connect_lobby_idx])
+	if args.size() > connect_lobby_idx + 2 and args[connect_lobby_idx+1].is_valid_int():
+		cmdline_lobby_id = int(args[connect_lobby_idx+1])
 
 	if cmdline_lobby_id == 0:
 		return
@@ -69,6 +74,13 @@ func get_lobby_members() -> void:
 	lobby_members_fetched.emit()
 
 
+func find_lobby_member(p_steam_id: int) -> int:
+	for lobby_member_idx in range(0, lobby_members.size()):
+		var lobby_member: Dictionary = lobby_members[lobby_member_idx]
+		if lobby_member.steam_id == p_steam_id:
+			return lobby_member_idx
+	return -1
+
 func leave_lobby() -> void:
 	# you're not in a lobby numbnuts
 	if lobby_id == 0:
@@ -98,12 +110,27 @@ func fetch_lobbies() -> void:
 	Steam.requestLobbyList()
 
 
-func send_lobby_msg(p_chat_message_type: LobbyChatMessageType, message: String) -> void:
-	var prefix: String
-	match p_chat_message_type:
-		LobbyChatMessageType.CHAT: "[CHAT]"
-		LobbyChatMessageType.COMMAND: "[COMMAND]"
-	Steam.sendLobbyChatMsg(lobby_id, "%s%s" % [p_chat_message_type, message])
+@rpc("call_local", "any_peer", "reliable")
+func register_player(p_steam_id: int) -> void:
+	var id = multiplayer.get_remote_sender_id()
+	players[id] = p_steam_id
+
+
+func unregister_player(id: int):
+	players.erase(id)
+
+
+func _on_multiplayer_peer_connected(id: int):
+	register_player.rpc_id(id, SteamGlobal.steam_id)
+
+
+func _on_multiplayer_peer_disconnected(id: int):
+	unregister_player(id)
+
+
+func on_multiplayer_connection_failed():
+	multiplayer.multiplayer_peer = null
+
 
 func _on_lobby_created(p_connect: int, p_lobby_id: int) -> void:
 	if p_connect != Steam.RESULT_OK:
@@ -115,20 +142,17 @@ func _on_lobby_created(p_connect: int, p_lobby_id: int) -> void:
 	var set_relay: bool = Steam.allowP2PPacketRelay(true)
 	print("Allowing Steam to be relay backup: %s" % set_relay)
 	is_host = true
-	
+	Steam.setRichPresence("connect", str(p_lobby_id))
 	var peer := SteamMultiplayerPeer.new()
 	peer.create_host(0)
 	multiplayer.multiplayer_peer = peer
+	players[1] = SteamGlobal.steam_id
 	lobby_created.emit()
 
  
 func _on_lobby_join_requested(p_lobby_id: int, p_friend_id: int) -> void:
 	var owner_name: String = Steam.getFriendPersonaName(p_friend_id)
 	print("Joining %s's lobby..." % owner_name)
-	
-	var peer := SteamMultiplayerPeer.new()
-	peer.create_client(p_friend_id, 0)
-	multiplayer.multiplayer_peer = peer
 	join_lobby(p_lobby_id)
  
 
@@ -149,14 +173,23 @@ func _on_lobby_joined(p_lobby_id: int, _permissions: int, _locked: bool, p_respo
 		print("Failed to join lobby: %s" % fail_reason)
 		return
 	lobby_id = p_lobby_id
+	var owner_id := Steam.getLobbyOwner(p_lobby_id)
+	if owner_id != SteamGlobal.steam_id:
+		var peer := SteamMultiplayerPeer.new()
+		peer.create_client(owner_id, 0)
+		multiplayer.set_multiplayer_peer(peer)
+		register_player.rpc(SteamGlobal.steam_id)
 	lobby_joined.emit()
 	get_lobby_members()
+	# TODO: force a scene transition somewhere to actually join the lobby
 
 
 func _on_persona_change(p_steam_id: int, _flag: int) -> void:
 	if lobby_id == 0:
 		return
 	print("A user (%s) had information change, updating the lobby list" % p_steam_id)
+	var lobby_member_idx := find_lobby_member(p_steam_id)
+	
 	get_lobby_members()
 
 
@@ -185,13 +218,12 @@ func _on_lobby_match_list(p_lobbies: Array) -> void:
 	lobby_list_fetched.emit()
 
 
-# TODO: implement
-func _on_lobby_message(p_lobby_id: int, p_user_id: int, p_message: String, _chat_type: int) -> void:
-	if p_lobby_id != lobby_id:
-		print("got message from lobby %s but we're in lobby %s" % [p_lobby_id, lobby_id])
+func _on_join_game_requested(_p_user_id: int, p_connect: String):
+	if not p_connect.is_valid_int():
+		print("Got a connect string (%s) that isn't a valid int" % p_connect)
 		return
-	
-
+	var lobby_to_join_id: int = p_connect.to_int()
+	join_lobby(lobby_to_join_id)
 
 class LobbyInfo:
 	var num_members: int
