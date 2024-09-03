@@ -17,8 +17,8 @@ config/icon="res://icon.svg"
 
 [autoload]
 
-SteamGlobal="*res://scripts/multiplayer/steam_global.gd"
-SteamInputGlobal="*res://scripts/multiplayer/steam_input_global.gd"
+SteamGlobal="*res://scripts/steam_integration/steam_global.gd"
+SteamInputGlobal="*res://scripts/input/steam_input_global.gd"
 SteamLobbyGlobal="*res://scripts/multiplayer/steam_lobby_global.gd"
 
 [debug]

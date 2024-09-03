@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://b5cbd3afjutu2"]
 
 [ext_resource type="Theme" uid="uid://c8ustssjawosr" path="res://main_theme.tres" id="1_7npvu"]
-[ext_resource type="Script" path="res://scripts/multiplayer/multiplayer_lobby.gd" id="2_a72nn"]
+[ext_resource type="Script" path="res://scripts/ui/multiplayer_lobby.gd" id="2_a72nn"]
 
 [node name="MultiplayerLobby" type="PanelContainer"]
 anchors_preset = 15
