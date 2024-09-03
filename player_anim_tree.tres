@@ -28,7 +28,7 @@ max_space = 3.0
 snap = 1.0
 
 [resource]
-graph_offset = Vector2(-520, 4)
+graph_offset = Vector2(-633.549, 0)
 nodes/move_anim_speed/node = SubResource("AnimationNodeTimeScale_5mmdg")
 nodes/move_anim_speed/position = Vector2(80, 80)
 nodes/move_blend/node = SubResource("AnimationNodeBlendSpace1D_ybe7i")

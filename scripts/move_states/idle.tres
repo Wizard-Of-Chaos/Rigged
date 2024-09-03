@@ -4,7 +4,11 @@
 
 [resource]
 script = ExtResource("1_rxhpo")
+id = 0
 speed = 0.0
 acceleration = 6.0
+rotation_speed = 8.0
 fov = 80.0
 animation_speed = 1.0
+grounded = true
+controllable = true
