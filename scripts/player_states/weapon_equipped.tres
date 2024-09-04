@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="PlayerState" load_steps=2 format=3 uid="uid://i2x300gyt23r"]
+
+[ext_resource type="Script" path="res://scripts/player_states/player_state.gd" id="1_kprc2"]
+
+[resource]
+script = ExtResource("1_kprc2")
+id = 1
+name = "weapon_equipped"
