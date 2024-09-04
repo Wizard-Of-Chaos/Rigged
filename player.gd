@@ -1,6 +1,7 @@
 extends CharacterBody3D
 
 @export var movestates: Dictionary
+@export var playerstates: Dictionary
 @onready var mesh_root: Node3D = $MeshRoot
 @onready var anim_tree: AnimationTree = $MeshRoot/Guy/AnimationTree
 @onready var move_controller: MoveController = $MoveController

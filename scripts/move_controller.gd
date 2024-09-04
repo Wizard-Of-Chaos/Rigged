@@ -2,7 +2,9 @@ class_name MoveController
 extends Node
 
 signal movestate_set(MoveState)
+signal playerstate_set(PlayerState)
 
+@export var current_player_state: PlayerState
 @export var rotation_speed: float = 8
 @export var direction: Vector3
 @export var acceleration: float
@@ -18,6 +20,10 @@ func set_movestate(p_movestate: MoveState):
 	acceleration = p_movestate.acceleration
 	rotation_speed = p_movestate.rotation_speed
 	movestate_set.emit(p_movestate)
+
+func set_playerstate(p_playerstate: PlayerState):
+	current_player_state = p_playerstate
+	playerstate_set.emit(p_playerstate)
 
 func set_move_dir(p_direction: Vector3):
 	direction = p_direction.rotated(up, rotation)
