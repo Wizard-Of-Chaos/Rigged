@@ -16,7 +16,7 @@ class ActionSet:
 	func _init(p_name: String, p_actions: Array[Action], p_is_action_set_layer: bool = false) -> void:
 		self.name = p_name
 		self.actions = p_actions
-		p_is_action_set_layer = p_is_action_set_layer
+		self.is_action_set_layer = p_is_action_set_layer
 
 
 class Action:
@@ -92,13 +92,13 @@ static var steam_inputs: Array[ActionSet] = [
 	),
 	ActionSet.new(ACTION_SET_MENU_CONTROLS,
 		[
-			DigitalAction.new("menu_up", ""),
-			DigitalAction.new("menu_down", ""),
-			DigitalAction.new("menu_left", ""),
-			DigitalAction.new("menu_right", ""),
-			DigitalAction.new("menu_select", ""),
-			DigitalAction.new("menu_cancel", ""),
-			DigitalAction.new("close_menu", ""),
+			DigitalAction.new("menu_up", "ui_up"),
+			DigitalAction.new("menu_down", "ui_down"),
+			DigitalAction.new("menu_left", "ui_left"),
+			DigitalAction.new("menu_right", "ui_right"),
+			DigitalAction.new("menu_select", "ui_accept"),
+			DigitalAction.new("menu_cancel", "ui_cancel"),
+			DigitalAction.new("close_menu", "ui_cancel"),
 		]
 	)
 ]

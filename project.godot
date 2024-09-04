@@ -17,6 +17,7 @@ config/icon="res://icon.svg"
 
 [autoload]
 
+GameState="*res://scripts/game_state.gd"
 SteamGlobal="*res://scripts/steam_integration/steam_global.gd"
 SteamInputGlobal="*res://scripts/input/steam_input_global.gd"
 SteamLobbyGlobal="*res://scripts/multiplayer/steam_lobby_global.gd"

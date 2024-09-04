@@ -180,7 +180,13 @@ func _on_input_device_connected(p_input_handle: int) -> void:
 	var free_slot := _get_controller_slot_for_handle(0)
 	# there should only ever be 16 controllers connected in Steam, so should be good to go
 	_controllers[free_slot].handle = p_input_handle
-	var action_set := RiggedInputUtils.get_action_set(RiggedInputUtils.ACTION_SET_IN_GAME_CONTROLS)
+	var action_set: RiggedInputUtils.ActionSet
+	match GameState.current_state:
+		GameState.State.MAIN_MENU:
+			action_set = RiggedInputUtils.get_action_set(RiggedInputUtils.ACTION_SET_MENU_CONTROLS)
+		GameState.State.IN_GAME:
+			action_set = RiggedInputUtils.get_action_set(RiggedInputUtils.ACTION_SET_IN_GAME_CONTROLS)
+	
 	if action_set != null and action_set.handle != 0:
 		Steam.activateActionSet(p_input_handle, action_set.handle)
 		_controllers[free_slot].active_action_set = action_set
