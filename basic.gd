@@ -7,8 +7,6 @@ func _ready() -> void:
 	GameState.set_state(GameState.State.IN_GAME)
 	if multiplayer.is_server():
 		var player_scene := preload("res://player.tscn")
-		print(GameState.players)
-		print(GameState.players.filter(func(player_info): return player_info.is_active))
 		for player in GameState.players.filter(func(player_info): return player_info.is_active):
 			print("setting up player %s" % player)
 			var player_instance := player_scene.instantiate()
@@ -24,7 +22,6 @@ func _ready() -> void:
 @rpc("any_peer", "call_local", "reliable")
 func camera_setup():
 	var active_local_players := GameState.players.filter(func(player_info): return player_info.is_active and player_info.peer_id == multiplayer.get_unique_id())
-	print("active local players: %s" % [active_local_players])
 	for player_idx in range(0, active_local_players.size()):
 		var subviewport_container := SubViewportContainer.new()
 		subviewport_container.stretch = true

@@ -46,7 +46,6 @@ func moving() -> bool:
 
 @rpc("any_peer", "call_local", "reliable")
 func set_up(player_info: Dictionary) -> void:
-	print(player_info)
 	set_multiplayer_authority(player_info.peer_id)
 	if player_info.peer_id == multiplayer.get_unique_id():
 		#var camera := preload("res://camera.tscn").instantiate()
@@ -56,7 +55,6 @@ func set_up(player_info: Dictionary) -> void:
 		pistol.visible = false
 
 func _input(event: InputEvent):
-	print("%s: %s %s %s %s" % [self.name, event.device, devices, event.device in devices, is_multiplayer_authority()])
 	if not is_multiplayer_authority() or not event.device in devices:
 		return
 
