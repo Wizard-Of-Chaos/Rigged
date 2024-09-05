@@ -1,13 +1,16 @@
+class_name Player
 extends CharacterBody3D
 
 @export var movestates: Dictionary
-@onready var mesh_root: Node3D = $MeshRoot
+@onready var mesh_root: Node3D = %MeshRoot
 @onready var anim_tree: AnimationTree = $MeshRoot/Guy/AnimationTree
-@onready var move_controller: MoveController = $MoveController
-@onready var ik_target: Marker3D = $IKTarget
+@onready var move_controller: MoveController = %MoveController
+@onready var ik_target: Marker3D = %IKTarget
+@onready var remote_transform: RemoteTransform3D = %RemoteTransform
 
 var camera_root: CameraController
 var anim_controller: AnimationController = AnimationController.new()
+var devices: Array[int] = []
 
 func _ready():
 	move_controller.set_movestate(movestates["idle"])
@@ -38,23 +41,22 @@ func moving() -> bool:
 	return abs(move_direction.x) > 0 or abs(move_direction.y) > 0 or abs(move_direction.z) > 0
 
 @rpc("any_peer", "call_local", "reliable")
-func set_up(authority_id: int) -> void:
-	set_multiplayer_authority(authority_id)
-	if authority_id == multiplayer.get_unique_id():
-		var camera := preload("res://camera.tscn").instantiate()
-		camera.name = "CameraRoot"
-		print(ik_target.get_path())
-		add_child(camera)
-		camera.remote_transform.remote_path = ik_target.get_path()
-		camera_root = camera
-		move_controller.movestate_set.connect(camera_root._on_set_movestate)
-		anim_controller.set_tree(anim_tree)
-		camera_root.set_cam_rotation.connect(_on_camera_root_set_cam_rotation)
+func set_up(player_info: Dictionary) -> void:
+	print(player_info)
+	set_multiplayer_authority(player_info.peer_id)
+	if player_info.peer_id == multiplayer.get_unique_id():
+		#var camera := preload("res://camera.tscn").instantiate()
+		player_info.player_node = self
+		devices = player_info.devices
 
 func _input(event: InputEvent):
-	if not is_multiplayer_authority():
+	print("%s: %s %s %s %s" % [self.name, event.device, devices, event.device in devices, is_multiplayer_authority()])
+	if not is_multiplayer_authority() or not event.device in devices:
 		return
-	if event.is_action("move_forward"):
+
+	if event is InputEventMouseMotion:
+		camera_root.cam_input(event)
+	elif event.is_action("move_forward"):
 		_forward_strength = event.get_action_strength("move_forward")
 	elif event.is_action("move_back"):
 		_back_strength = event.get_action_strength("move_back")
@@ -65,6 +67,7 @@ func _input(event: InputEvent):
 	elif event.is_action("sprint"):
 		_sprinting = event.is_action_pressed("sprint", true)
 	elif event.is_action_pressed("jump") and is_on_floor():
+		print("player 2 jumping")
 		_jumped = event.is_action_pressed("jump")
 	elif event.is_action_pressed("pause_menu") and event.device < -1:
 		SteamInputGlobal.show_binding_panel(event.device)

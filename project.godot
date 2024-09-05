@@ -26,6 +26,11 @@ SteamLobbyGlobal="*res://scripts/multiplayer/steam_lobby_global.gd"
 
 file_logging/enable_file_logging=true
 
+[display]
+
+window/size/viewport_width=1920
+window/size/viewport_height=1080
+
 [editor]
 
 version_control/plugin_name="GitPlugin"

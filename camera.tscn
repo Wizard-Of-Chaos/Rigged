@@ -15,3 +15,5 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.405, -0.619611, 1.75552)
 
 [node name="RemoteTransform3D" type="RemoteTransform3D" parent="CamYaw/CamPitch"]
 transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, 0, 0)
+update_position = false
+update_scale = false

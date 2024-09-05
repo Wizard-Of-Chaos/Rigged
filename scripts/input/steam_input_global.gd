@@ -20,6 +20,7 @@ func _ready() -> void:
 	Steam.input_device_connected.connect(_on_input_device_connected)
 	Steam.input_device_disconnected.connect(_on_input_device_disconnected)
 	Steam.input_gamepad_slot_change.connect(_on_input_gamepad_slot_change)
+	GameState.game_state_changed.connect(_on_gamestate_changed)
 
 
 func _get_controller_slot_for_handle(p_handle: int) -> int:
@@ -173,6 +174,19 @@ func translate_mouse_like_input(p_steam_input: Dictionary, _action: RiggedInputU
 	Input.parse_input_event(ev)
 
 
+func _swap_to_active_action_set(p_controller: RiggedInputUtils.ControllerState) -> void:
+	var action_set: RiggedInputUtils.ActionSet
+	match GameState.current_state:
+		GameState.State.MAIN_MENU:
+			action_set = RiggedInputUtils.get_action_set(RiggedInputUtils.ACTION_SET_MENU_CONTROLS)
+		GameState.State.IN_GAME:
+			action_set = RiggedInputUtils.get_action_set(RiggedInputUtils.ACTION_SET_IN_GAME_CONTROLS)
+	if action_set != null and action_set.handle != 0:
+		Steam.activateActionSet(p_controller.handle, action_set.handle)
+		p_controller.active_action_set = action_set
+		
+
+
 func _on_input_device_connected(p_input_handle: int) -> void:
 	# INFO: handles are only available once at least one controller has connected
 	if not _got_action_handles:
@@ -211,6 +225,12 @@ func _on_input_device_disconnected(p_input_handle: int) -> void:
 func _on_input_gamepad_slot_change(p_app_id: int, p_device_handle: int, p_device_type: int, p_old_gamepad_slot: int, p_new_gamepad_slot: int):
 	print("slot change:\n\tapp_id: %s \n\tdevice_handle: %s\n\tdevice_type: %s \n\told_slot: %s\n\tnew_slot: %s \n\t" % [p_app_id, p_device_handle, p_device_type, p_old_gamepad_slot, p_new_gamepad_slot])
 
+
+func _on_gamestate_changed() -> void:
+	for controller in _controllers:
+		if controller.handle == 0:
+			continue
+		_swap_to_active_action_set(controller)
 
 func show_binding_panel(p_virtual_device: int) -> void:
 	var controller: int = get_controller_handle(p_virtual_device)

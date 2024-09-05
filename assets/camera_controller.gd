@@ -20,9 +20,13 @@ var pitch: float = 0
 
 var tween: Tween
 
+var devices: Array[int] = []
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+	if 0 in devices:
+		print("this camera belongs to the mouse player")
+		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 
 func _on_set_movestate(movestate: MoveState):
 	if tween:
@@ -30,10 +34,11 @@ func _on_set_movestate(movestate: MoveState):
 	tween = create_tween() #BUT NOT ENOUGH TO STOP THEIR EXISTENCE
 	tween.tween_property(camera, "fov", movestate.fov, .5).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
 
-func _input(event):
-	if event is InputEventMouseMotion:
-		yaw += -event.relative.x * yaw_sensitivity
-		pitch += -event.relative.y * pitch_sensitivity
+
+func cam_input(event: InputEventMouseMotion):
+	yaw += -event.relative.x * yaw_sensitivity
+	pitch += -event.relative.y * pitch_sensitivity 
+
 
 func _physics_process(delta):
 	pitch = clamp(pitch, pitch_min, pitch_max)

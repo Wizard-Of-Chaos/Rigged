@@ -16,7 +16,7 @@ func _ready():
 
 func _input(event: InputEvent) -> void:
 	if event.is_action("ui_cancel") and GameState.active_players < GameState.MAX_PLAYERS and GameState.find_player_for_device(event.device) == -1:
-		GameState.register_player(GameState.active_players, 0, [event.device])
+		GameState.register_player(GameState.active_players, [event.device])
 
 func _on_start_pressed():
 	get_tree().change_scene_to_file("res://basic.tscn")

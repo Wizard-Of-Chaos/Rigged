@@ -45,7 +45,11 @@ transform = Transform3D(1, 0, 0, 0, -0.690769, 0.723076, 0, -0.723076, -0.690769
 environment = SubResource("Environment_vah5s")
 
 [node name="Players" type="Node" parent="."]
+unique_name_in_owner = true
 
 [node name="PlayerSpawner" type="MultiplayerSpawner" parent="."]
 _spawnable_scenes = PackedStringArray("res://player.tscn")
 spawn_path = NodePath("../Players")
+
+[node name="UI" type="Node" parent="."]
+unique_name_in_owner = true
