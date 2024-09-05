@@ -11,8 +11,6 @@ extends CharacterBody3D
 @onready var remote_transform: RemoteTransform3D = %RemoteTransform
 
 @onready var ik_arm_target: Marker3D = %ArmIKTarget
-@onready var remote_arm_transform: RemoteTransform3D = %RemoteTransformArm
-
 @onready var pistol: Node3D = $MeshRoot/Guy/Armature/Skeleton3D/GunAttachment/Pistol
 @onready var ik_arm: SkeletonIK3D = $MeshRoot/Guy/Armature/Skeleton3D/ArmIK
 var camera_root: CameraController

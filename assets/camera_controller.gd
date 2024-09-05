@@ -7,7 +7,6 @@ signal set_cam_rotation(_cam_rotation: float)
 @onready var pitch_node: Node3D = $CamYaw/CamPitch
 @onready var camera: Camera3D = $CamYaw/CamPitch/Camera3D
 @onready var remote_transform: RemoteTransform3D = $CamYaw/CamPitch/RemoteTransform3D
-@onready var remote_arm_transform: RemoteTransform3D = $CamYaw/CamPitch/RemoteTransformArm
 @export var yaw_sensitivity: float = 0.07
 @export var pitch_sensitivity: float = 0.07
 @export var yaw_acceleration: float = 15
