@@ -53,6 +53,7 @@ func set_up(authority_id: int) -> void:
 		camera_root = camera
 		move_controller.movestate_set.connect(camera_root._on_set_movestate)
 		anim_controller.set_tree(anim_tree)
+		move_controller.playerstate_set.connect(anim_controller._on_set_playerstate)
 		camera_root.set_cam_rotation.connect(_on_camera_root_set_cam_rotation)
 		pistol.visible = false
 
@@ -80,6 +81,12 @@ func _input(event: InputEvent):
 		else:
 			move_controller.set_playerstate(playerstates["neutral"])
 			pistol.visible = false
+	elif event.is_action_pressed("aim"):
+		if pistol.visible:
+			if move_controller.current_player_state.name == "weapon_equipped":
+				move_controller.set_playerstate(playerstates["weapon_aiming"])
+			else:
+				move_controller.set_playerstate(playerstates["weapon_equipped"])
 
 func _physics_process(delta: float):
 	if moving():
