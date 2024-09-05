@@ -43,7 +43,7 @@ func camera_setup():
 		camera.remote_transform.remote_path = player.ik_target.get_path()
 		
 		player.remote_arm_transform.remote_path = camera.get_node("ArmMarker").get_path()
-		camera.remote_arm_transform.remote_path = player.ik_arm.get_path()
+		camera.remote_arm_transform.remote_path = player.ik_arm_target.get_path()
 		
 		player.move_controller.movestate_set.connect(camera._on_set_movestate)
 		player.move_controller.playerstate_set.connect(camera._on_set_playerstate)
