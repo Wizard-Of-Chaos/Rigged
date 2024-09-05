@@ -38,8 +38,14 @@ func camera_setup():
 		subviewport.add_child(camera)
 		add_child(subviewport_container)
 		var player: Player = active_local_players[player_idx].player_node
+		
 		player.remote_transform.remote_path = camera.get_path()
 		camera.remote_transform.remote_path = player.ik_target.get_path()
+		
+		player.remote_arm_transform.remote_path = camera.get_node("ArmMarker").get_path()
+		camera.remote_arm_transform.remote_path = player.ik_arm.get_path()
+		
 		player.move_controller.movestate_set.connect(camera._on_set_movestate)
+		player.move_controller.playerstate_set.connect(camera._on_set_playerstate)
 		camera.set_cam_rotation.connect(player._on_camera_root_set_cam_rotation)
 		player.camera_root = camera

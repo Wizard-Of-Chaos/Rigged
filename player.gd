@@ -6,10 +6,15 @@ extends CharacterBody3D
 @onready var mesh_root: Node3D = %MeshRoot
 @onready var anim_tree: AnimationTree = $MeshRoot/Guy/AnimationTree
 @onready var move_controller: MoveController = %MoveController
+
 @onready var ik_target: Marker3D = %IKTarget
 @onready var remote_transform: RemoteTransform3D = %RemoteTransform
-@onready var pistol: Node3D = $MeshRoot/Guy/Armature/Skeleton3D/GunAttachment/Pistol
 
+@onready var ik_arm_target: Marker3D = %ArmIKTarget
+@onready var remote_arm_transform: RemoteTransform3D = %RemoteTransformArm
+
+@onready var pistol: Node3D = $MeshRoot/Guy/Armature/Skeleton3D/GunAttachment/Pistol
+@onready var ik_arm: SkeletonIK3D = $MeshRoot/Guy/Armature/Skeleton3D/ArmIK
 var camera_root: CameraController
 var anim_controller: AnimationController = AnimationController.new()
 var devices: Array[int] = []
@@ -40,7 +45,6 @@ var _back_strength: float = 0.0
 var _sprinting: bool = false
 var _jumped: bool = false
 
-
 func moving() -> bool:
 	return abs(move_direction.x) > 0 or abs(move_direction.y) > 0 or abs(move_direction.z) > 0
 
@@ -48,11 +52,11 @@ func moving() -> bool:
 func set_up(player_info: Dictionary) -> void:
 	set_multiplayer_authority(player_info.peer_id)
 	if player_info.peer_id == multiplayer.get_unique_id():
-		#var camera := preload("res://camera.tscn").instantiate()
 		player_info.player_node = self
 		devices = player_info.devices
 		move_controller.playerstate_set.connect(anim_controller._on_set_playerstate)
 		pistol.visible = false
+		ik_arm.stop()
 
 func _input(event: InputEvent):
 	if not is_multiplayer_authority() or not event.device in devices:
@@ -82,12 +86,16 @@ func _input(event: InputEvent):
 		else:
 			move_controller.set_playerstate(playerstates["neutral"])
 			pistol.visible = false
+			
 	elif event.is_action_pressed("aim"):
 		if pistol.visible:
 			if move_controller.current_player_state.name == "weapon_equipped":
 				move_controller.set_playerstate(playerstates["weapon_aiming"])
+				ik_arm.start()
 			else:
 				move_controller.set_playerstate(playerstates["weapon_equipped"])
+				ik_arm.stop()
+
 
 func _physics_process(delta: float):
 	if moving():
