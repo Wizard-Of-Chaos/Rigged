@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="PlayerState" load_steps=2 format=3 uid="uid://duskci8txar6m"]
+
+[ext_resource type="Script" path="res://scripts/player_states/player_state.gd" id="1_f3xu1"]
+
+[resource]
+script = ExtResource("1_f3xu1")
+id = 2
+name = "weapon_aiming"

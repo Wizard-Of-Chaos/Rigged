@@ -2,11 +2,13 @@ class_name Player
 extends CharacterBody3D
 
 @export var movestates: Dictionary
+@export var playerstates: Dictionary
 @onready var mesh_root: Node3D = %MeshRoot
 @onready var anim_tree: AnimationTree = $MeshRoot/Guy/AnimationTree
 @onready var move_controller: MoveController = %MoveController
 @onready var ik_target: Marker3D = %IKTarget
 @onready var remote_transform: RemoteTransform3D = %RemoteTransform
+@onready var pistol: Node3D = $MeshRoot/Guy/Armature/Skeleton3D/GunAttachment/Pistol
 
 var camera_root: CameraController
 var anim_controller: AnimationController = AnimationController.new()
@@ -14,8 +16,10 @@ var devices: Array[int] = []
 
 func _ready():
 	move_controller.set_movestate(movestates["idle"])
+	move_controller.set_playerstate(playerstates["neutral"])
 	move_controller.movestate_set.connect(anim_controller._on_set_movestate)
 	anim_controller.set_tree(anim_tree)
+	pistol.visible = false
 
 var move_direction: Vector3: 
 	get:
@@ -48,6 +52,8 @@ func set_up(player_info: Dictionary) -> void:
 		#var camera := preload("res://camera.tscn").instantiate()
 		player_info.player_node = self
 		devices = player_info.devices
+		move_controller.playerstate_set.connect(anim_controller._on_set_playerstate)
+		pistol.visible = false
 
 func _input(event: InputEvent):
 	print("%s: %s %s %s %s" % [self.name, event.device, devices, event.device in devices, is_multiplayer_authority()])
@@ -71,6 +77,19 @@ func _input(event: InputEvent):
 		_jumped = event.is_action_pressed("jump")
 	elif event.is_action_pressed("pause_menu") and event.device < -1:
 		SteamInputGlobal.show_binding_panel(event.device)
+	elif event.is_action_pressed("equip_weapon"):
+		if move_controller.current_player_state.name == "neutral" or move_controller.current_player_state.name == "weapon_aiming":
+			move_controller.set_playerstate(playerstates["weapon_equipped"])
+			pistol.visible = true
+		else:
+			move_controller.set_playerstate(playerstates["neutral"])
+			pistol.visible = false
+	elif event.is_action_pressed("aim"):
+		if pistol.visible:
+			if move_controller.current_player_state.name == "weapon_equipped":
+				move_controller.set_playerstate(playerstates["weapon_aiming"])
+			else:
+				move_controller.set_playerstate(playerstates["weapon_equipped"])
 
 func _physics_process(delta: float):
 	if moving():
