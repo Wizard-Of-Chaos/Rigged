@@ -93,7 +93,11 @@ func _input(event: InputEvent):
 			else:
 				move_controller.set_playerstate(playerstates["weapon_equipped"])
 				ik_arm.stop()
-
+	
+	elif event.is_action_pressed("fire"):
+		pass
+	elif event.is_action_pressed("interact"):
+		pass
 
 func _physics_process(delta: float):
 	if moving():
