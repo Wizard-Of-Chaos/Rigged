@@ -13,11 +13,11 @@ func _ready():
 		_current_clip_count = 1
 	
 func _physics_process(delta):
-	if firing and _time_since_last_shot >= stats.firing_speed and _current_clip_count > 0:
+	while firing and _time_since_last_shot >= stats.firing_speed and _current_clip_count > 0:
 		if stats.uses_ammo:
 			_current_clip_count -= 1
 		print("Blam! Blam!")
-		_time_since_last_shot = 0.0
+		_time_since_last_shot -= stats.firing_speed
 		#raycast
 		
 	_time_since_last_shot += delta
