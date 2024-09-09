@@ -17,6 +17,7 @@ func _physics_process(delta):
 		if stats.uses_ammo:
 			_current_clip_count -= 1
 		print("Blam! Blam!")
+		_time_since_last_shot = 0.0
 		#raycast
 		
 	_time_since_last_shot += delta
