@@ -12,3 +12,6 @@ range = 20.0
 hitscan = true
 projectile_speed = 1000.0
 two_handed = false
+uses_ammo = true
+reload_time = 1.5
+max_clip = 6

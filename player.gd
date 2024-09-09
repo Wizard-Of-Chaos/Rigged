@@ -11,7 +11,7 @@ extends CharacterBody3D
 @onready var remote_transform: RemoteTransform3D = %RemoteTransform
 
 @onready var ik_arm_target: Marker3D = %ArmIKTarget
-@onready var pistol: Node3D = $MeshRoot/Guy/Armature/Skeleton3D/GunAttachment/Pistol
+@onready var pistol: Weapon = $MeshRoot/Guy/Armature/Skeleton3D/GunAttachment/Pistol
 @onready var ik_arm: SkeletonIK3D = $MeshRoot/Guy/Armature/Skeleton3D/ArmIK
 var camera_root: CameraController
 var anim_controller: AnimationController = AnimationController.new()
@@ -59,7 +59,7 @@ func set_up(player_info: Dictionary) -> void:
 func _input(event: InputEvent):
 	if not is_multiplayer_authority() or not event.device in devices:
 		return
-
+	pistol.firing = false
 	if event is InputEventMouseMotion:
 		camera_root.cam_input(event)
 	elif event.is_action("move_forward"):
@@ -93,10 +93,13 @@ func _input(event: InputEvent):
 			else:
 				move_controller.set_playerstate(playerstates["weapon_equipped"])
 				ik_arm.stop()
+				
+	if event.is_action_pressed("fire") and move_controller.current_player_state.name == "weapon_aiming":
+		pistol.firing = true
+	else:
+		pistol.firing = false
 	
-	elif event.is_action_pressed("fire"):
-		pass
-	elif event.is_action_pressed("interact"):
+	if event.is_action_pressed("interact"):
 		pass
 
 func _physics_process(delta: float):

@@ -1,11 +1,32 @@
 extends Node3D
+class_name Weapon
 
+@export var stats: WeaponStats
+@export var firing: bool = false
+var _time_since_last_shot: float = 0.0
+var _current_clip_count: int
+var _time_reloading: float = 0.0
 
-# Called when the node enters the scene tree for the first time.
 func _ready():
-	pass # Replace with function body.
+	_current_clip_count = stats.max_clip
+	if !stats.uses_ammo:
+		_current_clip_count = 1
+	
+func _physics_process(delta):
+	if firing and _time_since_last_shot >= stats.firing_speed and _current_clip_count > 0:
+		if stats.uses_ammo:
+			_current_clip_count -= 1
+		print("Blam! Blam!")
+		#raycast
+		
+	_time_since_last_shot += delta
 
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
+	if _current_clip_count == 0:
+		_time_reloading += delta
+		print(_time_reloading)
+		if _time_reloading >= stats.reload_time:
+			_current_clip_count = stats.max_clip
+			_time_reloading = 0.0
+			print("Reloaded!")
 	pass
