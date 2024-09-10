@@ -56,6 +56,7 @@ func set_up(player_info: Dictionary) -> void:
 		pistol.visible = false
 		ik_arm.stop()
 
+
 func _input(event: InputEvent):
 	if not is_multiplayer_authority() or not event.device in devices:
 		return
@@ -73,7 +74,6 @@ func _input(event: InputEvent):
 	elif event.is_action("sprint"):
 		_sprinting = event.is_action_pressed("sprint", true)
 	elif event.is_action_pressed("jump") and is_on_floor():
-		print("player 2 jumping")
 		_jumped = event.is_action_pressed("jump")
 	elif event.is_action_pressed("pause_menu") and event.device < -1:
 		SteamInputGlobal.show_binding_panel(event.device)
@@ -84,7 +84,6 @@ func _input(event: InputEvent):
 		else:
 			move_controller.set_playerstate(playerstates["neutral"])
 			pistol.visible = false
-			
 	elif event.is_action_pressed("aim"):
 		if pistol.visible:
 			if move_controller.current_player_state.name == "weapon_equipped":

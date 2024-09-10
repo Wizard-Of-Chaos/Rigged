@@ -26,13 +26,13 @@ ambient_light_energy = 8.0
 [node name="MainScene" type="Node3D"]
 script = ExtResource("1_uv0ub")
 
-[node name="FLOOR" type="CSGBox3D" parent="."]
+[node name="Floor" type="CSGBox3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.2369, 0.00443175, -1.7427)
 material_override = SubResource("StandardMaterial3D_q73ef")
 use_collision = true
 size = Vector3(174.71, 0.155884, 160.123)
 
-[node name="Brick" type="CSGBox3D" parent="FLOOR"]
+[node name="Brick" type="CSGBox3D" parent="Floor"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.43481, 4.515, 1.7006)
 material_override = SubResource("StandardMaterial3D_q73ef")
 use_collision = true

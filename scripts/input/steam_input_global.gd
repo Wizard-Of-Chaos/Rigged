@@ -32,8 +32,12 @@ func _get_controller_slot_for_handle(p_handle: int) -> int:
 
 func _process(_delta: float) -> void:
 	for controller in _controllers:
-		if controller.handle == 0 or controller.active_action_set == null:
+		if controller.handle == 0:
 			continue
+		if not _got_action_handles:
+			_get_action_handles()
+		if controller.active_action_set == null:
+			_swap_to_active_action_set(controller)
 		for action in controller.active_action_set.actions:
 			if action is RiggedInputUtils.AnalogAction:
 				var res := Steam.getAnalogActionData(controller.handle, action.handle)
@@ -167,7 +171,7 @@ func translate_mouse_like_input(p_steam_input: Dictionary, _action: RiggedInputU
 	if p_steam_input.x == 0 and p_steam_input.y == 0:
 		return
 	var ev := InputEventMouseMotion.new()
-	# TODO: properly caculate relative
+	# TODO: properly caculate global
 	ev.screen_relative = Vector2(p_steam_input.x, p_steam_input.y)
 	ev.relative = Vector2(p_steam_input.x, p_steam_input.y)
 	ev.device = get_virtual_device_id(p_device_handle)
@@ -184,7 +188,6 @@ func _swap_to_active_action_set(p_controller: RiggedInputUtils.ControllerState) 
 	if action_set != null and action_set.handle != 0:
 		Steam.activateActionSet(p_controller.handle, action_set.handle)
 		p_controller.active_action_set = action_set
-		
 
 
 func _on_input_device_connected(p_input_handle: int) -> void:
@@ -223,6 +226,7 @@ func _on_input_device_disconnected(p_input_handle: int) -> void:
 
 
 func _on_input_gamepad_slot_change(p_app_id: int, p_device_handle: int, p_device_type: int, p_old_gamepad_slot: int, p_new_gamepad_slot: int):
+	# this shouldn't actually be called since we're not doing xinput emulation? Throwing it in here anyway just in case something crops up during testing
 	print("slot change:\n\tapp_id: %s \n\tdevice_handle: %s\n\tdevice_type: %s \n\told_slot: %s\n\tnew_slot: %s \n\t" % [p_app_id, p_device_handle, p_device_type, p_old_gamepad_slot, p_new_gamepad_slot])
 
 

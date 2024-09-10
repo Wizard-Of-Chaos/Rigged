@@ -12,6 +12,7 @@ var lobby_members: Array = []
 var lobbies: Array = []
 var players: Dictionary = {}
 var is_host: bool = false
+var lobby_max: int = 4
 
 
 func _ready() -> void:
@@ -47,6 +48,7 @@ func create_lobby(p_lobby_type: Steam.LobbyType, p_max_members: int) -> void:
 	# you're already in a lobby numbnuts
 	if lobby_id != 0:
 		return
+	lobby_max = p_max_members
 	Steam.createLobby(p_lobby_type, p_max_members)
 
 
@@ -111,9 +113,20 @@ func fetch_lobbies() -> void:
 
 
 @rpc("call_local", "any_peer", "reliable")
-func register_player(p_steam_id: int) -> void:
+func register_player(p_steam_id: int, p_num_players: int) -> void:
+	if p_num_players > 1:
+		# decrease our lobby limit if we get multiple players connecting on one peer
+		Steam.setLobbyMemberLimit(lobby_id, lobby_max - (p_num_players - 1))
 	var id = multiplayer.get_remote_sender_id()
+	GameState.add_remote_players(p_num_players, id)
 	players[id] = p_steam_id
+	client_register_player(GameState.players, p_steam_id, id)
+
+
+@rpc("call_remote", "authority", "reliable")
+func client_register_player(p_players_dict: Array[Dictionary], p_steam_id: int, p_peer_id: int) -> void:
+	players[p_peer_id] = p_steam_id
+	GameState.update_players(p_players_dict)
 
 
 func unregister_player(id: int):
@@ -121,7 +134,9 @@ func unregister_player(id: int):
 
 
 func _on_multiplayer_peer_connected(id: int):
-	register_player.rpc_id(id, SteamGlobal.steam_id)
+	if id == 1:
+		var local_active_players := GameState.players.filter(func(player_info): return player_info.is_active and player_info.peer_id == multiplayer.get_unique_id())
+		register_player.rpc_id(id, SteamGlobal.steam_id, local_active_players.size())
 
 
 func _on_multiplayer_peer_disconnected(id: int):
