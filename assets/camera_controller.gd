@@ -37,6 +37,8 @@ func _on_set_movestate(movestate: MoveState):
 
 
 func _on_set_playerstate(playerstate: PlayerStateChange):
+	if playerstate.new_state.id == playerstate.old_state.id:
+		return
 	if player_tween:
 		player_tween.kill()
 	player_tween = create_tween()

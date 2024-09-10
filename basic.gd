@@ -38,7 +38,6 @@ func camera_setup():
 		subviewport.add_child(camera)
 		add_child(subviewport_container)
 		var player: Player = active_local_players[player_idx].player_node
-		
 		player.remote_transform.remote_path = camera.get_path()
 		camera.remote_transform.remote_path = player.ik_target.get_path()
 				
@@ -46,3 +45,6 @@ func camera_setup():
 		player.move_controller.playerstate_set.connect(camera._on_set_playerstate)
 		camera.set_cam_rotation.connect(player._on_camera_root_set_cam_rotation)
 		player.camera_root = camera
+		
+		#TODO: there has to be a better way of maintaining access to the camera from the gun with possible gun swaps
+		player.pistol.camera = player.camera_root.camera

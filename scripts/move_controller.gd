@@ -18,7 +18,7 @@ var fall_speed = 40
 func get_statechange(newstate: PlayerState) -> PlayerStateChange:
 	var ret: PlayerStateChange = PlayerStateChange.new()
 	ret.old_state = old_player_state
-	ret.new_state = current_player_state
+	ret.new_state = newstate
 	return ret
 
 func set_movestate(p_movestate: MoveState):
