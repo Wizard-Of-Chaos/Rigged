@@ -6,7 +6,7 @@
 script = ExtResource("1_hf0jm")
 id = 0
 name = "Chorus 6-S"
-firing_speed = 0.0
+firing_speed = 0.7
 damage = 0
 range = 20.0
 hitscan = true

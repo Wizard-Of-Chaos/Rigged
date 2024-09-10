@@ -13,7 +13,7 @@ extends CharacterBody3D
 @onready var ik_arm_target: Marker3D = %ArmIKTarget
 @onready var pistol: Weapon = $MeshRoot/Guy/Armature/Skeleton3D/GunAttachment/Pistol
 @onready var ik_arm: SkeletonIK3D = $MeshRoot/Guy/Armature/Skeleton3D/ArmIK
-var camera_root: CameraController
+@export var camera_root: CameraController
 var anim_controller: AnimationController = AnimationController.new()
 var devices: Array[int] = []
 
@@ -54,7 +54,7 @@ func set_up(player_info: Dictionary) -> void:
 		devices = player_info.devices
 		move_controller.playerstate_set.connect(anim_controller._on_set_playerstate)
 		pistol.visible = false
-		ik_arm.stop()
+		ik_arm.stop() 
 
 func _input(event: InputEvent):
 	if not is_multiplayer_authority() or not event.device in devices:
