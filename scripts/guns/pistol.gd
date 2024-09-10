@@ -31,6 +31,12 @@ func _physics_process(delta):
 		var result: Dictionary = space_state.intersect_ray(query)
 		if !result.is_empty():
 			print("Hit something!")
+			var collider: Node3D = result.collider
+			if collider.has_node("%Health"):
+				print("Hit something with a health node!")
+				var hp: Health = collider.get_node("%Health")
+				hp.damage(stats.damage)
+				print(hp.current_health)
 		else:
 			print("Whiffed!")
 		
