@@ -1,7 +1,12 @@
 extends Node
 class_name Health
 
-@export var current_health: int = 500
+signal health_changed(old_health: int, new_health: int)
+
+@export var current_health: int = 500:
+	set(value):
+		health_changed.emit(current_health, value)
+		current_health = value
 @export var max_health: int = 500
  
 func damage(dmg: int):
@@ -12,8 +17,3 @@ func damage(dmg: int):
 
 func _ready():
 	pass
-
-func _process(delta):
-	if max_health <= 0:
-		#kill this fucking thing
-		pass
