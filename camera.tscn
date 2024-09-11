@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://boxg40g8f3eji"]
+[gd_scene load_steps=3 format=3 uid="uid://boxg40g8f3eji"]
 
 [ext_resource type="Script" path="res://assets/camera_controller.gd" id="1_dphn5"]
+[ext_resource type="Texture2D" uid="uid://qgu18kyl7iao" path="res://assets/ui/crosshair.png" id="2_0nhdm"]
 
 [node name="CameraRoot" type="Node3D"]
 transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, 4.65702, 0)
@@ -15,6 +16,14 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.405, -0.619611, 1.75552)
 
 [node name="AimRay" type="RayCast3D" parent="CamYaw/CamPitch/Camera3D"]
 transform = Transform3D(1, 0, -3.82137e-15, -3.82137e-15, 4.37114e-08, -1, 0, 1, 4.37114e-08, 0, 0, 0)
+
+[node name="Crosshair" type="CenterContainer" parent="CamYaw/CamPitch/Camera3D"]
+offset_right = 1920.0
+offset_bottom = 1080.0
+
+[node name="CrosshairTexture" type="TextureRect" parent="CamYaw/CamPitch/Camera3D/Crosshair"]
+layout_mode = 2
+texture = ExtResource("2_0nhdm")
 
 [node name="RemoteTransform3D" type="RemoteTransform3D" parent="CamYaw/CamPitch"]
 transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, 0, 0)

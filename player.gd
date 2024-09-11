@@ -88,9 +88,11 @@ func _input(event: InputEvent):
 		if pistol.visible:
 			if move_controller.current_player_state.name == "weapon_equipped":
 				move_controller.set_playerstate(playerstates["weapon_aiming"])
+				camera_root.crosshair.visible = true
 				ik_arm.start()
 			else:
 				move_controller.set_playerstate(playerstates["weapon_equipped"])
+				camera_root.crosshair.visible = false
 				ik_arm.stop()
 				
 	if event.is_action_pressed("fire") and move_controller.current_player_state.name == "weapon_aiming":
