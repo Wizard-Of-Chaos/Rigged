@@ -35,9 +35,12 @@ func _process(_delta: float) -> void:
 		if controller.handle == 0:
 			continue
 		if not _got_action_handles:
-			_get_action_handles()
+			var result := _get_action_handles()
+			if not result:
+				break
 		if controller.active_action_set == null:
 			_swap_to_active_action_set(controller)
+			
 		for action in controller.active_action_set.actions:
 			if action is RiggedInputUtils.AnalogAction:
 				var res := Steam.getAnalogActionData(controller.handle, action.handle)
@@ -55,7 +58,7 @@ func _process(_delta: float) -> void:
 				printerr("Unknown action: %s" % action)
 
 
-func _get_action_handles() -> void:
+func _get_action_handles() -> bool:
 	var null_handle := false
 	for action_set in RiggedInputUtils.steam_inputs:
 		action_set.handle = Steam.getActionSetHandle(action_set.name)
@@ -68,6 +71,7 @@ func _get_action_handles() -> void:
 				null_handle = true
 				print("Got a null action handle for action %s" % action.name)
 	_got_action_handles = not null_handle
+	return _got_action_handles
 
 
 
