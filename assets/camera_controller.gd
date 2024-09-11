@@ -7,6 +7,7 @@ signal set_cam_rotation(_cam_rotation: float)
 @onready var pitch_node: Node3D = $CamYaw/CamPitch
 @onready var camera: Camera3D = $CamYaw/CamPitch/Camera3D
 @onready var remote_transform: RemoteTransform3D = $CamYaw/CamPitch/RemoteTransform3D
+@onready var crosshair: TextureRect = $CamYaw/CamPitch/Camera3D/CenterContainer/Crosshair
 @export var yaw_sensitivity: float = 0.07
 @export var pitch_sensitivity: float = 0.07
 @export var yaw_acceleration: float = 15
@@ -27,6 +28,7 @@ func _ready():
 	if 0 in devices:
 		print("this camera belongs to the mouse player")
 		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+	crosshair.visible = false
 
 
 func _on_set_movestate(movestate: MoveState):
