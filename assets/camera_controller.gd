@@ -50,6 +50,8 @@ func _on_set_playerstate(playerstate: PlayerStateChange):
 	elif playerstate.old_state.name == "weapon_aiming":
 		player_tween.tween_property(camera, "position", camera.position + Vector3(0, 0, .75), .1).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
 		#player_tween.parallel().tween_property(camera, "fov", camera.fov + 60, .1).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	else:
+		printerr("Unknown state combo [%s, %s]" % [playerstate.old_state.name, playerstate.new_state.name])
 
 
 func cam_input(event: InputEventMouseMotion) -> void:

@@ -25,7 +25,7 @@ func _ready() -> void:
 	Steam.join_game_requested.connect(_on_join_game_requested)
 	multiplayer.peer_connected.connect(_on_multiplayer_peer_connected)
 	multiplayer.peer_disconnected.connect(_on_multiplayer_peer_disconnected)
-	multiplayer.connection_failed.connect(on_multiplayer_connection_failed)
+	multiplayer.connection_failed.connect(_on_multiplayer_connection_failed)
 	check_command_line()
 
 func check_command_line() -> void:
@@ -90,10 +90,6 @@ func leave_lobby() -> void:
 	Steam.leaveLobby(lobby_id)
 	lobby_id = 0
 	
-	for member in lobby_members:
-		if member['steam_id'] != SteamGlobal.steam_id:
-			Steam.closeP2PSessionWithUser(member['steam_id'])
-
 	lobby_members.clear()
 
 
@@ -117,7 +113,7 @@ func register_player(p_steam_id: int, p_num_players: int) -> void:
 	if p_num_players > 1:
 		# decrease our lobby limit if we get multiple players connecting on one peer
 		Steam.setLobbyMemberLimit(lobby_id, lobby_max - (p_num_players - 1))
-	var id = multiplayer.get_remote_sender_id()
+	var id := multiplayer.get_remote_sender_id()
 	GameState.add_remote_players(p_num_players, id)
 	players[id] = p_steam_id
 	client_register_player(GameState.players, p_steam_id, id)
@@ -129,8 +125,8 @@ func client_register_player(p_players_dict: Array[Dictionary], p_steam_id: int, 
 	GameState.update_players(p_players_dict)
 
 
-func unregister_player(id: int):
-	players.erase(id)
+func unregister_player(p_peer_id: int):
+	players.erase(p_peer_id)
 
 
 func _on_multiplayer_peer_connected(id: int):
@@ -143,7 +139,7 @@ func _on_multiplayer_peer_disconnected(id: int):
 	unregister_player(id)
 
 
-func on_multiplayer_connection_failed():
+func _on_multiplayer_connection_failed():
 	multiplayer.multiplayer_peer = null
 
 
@@ -193,7 +189,6 @@ func _on_lobby_joined(p_lobby_id: int, _permissions: int, _locked: bool, p_respo
 		var peer := SteamMultiplayerPeer.new()
 		peer.create_client(owner_id, 0)
 		multiplayer.set_multiplayer_peer(peer)
-		register_player.rpc(SteamGlobal.steam_id)
 	lobby_joined.emit()
 	get_lobby_members()
 	# TODO: force a scene transition somewhere to actually join the lobby
