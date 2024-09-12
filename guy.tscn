@@ -93,7 +93,7 @@ bones/43/rotation = Quaternion(0.00803014, -0.00844163, 0.722212, 0.691574)
 bones/43/scale = Vector3(1, 1, 1)
 
 [node name="GunAttachment" type="BoneAttachment3D" parent="Armature/Skeleton3D" index="6"]
-transform = Transform3D(-0.615125, 0.706244, 0.350485, 0.329049, -0.17401, 0.928141, 0.716483, 0.68625, -0.125352, -0.714895, 0.420673, 0.904439)
+transform = Transform3D(-0.922516, 0.0355131, 0.38432, 0.00205768, -0.995291, 0.0969092, 0.385952, 0.0901911, 0.918099, -0.659751, -0.061871, -1.63913e-07)
 bone_name = "Hand.r"
 bone_idx = 23
 
@@ -117,4 +117,4 @@ tree_root = ExtResource("4_p38ux")
 anim_player = NodePath("../AnimationPlayer")
 parameters/aim_blend/blend_amount = 0
 parameters/move_anim_speed/scale = 1.0
-parameters/move_blend/blend_position = 0.221184
+parameters/move_blend/blend_position = 0.0
