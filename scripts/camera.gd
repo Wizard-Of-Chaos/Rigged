@@ -1,5 +1,5 @@
-extends Node3D
 class_name CameraController
+extends Node3D
 
 signal set_cam_rotation(_cam_rotation: float)
 

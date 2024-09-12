@@ -1,7 +1,7 @@
 [gd_resource type="AnimationNodeBlendTree" load_steps=9 format=3 uid="uid://ce6bvshi5lig2"]
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_16x0u"]
-animation = &"Armature|pistol_aim"
+animation = &"pistol_aim"
 
 [sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_q1gx6"]
 filter_enabled = true
@@ -10,16 +10,16 @@ filters = ["Armature/Skeleton3D:Hand.r", "Armature/Skeleton3D:LowerArm.r", "Arma
 [sub_resource type="AnimationNodeTimeScale" id="AnimationNodeTimeScale_5mmdg"]
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_82c46"]
-animation = &"Armature|Idle"
+animation = &"Idle"
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_3cdtk"]
-animation = &"Armature|Run"
+animation = &"Run"
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_x44nc"]
 animation = &"Armature|pistol_run"
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_4rwq0"]
-animation = &"Armature|sprint"
+animation = &"sprint"
 
 [sub_resource type="AnimationNodeBlendSpace1D" id="AnimationNodeBlendSpace1D_ybe7i"]
 blend_point_0/node = SubResource("AnimationNodeAnimation_82c46")
@@ -35,9 +35,9 @@ max_space = 3.0
 snap = 1.0
 
 [resource]
-graph_offset = Vector2(-468.139, 4.14463)
+graph_offset = Vector2(-799.591, 52.7909)
 nodes/Animation/node = SubResource("AnimationNodeAnimation_16x0u")
-nodes/Animation/position = Vector2(-320, 180)
+nodes/Animation/position = Vector2(-340, 220)
 nodes/aim_blend/node = SubResource("AnimationNodeBlend2_q1gx6")
 nodes/aim_blend/position = Vector2(-40, 100)
 nodes/move_anim_speed/node = SubResource("AnimationNodeTimeScale_5mmdg")

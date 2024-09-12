@@ -31,7 +31,22 @@ animation/trimming=false
 animation/remove_immutable_tracks=true
 animation/import_rest_as_RESET=false
 import_script/path=""
-_subresources={}
+_subresources={
+"nodes": {
+"PATH:Armature/Skeleton3D/Stock": {
+"import/skip_import": true
+},
+"PATH:HAND": {
+"import/skip_import": true
+},
+"PATH:Reference": {
+"import/skip_import": true
+},
+"PATH:Side Ref": {
+"import/skip_import": true
+}
+}
+}
 blender/nodes/visible=0
 blender/nodes/active_collection_only=false
 blender/nodes/punctual_lights=true
