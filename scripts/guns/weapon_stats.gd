@@ -5,7 +5,7 @@ class_name WeaponStats
 @export var name: String
 @export var firing_speed: float
 @export var damage: int
-@export var range: float = 20
+@export var weapon_range: float = 20
 @export var hitscan: bool = true
 @export var projectile_speed: float = 1000
 @export var two_handed: bool = false
