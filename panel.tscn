@@ -1,5 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://d2alkgfjssua2"]
-
-[ext_resource type="PackedScene" uid="uid://f2ady0lub6h4" path="res://wip_models/panel/panel.blend" id="1_7w4rm"]
-
-[node name="Panel" instance=ExtResource("1_7w4rm")]

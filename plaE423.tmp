@@ -8,15 +8,68 @@
 [ext_resource type="PackedScene" uid="uid://bk4a64oc4mjar" path="res://guy.tscn" id="6_mbrvk"]
 [ext_resource type="Resource" uid="uid://dom41en6j6htm" path="res://scripts/player_states/neutral.tres" id="6_vmwx6"]
 [ext_resource type="Resource" uid="uid://duskci8txar6m" path="res://scripts/player_states/weapon_aiming.tres" id="7_7o7rs"]
-[ext_resource type="Script" path="res://scripts/move_controller.gd" id="7_u66cd"]
 [ext_resource type="Resource" uid="uid://i2x300gyt23r" path="res://scripts/player_states/weapon_equipped.tres" id="8_kwc1u"]
 [ext_resource type="Resource" uid="uid://d0fxd7unks3p1" path="res://scripts/player_states/disabled.tres" id="9_085gu"]
-[ext_resource type="Script" path="res://scripts/move_controller.gd" id="11_qjfjj"]
 [ext_resource type="Script" path="res://health.gd" id="13_3wql2"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_y2tno"]
 radius = 0.839578
 height = 4.61406
+
+[sub_resource type="GDScript" id="GDScript_nq20p"]
+script/source = "class_name MoveController
+extends Node
+
+signal movestate_set(MoveState)
+signal playerstate_set(PlayerStateChange)
+
+@export var current_player_state: PlayerState
+@export var old_player_state: PlayerState
+@export var rotation_speed: float = 8
+@export var direction: Vector3
+@export var acceleration: float
+@export var speed: float
+@export var rotation: float = 0
+var up: Vector3 = Vector3.UP
+var jump_speed = 1200
+var fall_speed = 40
+
+func get_statechange(newstate: PlayerState) -> PlayerStateChange:
+	var ret: PlayerStateChange = PlayerStateChange.new()
+	ret.old_state = old_player_state
+	ret.new_state = newstate
+	return ret
+
+func set_movestate(p_movestate: MoveState):
+	speed = p_movestate.speed
+	acceleration = p_movestate.acceleration
+	rotation_speed = p_movestate.rotation_speed
+	movestate_set.emit(p_movestate)
+
+func set_playerstate(p_playerstate: PlayerState):
+	old_player_state = current_player_state
+	current_player_state = p_playerstate
+	playerstate_set.emit(get_statechange(p_playerstate))
+
+func set_move_dir(p_direction: Vector3):
+	direction = p_direction.rotated(up, rotation)
+
+func set_rotation(p_rotation: float):
+	rotation = p_rotation
+
+func get_velocity(is_on_floor: bool) -> Vector3:
+	var res: Vector3 = direction
+	if not res.is_zero_approx() and res.length_squared() > 1:
+		res = res.normalized()
+	
+	res.x *= speed
+	if not is_on_floor:
+		res.y *= fall_speed
+	elif direction.y > 0:
+		res.y *= jump_speed
+	res.z *= speed
+	return res
+"
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_iy1fq"]
 properties/0/path = NodePath(".:position")
@@ -55,13 +108,13 @@ properties/10/replication_mode = 1
 
 [node name="Player" type="CharacterBody3D"]
 script = ExtResource("1_83kd4")
-move_states = {
+movestates = {
 "idle": ExtResource("2_tc54y"),
 "jump": ExtResource("3_n2ijg"),
 "run": ExtResource("4_xv0kn"),
 "sprint": ExtResource("5_8og6d")
 }
-player_states = {
+playerstates = {
 "disabled": ExtResource("9_085gu"),
 "neutral": ExtResource("6_vmwx6"),
 "weapon_aiming": ExtResource("7_7o7rs"),
@@ -138,7 +191,7 @@ bones/42/rotation = Quaternion(-0.0218794, -0.00270206, -0.0337067, 0.999189)
 bones/43/rotation = Quaternion(0.00803014, -0.00844163, 0.722212, 0.691574)
 
 [node name="GunAttachment" parent="MeshRoot/Guy/Armature/Skeleton3D" index="6"]
-transform = Transform3D(-0.922521, 0.0355133, 0.384322, 0.00205778, -0.995296, 0.0969097, 0.385954, 0.0901916, 0.918104, -0.677221, -0.04991, 0.00336979)
+transform = Transform3D(-0.922523, 0.0355134, 0.384323, 0.00205769, -0.995297, 0.0969099, 0.385954, 0.0901917, 0.918106, -0.681699, -0.0468446, 0.00423357)
 
 [node name="SpineIK" parent="MeshRoot/Guy/Armature/Skeleton3D" index="7"]
 target_node = NodePath("../../../../../IKTarget")
@@ -148,7 +201,9 @@ target_node = NodePath("../../../../../IKTarget/ArmIKTarget")
 
 [node name="MoveController" type="Node" parent="."]
 unique_name_in_owner = true
-script = ExtResource("11_qjfjj")
+script = SubResource("GDScript_nq20p")
+current_player_state = ExtResource("6_vmwx6")
+old_player_state = ExtResource("6_vmwx6")
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_iy1fq")
