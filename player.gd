@@ -101,6 +101,15 @@ func _input(event: InputEvent):
 		pistol.firing = false
 	
 	if event.is_action_pressed("interact"):
+		camera_root.aim_ray.force_raycast_update()
+		if camera_root.aim_ray.is_colliding():
+			var collider: Node3D = camera_root.aim_ray.get_collider()
+			if collider.has_node("%Interact"):
+				print("I can interact with this thing!")
+			else:
+				print("I hit something, but can't interact with it")
+		else:
+			print("Nothing to hit or interact with")
 		pass
 
 func _physics_process(delta: float):

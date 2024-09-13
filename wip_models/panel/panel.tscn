@@ -18,6 +18,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.74788, 0)
 shape = SubResource("CapsuleShape3D_elljn")
 
 [node name="Interact" type="Sprite3D" parent="." index="2"]
+unique_name_in_owner = true
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 4.35171, 0)
 visibility_range_end = 10.0
 visibility_range_end_margin = 5.0

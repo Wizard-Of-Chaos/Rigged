@@ -8,6 +8,7 @@ signal set_cam_rotation(_cam_rotation: float)
 @onready var camera: Camera3D = $CamYaw/CamPitch/Camera3D
 @onready var remote_transform: RemoteTransform3D = $CamYaw/CamPitch/RemoteTransform3D
 @onready var crosshair: CenterContainer = $CamYaw/CamPitch/Camera3D/Crosshair
+@onready var aim_ray: RayCast3D = $CamYaw/CamPitch/Camera3D/AimRay
 @export var yaw_sensitivity: float = 0.07
 @export var pitch_sensitivity: float = 0.07
 @export var yaw_acceleration: float = 15
