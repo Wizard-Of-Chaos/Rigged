@@ -41,8 +41,8 @@ func camera_setup():
 		player.remote_transform.remote_path = camera.get_path()
 		camera.remote_transform.remote_path = player.ik_target.get_path()
 				
-		player.move_controller.movestate_set.connect(camera._on_set_movestate)
-		player.move_controller.playerstate_set.connect(camera._on_set_playerstate)
+		player.move_controller.move_state_set.connect(camera._on_set_move_state)
+		player.move_controller.player_state_set.connect(camera._on_set_player_state)
 		camera.set_cam_rotation.connect(player._on_camera_root_set_cam_rotation)
 		player.camera_root = camera
 		

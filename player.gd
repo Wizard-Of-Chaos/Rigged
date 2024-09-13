@@ -1,8 +1,8 @@
 class_name Player
 extends CharacterBody3D
 
-@export var movestates: Dictionary
-@export var playerstates: Dictionary
+@export var move_states: Dictionary
+@export var player_states: Dictionary
 @onready var mesh_root: Node3D = %MeshRoot
 @onready var anim_tree: AnimationTree = $MeshRoot/Guy/AnimationTree
 @onready var move_controller: MoveController = %MoveController
@@ -18,9 +18,9 @@ var anim_controller: AnimationController = AnimationController.new()
 var devices: Array[int] = []
 
 func _ready():
-	move_controller.set_movestate(movestates["idle"])
-	move_controller.set_playerstate(playerstates["neutral"])
-	move_controller.movestate_set.connect(anim_controller._on_set_movestate)
+	move_controller.set_move_state(move_states["idle"])
+	move_controller.set_player_state(player_states["neutral"])
+	move_controller.move_state_set.connect(anim_controller._on_set_move_state)
 	anim_controller.set_tree(anim_tree)
 	pistol.visible = false
 
@@ -52,7 +52,7 @@ func set_up(player_info: Dictionary) -> void:
 	if player_info.peer_id == multiplayer.get_unique_id():
 		player_info.player_node = self
 		devices = player_info.devices
-		move_controller.playerstate_set.connect(anim_controller._on_set_playerstate)
+		move_controller.player_state_set.connect(anim_controller._on_set_player_state)
 		pistol.visible = false
 		ik_arm.stop() 
 
@@ -79,19 +79,19 @@ func _input(event: InputEvent):
 		SteamInputGlobal.show_binding_panel(event.device)
 	elif event.is_action_pressed("equip_weapon"):
 		if move_controller.current_player_state.name == "neutral" or move_controller.current_player_state.name == "weapon_aiming":
-			move_controller.set_playerstate(playerstates["weapon_equipped"])
+			move_controller.set_player_state(player_states["weapon_equipped"])
 			pistol.visible = true
 		else:
-			move_controller.set_playerstate(playerstates["neutral"])
+			move_controller.set_player_state(player_states["neutral"])
 			pistol.visible = false
 	elif event.is_action_pressed("aim"):
 		if pistol.visible:
 			if move_controller.current_player_state.name == "weapon_equipped":
-				move_controller.set_playerstate(playerstates["weapon_aiming"])
+				move_controller.set_player_state(player_states["weapon_aiming"])
 				camera_root.crosshair.visible = true
 				ik_arm.start()
 			else:
-				move_controller.set_playerstate(playerstates["weapon_equipped"])
+				move_controller.set_player_state(player_states["weapon_equipped"])
 				camera_root.crosshair.visible = false
 				ik_arm.stop()
 				
@@ -106,9 +106,9 @@ func _input(event: InputEvent):
 func _physics_process(delta: float):
 	if moving():
 		move_controller.set_move_dir(move_direction)
-		move_controller.set_movestate(movestates["sprint"] if _sprinting else movestates["run"])
+		move_controller.set_move_state(move_states["sprint"] if _sprinting else move_states["run"])
 	else:
-		move_controller.set_movestate(movestates["idle"])
+		move_controller.set_move_state(move_states["idle"])
 	var target_rotation: float = atan2(move_controller.direction.x, move_controller.direction.z) - rotation.y
 	mesh_root.rotation.y = lerp_angle(mesh_root.rotation.y, target_rotation, move_controller.rotation_speed * delta)
 	velocity = velocity.lerp(move_controller.get_velocity(is_on_floor()), move_controller.acceleration * delta)

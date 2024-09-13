@@ -54,13 +54,13 @@ properties/10/replication_mode = 1
 
 [node name="Player" type="CharacterBody3D"]
 script = ExtResource("1_83kd4")
-move_states = {
+movestates = {
 "idle": ExtResource("2_tc54y"),
 "jump": ExtResource("3_n2ijg"),
 "run": ExtResource("4_xv0kn"),
 "sprint": ExtResource("5_8og6d")
 }
-player_states = {
+playerstates = {
 "disabled": ExtResource("9_085gu"),
 "neutral": ExtResource("6_vmwx6"),
 "weapon_aiming": ExtResource("7_7o7rs"),
@@ -137,7 +137,7 @@ bones/42/rotation = Quaternion(-0.0218794, -0.00270206, -0.0337067, 0.999189)
 bones/43/rotation = Quaternion(0.00803014, -0.00844163, 0.722212, 0.691574)
 
 [node name="GunAttachment" parent="MeshRoot/Guy/Armature/Skeleton3D" index="6"]
-transform = Transform3D(-0.922517, 0.0355132, 0.38432, 0.00205775, -0.995292, 0.0969093, 0.385952, 0.0901912, 0.9181, -0.68651, -0.0435387, 0.0051613)
+transform = Transform3D(-0.922514, 0.035513, 0.384319, 0.0020577, -0.995288, 0.096909, 0.38595, 0.0901908, 0.918096, -0.673073, -0.0527384, 0.0025693)
 
 [node name="SpineIK" parent="MeshRoot/Guy/Armature/Skeleton3D" index="7"]
 target_node = NodePath("../../../../../IKTarget")

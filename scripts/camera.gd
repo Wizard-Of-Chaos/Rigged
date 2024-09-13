@@ -31,27 +31,27 @@ func _ready():
 	crosshair.visible = false
 
 
-func _on_set_movestate(movestate: MoveState):
+func _on_set_move_state(move_state: MoveState):
 	if move_tween:
 		move_tween.kill() #I FUCKING HATE PEOPLE AGED 10-12
 	move_tween = create_tween() #BUT NOT ENOUGH TO STOP THEIR EXISTENCE
-	move_tween.tween_property(camera, "fov", movestate.fov, .5).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
+	move_tween.tween_property(camera, "fov", move_state.fov, .5).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
 
 
-func _on_set_playerstate(playerstate: PlayerStateChange):
-	if playerstate.new_state.id == playerstate.old_state.id:
+func _on_set_player_state(player_state: PlayerStateChange):
+	if player_state.new_state.id == player_state.old_state.id:
 		return
 	if player_tween:
 		player_tween.kill()
 	player_tween = create_tween()
-	if playerstate.old_state.name == "weapon_equipped" and playerstate.new_state.name == "weapon_aiming":
+	if player_state.old_state.name == "weapon_equipped" and player_state.new_state.name == "weapon_aiming":
 		player_tween.tween_property(camera, "position", camera.position + Vector3(0, 0, -.75), .1).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
 		#player_tween.parallel().tween_property(camera, "fov", camera.fov - 60, .1).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
-	elif playerstate.old_state.name == "weapon_aiming":
+	elif player_state.old_state.name == "weapon_aiming":
 		player_tween.tween_property(camera, "position", camera.position + Vector3(0, 0, .75), .1).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
 		#player_tween.parallel().tween_property(camera, "fov", camera.fov + 60, .1).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
 	else:
-		printerr("Unknown state combo [%s, %s]" % [playerstate.old_state.name, playerstate.new_state.name])
+		printerr("Unknown state combo [%s, %s]" % [player_state.old_state.name, player_state.new_state.name])
 
 
 func cam_input(event: InputEventMouseMotion) -> void:

@@ -1,8 +1,8 @@
 class_name MoveController
 extends Node
 
-signal movestate_set(MoveState)
-signal playerstate_set(PlayerStateChange)
+signal move_state_set(MoveState)
+signal player_state_set(PlayerStateChange)
 
 @export var current_player_state: PlayerState
 @export var old_player_state: PlayerState
@@ -15,22 +15,22 @@ var up: Vector3 = Vector3.UP
 var jump_speed = 1200
 var fall_speed = 40
 
-func get_statechange(newstate: PlayerState) -> PlayerStateChange:
+func get_state_change(new_state: PlayerState) -> PlayerStateChange:
 	var ret: PlayerStateChange = PlayerStateChange.new()
 	ret.old_state = old_player_state
-	ret.new_state = newstate
+	ret.new_state = new_state
 	return ret
 
-func set_movestate(p_movestate: MoveState):
-	speed = p_movestate.speed
-	acceleration = p_movestate.acceleration
-	rotation_speed = p_movestate.rotation_speed
-	movestate_set.emit(p_movestate)
+func set_move_state(p_move_state: MoveState):
+	speed = p_move_state.speed
+	acceleration = p_move_state.acceleration
+	rotation_speed = p_move_state.rotation_speed
+	move_state_set.emit(p_move_state)
 
-func set_playerstate(p_playerstate: PlayerState):
+func set_player_state(p_playerstate: PlayerState):
 	old_player_state = current_player_state
 	current_player_state = p_playerstate
-	playerstate_set.emit(get_statechange(p_playerstate))
+	player_state_set.emit(get_state_change(p_playerstate))
 
 func set_move_dir(p_direction: Vector3):
 	direction = p_direction.rotated(up, rotation)
