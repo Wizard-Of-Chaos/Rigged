@@ -1,7 +1,4 @@
-[gd_resource type="Theme" load_steps=6 format=3 uid="uid://c8ustssjawosr"]
-
-[ext_resource type="StyleBox" uid="uid://ckmg62sbcks1k" path="res://menu_button_pressed.tres" id="1_ciw0v"]
-[ext_resource type="StyleBox" uid="uid://d02v861ao6e7d" path="res://main_menu_background_stylebox.tres" id="1_o0c2i"]
+[gd_resource type="StyleBoxTexture" load_steps=3 format=3 uid="uid://c0irefsy5p7ee"]
 
 [sub_resource type="Image" id="Image_lv77d"]
 data = {
@@ -15,16 +12,5 @@ data = {
 [sub_resource type="ImageTexture" id="ImageTexture_5nxp2"]
 image = SubResource("Image_lv77d")
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_sf33u"]
-texture = SubResource("ImageTexture_5nxp2")
-
 [resource]
-Button/styles/hover = ExtResource("1_ciw0v")
-Button/styles/normal = SubResource("StyleBoxTexture_sf33u")
-Button/styles/pressed = ExtResource("1_ciw0v")
-MarginContainer/constants/margin_bottom = 20
-MarginContainer/constants/margin_left = 20
-MarginContainer/constants/margin_right = 20
-MarginContainer/constants/margin_top = 20
-MenuPanelContainerBackground/base_type = &"PanelContainer"
-MenuPanelContainerBackground/styles/panel = ExtResource("1_o0c2i")
+texture = SubResource("ImageTexture_5nxp2")
