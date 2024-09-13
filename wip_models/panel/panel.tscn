@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://d2alkgfjssua2"]
+
+[ext_resource type="PackedScene" uid="uid://f2ady0lub6h4" path="res://wip_models/panel/panel.blend" id="1_ge4cb"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_elljn"]
+radius = 1.23419
+height = 3.87977
+
+[node name="Panel" instance=ExtResource("1_ge4cb")]
+
+[node name="Body" type="RigidBody3D" parent="." index="1"]
+freeze = true
+
+[node name="Collider" type="CollisionShape3D" parent="Body" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.74788, 0)
+shape = SubResource("CapsuleShape3D_elljn")
