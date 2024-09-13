@@ -1,11 +1,10 @@
-[gd_scene load_steps=12 format=3 uid="uid://hmt035h6sxel"]
+[gd_scene load_steps=11 format=3 uid="uid://hmt035h6sxel"]
 
 [ext_resource type="Texture2D" uid="uid://cc35sv25ejsrv" path="res://placeholder.png" id="1_ul57f"]
 [ext_resource type="Script" path="res://basic.gd" id="1_uv0ub"]
 [ext_resource type="PackedScene" uid="uid://dsgx05iom5ut2" path="res://wip_models/exshock_imports/arthur/arthur.blend" id="4_u3vq2"]
 [ext_resource type="Texture2D" uid="uid://ctp4itiqnj44y" path="res://assets/skies/comet_base.png" id="5_btfkd"]
 [ext_resource type="Script" path="res://health.gd" id="5_m84h5"]
-[ext_resource type="PackedScene" uid="uid://dig84dkfev14o" path="res://scripts/fx/laser.tscn" id="6_epkvc"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_q73ef"]
 albedo_color = Color(0.918308, 0.905436, 0.896871, 1)
@@ -75,6 +74,3 @@ transform = Transform3D(0.4, 0, 0, 0, 0.4, 0, 0, 0, 0.4, 0, 4.5766, 0)
 [node name="Health" type="Node" parent="RigidBody3D"]
 unique_name_in_owner = true
 script = ExtResource("5_m84h5")
-
-[node name="Laser" parent="." instance=ExtResource("6_epkvc")]
-transform = Transform3D(-4.38006e-08, -1.00204, 0, 1.00204, -4.38006e-08, 0, 0, 0, 1.00204, 5.53031, 2.84224, 4.87397)
