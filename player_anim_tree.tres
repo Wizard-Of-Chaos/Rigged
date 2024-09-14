@@ -1,4 +1,4 @@
-[gd_resource type="AnimationNodeBlendTree" load_steps=9 format=3 uid="uid://ce6bvshi5lig2"]
+[gd_resource type="AnimationNodeBlendTree" load_steps=12 format=3 uid="uid://ce6bvshi5lig2"]
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_16x0u"]
 animation = &"pistol_aim"
@@ -6,6 +6,11 @@ animation = &"pistol_aim"
 [sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_q1gx6"]
 filter_enabled = true
 filters = ["Armature/Skeleton3D:Hand.r", "Armature/Skeleton3D:LowerArm.r", "Armature/Skeleton3D:LowerIndex.r", "Armature/Skeleton3D:LowerMiddle.r", "Armature/Skeleton3D:LowerPinky.r", "Armature/Skeleton3D:LowerRing.r", "Armature/Skeleton3D:LowerThumb.r", "Armature/Skeleton3D:Shoulder.r", "Armature/Skeleton3D:UpperArm.r", "Armature/Skeleton3D:UpperIndex.r", "Armature/Skeleton3D:UpperMiddle.r", "Armature/Skeleton3D:UpperPinky.r", "Armature/Skeleton3D:UpperRing.r", "Armature/Skeleton3D:UpperThumb.r"]
+
+[sub_resource type="AnimationNodeOneShot" id="AnimationNodeOneShot_hqtc3"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_v5tjp"]
+animation = &"jump"
 
 [sub_resource type="AnimationNodeTimeScale" id="AnimationNodeTimeScale_5mmdg"]
 
@@ -21,6 +26,9 @@ animation = &"Armature|pistol_run"
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_4rwq0"]
 animation = &"sprint"
 
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_p1pbk"]
+animation = &"float"
+
 [sub_resource type="AnimationNodeBlendSpace1D" id="AnimationNodeBlendSpace1D_ybe7i"]
 blend_point_0/node = SubResource("AnimationNodeAnimation_82c46")
 blend_point_0/pos = 0.0
@@ -30,19 +38,25 @@ blend_point_2/node = SubResource("AnimationNodeAnimation_x44nc")
 blend_point_2/pos = 1.0
 blend_point_3/node = SubResource("AnimationNodeAnimation_4rwq0")
 blend_point_3/pos = 2.0
+blend_point_4/node = SubResource("AnimationNodeAnimation_p1pbk")
+blend_point_4/pos = 3.0
 min_space = 0.0
 max_space = 3.0
 snap = 1.0
 
 [resource]
-graph_offset = Vector2(-799.591, 52.7909)
+graph_offset = Vector2(-259.936, 38.3174)
 nodes/Animation/node = SubResource("AnimationNodeAnimation_16x0u")
 nodes/Animation/position = Vector2(-340, 220)
 nodes/aim_blend/node = SubResource("AnimationNodeBlend2_q1gx6")
 nodes/aim_blend/position = Vector2(-40, 100)
+nodes/jump/node = SubResource("AnimationNodeOneShot_hqtc3")
+nodes/jump/position = Vector2(520, 60)
+nodes/jump_anim/node = SubResource("AnimationNodeAnimation_v5tjp")
+nodes/jump_anim/position = Vector2(400, 160)
 nodes/move_anim_speed/node = SubResource("AnimationNodeTimeScale_5mmdg")
 nodes/move_anim_speed/position = Vector2(160, 80)
 nodes/move_blend/node = SubResource("AnimationNodeBlendSpace1D_ybe7i")
 nodes/move_blend/position = Vector2(-280, 40)
-nodes/output/position = Vector2(340, 100)
-node_connections = [&"aim_blend", 0, &"move_blend", &"aim_blend", 1, &"Animation", &"move_anim_speed", 0, &"aim_blend", &"output", 0, &"move_anim_speed"]
+nodes/output/position = Vector2(720, 100)
+node_connections = [&"aim_blend", 0, &"move_blend", &"aim_blend", 1, &"Animation", &"jump", 0, &"move_anim_speed", &"jump", 1, &"jump_anim", &"move_anim_speed", 0, &"aim_blend", &"output", 0, &"jump"]

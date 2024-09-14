@@ -117,7 +117,12 @@ func _input(event: InputEvent):
 func _physics_process(delta: float):
 	if moving():
 		move_controller.set_move_dir(move_direction)
-		move_controller.set_move_state(move_states["sprint"] if _sprinting else move_states["run"])
+		if _jumped:
+			anim_controller.anim_tree["parameters/jump/request"] = AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE
+		if !is_on_floor():
+			move_controller.set_move_state(move_states["jump"])
+		else:
+			move_controller.set_move_state(move_states["sprint"] if _sprinting else move_states["run"])
 	else:
 		move_controller.set_move_state(move_states["idle"])
 	var target_rotation: float = atan2(move_controller.direction.x, move_controller.direction.z) - rotation.y

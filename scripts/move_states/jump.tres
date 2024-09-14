@@ -6,7 +6,7 @@
 script = ExtResource("1_uv6vc")
 id = 3
 speed = 21.0
-acceleration = 0.0
+acceleration = 6.0
 rotation_speed = 8.0
 fov = 90.0
 animation_speed = 1.2
