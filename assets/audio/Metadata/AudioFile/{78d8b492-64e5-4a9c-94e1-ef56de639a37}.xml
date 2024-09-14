@@ -2,7 +2,7 @@
 <objects serializationModel="Studio.02.02.00">
 	<object class="AudioFile" id="{78d8b492-64e5-4a9c-94e1-ef56de639a37}">
 		<property name="assetPath">
-			<value>ambient_station.ogg</value>
+			<value>placeholder_music/ambient_station.ogg</value>
 		</property>
 		<property name="isStreaming">
 			<value>true</value>
