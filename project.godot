@@ -17,7 +17,7 @@ General/is_memory_tracking_enabled=false
 "Software Format/sample_rate"=48000
 "Software Format/speaker_mode"=3
 "Software Format/raw_speaker_count"=0
-General/default_listener_count=1
+General/default_listener_count=8
 General/should_load_by_name=false
 DSP/dsp_buffer_size=512
 DSP/dsp_buffer_count=4
@@ -40,6 +40,7 @@ SteamGlobal="*res://scripts/steam_integration/steam_global.gd"
 SteamInputGlobal="*res://scripts/input/steam_input_global.gd"
 SteamLobbyGlobal="*res://scripts/multiplayer/steam_lobby_global.gd"
 FmodManager="*res://addons/fmod/FmodManager.gd"
+AudioManager="*res://audio_manager.tscn"
 
 [debug]
 

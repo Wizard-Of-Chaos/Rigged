@@ -1,0 +1,4 @@
+[gd_scene format=3 uid="uid://cxgupxxuj6i1d"]
+
+[node name="Master Bank" type="FmodBankLoader"]
+process_mode = 3

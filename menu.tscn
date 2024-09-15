@@ -93,6 +93,16 @@ layout_mode = 2
 size_flags_vertical = 3
 size_flags_stretch_ratio = 0.66
 
+[node name="PlaceholderMusic" type="FmodBankLoader" parent="."]
+bank_paths = ["res://assets/audio/Build/Desktop/Master.strings.bank", "res://assets/audio/Build/Desktop/Master.bank", "res://assets/audio/Build/Desktop/mess_hall.bank"]
+
+[node name="FmodEventEmitter2D" type="FmodEventEmitter2D" parent="PlaceholderMusic"]
+event_name = "event:/placeholder/mess_default"
+event_guid = "{3e29ee58-616b-42fd-a277-4f798d15091f}"
+autoplay = true
+
+[node name="FmodListener2D" type="FmodListener2D" parent="PlaceholderMusic"]
+
 [connection signal="pressed" from="UI/HBoxContainer/TitleAndButtons/Start" to="UI" method="_on_start_pressed"]
 [connection signal="pressed" from="UI/HBoxContainer/TitleAndButtons/Multiplayer" to="UI" method="_on_multiplayer_pressed"]
 [connection signal="pressed" from="UI/HBoxContainer/TitleAndButtons/Options" to="UI" method="_on_options_pressed"]
