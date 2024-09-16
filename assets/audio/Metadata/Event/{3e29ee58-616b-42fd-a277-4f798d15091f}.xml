@@ -65,7 +65,7 @@
 			<destination>{141fc07a-6860-41ea-bbf2-1891d7a750ee}</destination>
 		</relationship>
 		<relationship name="output">
-			<destination>{01cc1966-d01d-4a1c-95cf-a3e86ddbb09f}</destination>
+			<destination>{248bfbad-7879-46c3-b63d-e553835eec60}</destination>
 		</relationship>
 	</object>
 	<object class="EventAutomatableProperties" id="{87e86d0e-95f1-499e-8931-8c0bd69b1818}" />
@@ -87,15 +87,11 @@
 			<destination>{98a13af5-b84f-40d4-94a9-a358f5ca8377}</destination>
 		</relationship>
 		<relationship name="markers">
-			<destination>{baf72d79-5b2e-4ac4-8e5c-6b067ccae017}</destination>
 			<destination>{2ffab9e4-942c-4e33-a6de-c9ead628d049}</destination>
 			<destination>{9566b46a-37c6-47fa-9921-cf72b2ca1976}</destination>
 		</relationship>
 	</object>
 	<object class="EventMixerMaster" id="{3a3ebdf8-a505-40f1-b4b9-ab40796c8462}">
-		<property name="volume">
-			<value>-12</value>
-		</property>
 		<relationship name="effectChain">
 			<destination>{19a94e6c-738e-4106-a888-a4a9d12b7ec4}</destination>
 		</relationship>
@@ -150,9 +146,6 @@
 		</relationship>
 	</object>
 	<object class="EventMixerGroup" id="{9a1254c2-4d5f-4349-88c1-cc347c032384}">
-		<property name="volume">
-			<value>-11</value>
-		</property>
 		<property name="name">
 			<value>placeholder_music</value>
 		</property>
@@ -164,17 +157,6 @@
 		</relationship>
 		<relationship name="output">
 			<destination>{3a3ebdf8-a505-40f1-b4b9-ab40796c8462}</destination>
-		</relationship>
-	</object>
-	<object class="TransitionMarker" id="{baf72d79-5b2e-4ac4-8e5c-6b067ccae017}">
-		<property name="position">
-			<value>9.1428571428571423</value>
-		</property>
-		<relationship name="timeline">
-			<destination>{d3f62405-96be-4f1a-b463-ce021017b79d}</destination>
-		</relationship>
-		<relationship name="markerTrack">
-			<destination>{4a485b2e-0fda-491e-9176-de1a57dc5c5c}</destination>
 		</relationship>
 	</object>
 	<object class="TempoMarker" id="{2ffab9e4-942c-4e33-a6de-c9ead628d049}">
@@ -196,7 +178,7 @@
 			<value>0</value>
 		</property>
 		<property name="length">
-			<value>155.50306012609565</value>
+			<value>157.71428571428572</value>
 		</property>
 		<relationship name="timeline">
 			<destination>{d3f62405-96be-4f1a-b463-ce021017b79d}</destination>
@@ -257,7 +239,11 @@
 		</relationship>
 	</object>
 	<object class="MixerBusFader" id="{a23ee802-f74a-4c0c-bffe-67c603bd805e}" />
-	<object class="LoudnessMeter" id="{9bc229a7-6e47-4d3a-b614-53c048c9ae69}" />
+	<object class="LoudnessMeter" id="{9bc229a7-6e47-4d3a-b614-53c048c9ae69}">
+		<property name="loudnessTarget">
+			<value>-14</value>
+		</property>
+	</object>
 	<object class="AutomationPoint" id="{ffd1c881-e8b3-41f5-926f-fda737f748ff}">
 		<property name="position">
 			<value>0</value>
