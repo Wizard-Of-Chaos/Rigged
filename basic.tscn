@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://hmt035h6sxel"]
+[gd_scene load_steps=13 format=3 uid="uid://hmt035h6sxel"]
 
 [ext_resource type="Texture2D" uid="uid://cc35sv25ejsrv" path="res://placeholder.png" id="1_ul57f"]
 [ext_resource type="Script" path="res://basic.gd" id="1_uv0ub"]
@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://ctp4itiqnj44y" path="res://assets/skies/comet_base.png" id="5_btfkd"]
 [ext_resource type="Script" path="res://health.gd" id="5_m84h5"]
 [ext_resource type="PackedScene" uid="uid://d2alkgfjssua2" path="res://wip_models/panel/panel.tscn" id="6_3wn4t"]
+[ext_resource type="PackedScene" uid="uid://dkvlk36c56pb0" path="res://wip_models/crabbo/crabbo.tscn" id="7_0esye"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_q73ef"]
 albedo_color = Color(0.918308, 0.905436, 0.896871, 1)
@@ -61,20 +62,23 @@ spawn_path = NodePath("../Players")
 [node name="UI" type="Node" parent="."]
 unique_name_in_owner = true
 
-[node name="RigidBody3D" type="RigidBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 50.7496, 0, 0)
+[node name="ArthurDummy" type="RigidBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 50.7496, 0, -2.57314)
 freeze = true
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBody3D"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ArthurDummy"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 4.68521, -0.937475)
 shape = SubResource("CapsuleShape3D_f5euy")
 
-[node name="model" parent="RigidBody3D" instance=ExtResource("4_u3vq2")]
+[node name="model" parent="ArthurDummy" instance=ExtResource("4_u3vq2")]
 transform = Transform3D(0.4, 0, 0, 0, 0.4, 0, 0, 0, 0.4, 0, 4.5766, 0)
 
-[node name="Health" type="Node" parent="RigidBody3D"]
+[node name="Health" type="Node" parent="ArthurDummy"]
 unique_name_in_owner = true
 script = ExtResource("5_m84h5")
 
-[node name="Panel" parent="RigidBody3D" instance=ExtResource("6_3wn4t")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -57.5872, 0.0823732, -16.7965)
+[node name="Crab" parent="." instance=ExtResource("7_0esye")]
+transform = Transform3D(-0.0339576, 0, -0.999423, 0, 1, 0, 0.999423, 0, -0.0339576, 48.9524, 0.0823736, 3.66888)
+
+[node name="Panel" parent="." instance=ExtResource("6_3wn4t")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.8376, 0.0823732, -16.7965)

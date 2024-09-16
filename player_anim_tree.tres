@@ -45,7 +45,6 @@ max_space = 3.0
 snap = 1.0
 
 [resource]
-graph_offset = Vector2(-259.936, 38.3174)
 nodes/Animation/node = SubResource("AnimationNodeAnimation_16x0u")
 nodes/Animation/position = Vector2(-340, 220)
 nodes/aim_blend/node = SubResource("AnimationNodeBlend2_q1gx6")
