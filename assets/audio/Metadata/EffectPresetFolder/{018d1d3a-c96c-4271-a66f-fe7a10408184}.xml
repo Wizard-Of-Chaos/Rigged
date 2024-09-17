@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <objects serializationModel="Studio.02.02.00">
-	<object class="EventFolder" id="{0d57b23d-855d-40cb-b3eb-34e23a5d1c30}">
+	<object class="EffectPresetFolder" id="{018d1d3a-c96c-4271-a66f-fe7a10408184}">
 		<property name="name">
-			<value>placeholder</value>
+			<value>reverb</value>
 		</property>
 		<relationship name="folder">
-			<destination>{1dcd2d71-8c2f-46ff-8d0d-b1cd3c5c574b}</destination>
+			<destination>{9bbc8a53-e1b6-46d9-b103-67302e7a14b7}</destination>
 		</relationship>
 	</object>
 </objects>

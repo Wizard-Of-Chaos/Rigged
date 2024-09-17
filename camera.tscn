@@ -43,5 +43,3 @@ update_scale = false
 [node name="ArmMarker" type="Marker3D" parent="."]
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.11192e-06, 0, -12.7188)
-
-[node name="FmodListener3D" type="FmodListener3D" parent="."]

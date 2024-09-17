@@ -6,11 +6,23 @@
 		</property>
 		<relationship name="items">
 			<destination>{ca4860a2-0634-44c7-ac20-3c37c40a4486}</destination>
+			<destination>{0215f253-a20b-47eb-b35a-566444c89db8}</destination>
+			<destination>{5e9faeae-89e8-4210-aa14-d2baf1d13751}</destination>
 		</relationship>
 	</object>
 	<object class="Tag" id="{ca4860a2-0634-44c7-ac20-3c37c40a4486}">
 		<property name="name">
 			<value>placeholder</value>
+		</property>
+	</object>
+	<object class="Tag" id="{0215f253-a20b-47eb-b35a-566444c89db8}">
+		<property name="name">
+			<value>sfx</value>
+		</property>
+	</object>
+	<object class="Tag" id="{5e9faeae-89e8-4210-aa14-d2baf1d13751}">
+		<property name="name">
+			<value>weapon</value>
 		</property>
 	</object>
 </objects>
