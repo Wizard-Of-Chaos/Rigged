@@ -1,20 +1,27 @@
-[gd_scene load_steps=5 format=3 uid="uid://dkvlk36c56pb0"]
+[gd_scene load_steps=6 format=3 uid="uid://cs0os6w6n40w6"]
 
-[ext_resource type="PackedScene" uid="uid://0n5kcw8f6ntr" path="res://wip_models/crabbo/crabbo.blend" id="1_m4dd5"]
-[ext_resource type="Script" path="res://health.gd" id="2_oan21"]
+[ext_resource type="PackedScene" uid="uid://0n5kcw8f6ntr" path="res://wip_models/crabbo/crabbo.blend" id="1_7hqhc"]
+[ext_resource type="Script" path="res://scripts/ai/basic_ai.gd" id="1_s5u4j"]
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_7qh5e"]
 animation = &"Idle"
 
-[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_c8lnx"]
+[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_3y8gi"]
 nodes/Animation/node = SubResource("AnimationNodeAnimation_7qh5e")
 nodes/Animation/position = Vector2(220, 120)
 nodes/output/position = Vector2(440, 160)
 node_connections = [&"output", 0, &"Animation"]
 
-[node name="Crab" instance=ExtResource("1_m4dd5")]
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_dpi4b"]
+radius = 1.219
+height = 3.55415
 
-[node name="Skeleton3D" parent="Armature" index="0"]
+[node name="Crab" type="CharacterBody3D"]
+script = ExtResource("1_s5u4j")
+
+[node name="MeshRoot" parent="." instance=ExtResource("1_7hqhc")]
+
+[node name="Skeleton3D" parent="MeshRoot/Armature" index="0"]
 bones/7/rotation = Quaternion(0.267082, 0.654727, 0.654727, -0.267082)
 bones/8/rotation = Quaternion(0, 0, 0.00537616, 0.999986)
 bones/9/rotation = Quaternion(0, 0, 0.00636085, 0.99998)
@@ -27,10 +34,12 @@ bones/34/rotation = Quaternion(0, 0, 0.00959423, 0.999954)
 bones/44/rotation = Quaternion(0, 0, -0.0171402, 0.999853)
 bones/45/rotation = Quaternion(0, 0, -0.00636097, 0.99998)
 
-[node name="AnimationTree" type="AnimationTree" parent="." index="2"]
-tree_root = SubResource("AnimationNodeBlendTree_c8lnx")
+[node name="AnimationTree" type="AnimationTree" parent="MeshRoot"]
+tree_root = SubResource("AnimationNodeBlendTree_3y8gi")
 anim_player = NodePath("../AnimationPlayer")
 
-[node name="Health" type="Node" parent="." index="3"]
-unique_name_in_owner = true
-script = ExtResource("2_oan21")
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.68466, 0)
+shape = SubResource("CapsuleShape3D_dpi4b")
+
+[editable path="MeshRoot"]

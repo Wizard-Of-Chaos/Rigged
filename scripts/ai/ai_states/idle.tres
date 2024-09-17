@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="AIState" load_steps=2 format=3 uid="uid://gn7fl86jhk5x"]
+
+[ext_resource type="Script" path="res://scripts/ai/ai_states/ai_state.gd" id="1_y6ujg"]
+
+[resource]
+script = ExtResource("1_y6ujg")
+id = 0
+name = "idle"
+detect_radius = 20.0

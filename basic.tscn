@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://hmt035h6sxel"]
+[gd_scene load_steps=12 format=3 uid="uid://hmt035h6sxel"]
 
 [ext_resource type="Texture2D" uid="uid://cc35sv25ejsrv" path="res://placeholder.png" id="1_ul57f"]
 [ext_resource type="Script" path="res://basic.gd" id="1_uv0ub"]
@@ -6,7 +6,6 @@
 [ext_resource type="Texture2D" uid="uid://ctp4itiqnj44y" path="res://assets/skies/comet_base.png" id="5_btfkd"]
 [ext_resource type="Script" path="res://health.gd" id="5_m84h5"]
 [ext_resource type="PackedScene" uid="uid://d2alkgfjssua2" path="res://wip_models/panel/panel.tscn" id="6_3wn4t"]
-[ext_resource type="PackedScene" uid="uid://dkvlk36c56pb0" path="res://wip_models/crabbo/crabbo.tscn" id="7_0esye"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_q73ef"]
 albedo_color = Color(0.918308, 0.905436, 0.896871, 1)
@@ -76,9 +75,6 @@ transform = Transform3D(0.4, 0, 0, 0, 0.4, 0, 0, 0, 0.4, 0, 4.5766, 0)
 [node name="Health" type="Node" parent="ArthurDummy"]
 unique_name_in_owner = true
 script = ExtResource("5_m84h5")
-
-[node name="Crab" parent="." instance=ExtResource("7_0esye")]
-transform = Transform3D(-0.0339576, 0, -0.999423, 0, 1, 0, 0.999423, 0, -0.0339576, 48.9524, 0.0823736, 3.66888)
 
 [node name="Panel" parent="." instance=ExtResource("6_3wn4t")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.8376, 0.0823732, -16.7965)
