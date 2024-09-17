@@ -6,3 +6,8 @@ addons/godot-git-plugin/win64/~libgit_plugin.windows.editor.x86_64.dll
 assets/audio/.cache
 assets/audio/.unsaved
 assets/audio/.user
+assets/audio/Metadata
+assets/audio/Assets
+assets/audio/audio.fspro
+
+
