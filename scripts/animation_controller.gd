@@ -3,7 +3,7 @@ extends Node
 
 var move_tween: Tween
 var aim_tween: Tween
-var anim_tree: AnimationTree
+@export var anim_tree: AnimationTree
 
 func set_tree(tree: AnimationTree):
 	anim_tree = tree
