@@ -1,10 +1,11 @@
-[gd_scene load_steps=16 format=3 uid="uid://j0585521habw"]
+[gd_scene load_steps=18 format=3 uid="uid://j0585521habw"]
 
 [ext_resource type="Script" path="res://player.gd" id="1_83kd4"]
 [ext_resource type="Resource" uid="uid://sy1amvuhsyeo" path="res://scripts/move_states/idle.tres" id="2_tc54y"]
 [ext_resource type="Resource" uid="uid://d1lfycc21uw" path="res://scripts/move_states/jump.tres" id="3_n2ijg"]
 [ext_resource type="Resource" uid="uid://rp04ot2ba6yt" path="res://scripts/move_states/run.tres" id="4_xv0kn"]
 [ext_resource type="Resource" uid="uid://cnxmsfayuy712" path="res://scripts/move_states/sprint.tres" id="5_8og6d"]
+[ext_resource type="Script" path="res://scripts/move_states/move_state.gd" id="6_cevgj"]
 [ext_resource type="PackedScene" uid="uid://bk4a64oc4mjar" path="res://guy.tscn" id="6_mbrvk"]
 [ext_resource type="Resource" uid="uid://dom41en6j6htm" path="res://scripts/player_states/neutral.tres" id="6_vmwx6"]
 [ext_resource type="Resource" uid="uid://duskci8txar6m" path="res://scripts/player_states/weapon_aiming.tres" id="7_7o7rs"]
@@ -13,6 +14,17 @@
 [ext_resource type="Script" path="res://scripts/move_controller.gd" id="11_qjfjj"]
 [ext_resource type="Script" path="res://health.gd" id="13_3wql2"]
 [ext_resource type="Script" path="res://scripts/animation_controller.gd" id="13_rrm0i"]
+
+[sub_resource type="Resource" id="Resource_cl5ca"]
+script = ExtResource("6_cevgj")
+id = 4
+speed = 8.0
+acceleration = 6.0
+rotation_speed = 8.0
+fov = 85.0
+animation_speed = 1.0
+grounded = false
+controllable = true
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_y2tno"]
 radius = 0.839578
@@ -56,6 +68,7 @@ properties/10/replication_mode = 1
 [node name="Player" type="CharacterBody3D"]
 script = ExtResource("1_83kd4")
 move_states = {
+"float": SubResource("Resource_cl5ca"),
 "idle": ExtResource("2_tc54y"),
 "jump": ExtResource("3_n2ijg"),
 "run": ExtResource("4_xv0kn"),
@@ -140,7 +153,7 @@ bones/42/rotation = Quaternion(-0.0218794, -0.00270206, -0.0337067, 0.999189)
 bones/43/rotation = Quaternion(0.00803014, -0.00844163, 0.722212, 0.691574)
 
 [node name="GunAttachment" parent="MeshRoot/Guy/Armature/Skeleton3D" index="6"]
-transform = Transform3D(-0.811379, -0.486153, 0.324543, 0.567554, -0.522401, 0.636386, -0.139839, 0.700543, 0.699781, -1.25749, 1.3176, 0.133038)
+transform = Transform3D(-0.835493, -0.461488, 0.298301, 0.528896, -0.528082, 0.664381, -0.149077, 0.712855, 0.685287, -1.22195, 1.28739, 0.135914)
 
 [node name="SpineIK" parent="MeshRoot/Guy/Armature/Skeleton3D" index="7"]
 target_node = NodePath("../../../../../IKTarget")

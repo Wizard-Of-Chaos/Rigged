@@ -29,8 +29,10 @@ var move_direction: Vector3:
 		var dir := Vector3.ZERO
 		dir.x = _left_strength - _right_strength
 		dir.z = _forward_strength - _back_strength
-		if(_jumped):
+		if _jumped:
 			dir.y = 1.0
+		elif _floating:
+			dir.y = _up_strength - _down_strength
 		elif not is_on_floor():
 			dir.y = -1.0
 		else:
@@ -40,8 +42,11 @@ var _right_strength: float = 0.0
 var _left_strength: float = 0.0
 var _forward_strength: float = 0.0
 var _back_strength: float = 0.0
+var _up_strength: float = 0.0
+var _down_strength: float = 0.0
 var _sprinting: bool = false
 var _jumped: bool = false
+var _floating: bool = false
 
 func moving() -> bool:
 	return abs(move_direction.x) > 0 or abs(move_direction.y) > 0 or abs(move_direction.z) > 0
@@ -73,8 +78,12 @@ func _input(event: InputEvent):
 		_left_strength = event.get_action_strength("move_left")
 	elif event.is_action("sprint"):
 		_sprinting = event.is_action_pressed("sprint", true)
-	elif event.is_action_pressed("jump") and is_on_floor():
+	elif event.is_action_pressed("jump") and is_on_floor() and not _floating:
 		_jumped = event.is_action_pressed("jump")
+	elif event.is_action("jump") and _floating:
+		_up_strength = event.get_action_strength("jump")
+	elif event.is_action("descend") and _floating:
+		_down_strength = event.get_action_strength("descend")
 	elif event.is_action_pressed("pause_menu") and event.device < -1:
 		SteamInputGlobal.show_binding_panel(event.device)
 	elif event.is_action_pressed("equip_weapon"):
@@ -112,7 +121,9 @@ func _input(event: InputEvent):
 				print("I hit something, but can't interact with it")
 		else:
 			print("Nothing to hit or interact with")
-		pass
+	
+	if event.is_action_pressed("debug_float_toggle"):
+		set_floating(not _floating)
 
 func _physics_process(delta: float):
 	if moving():
@@ -120,11 +131,12 @@ func _physics_process(delta: float):
 		if _jumped:
 			anim_controller.anim_tree["parameters/jump/request"] = AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE
 		if !is_on_floor():
-			move_controller.set_move_state(move_states["jump"])
+			move_controller.set_move_state(move_states["float"] if _floating else move_states["jump"])
 		else:
 			move_controller.set_move_state(move_states["sprint"] if _sprinting else move_states["run"])
 	else:
-		move_controller.set_move_state(move_states["idle"])
+		move_controller.set_move_dir(Vector3(0,0,0))
+		move_controller.set_move_state(move_states["float"] if _floating else move_states["idle"])
 	var target_rotation: float = atan2(move_controller.direction.x, move_controller.direction.z) - rotation.y
 	mesh_root.rotation.y = lerp_angle(mesh_root.rotation.y, target_rotation, move_controller.rotation_speed * delta)
 	velocity = velocity.lerp(move_controller.get_velocity(is_on_floor()), move_controller.acceleration * delta)
@@ -134,4 +146,10 @@ func _physics_process(delta: float):
 
 func _on_camera_root_set_cam_rotation(p_cam_rotation: float) -> void:
 	move_controller.set_rotation(p_cam_rotation)
-	
+
+func set_floating(p_floating: bool) -> void:
+	_floating = p_floating
+	if _floating:
+		motion_mode = MotionMode.MOTION_MODE_FLOATING
+	else:
+		motion_mode = MotionMode.MOTION_MODE_GROUNDED
