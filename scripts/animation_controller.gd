@@ -1,4 +1,5 @@
 class_name AnimationController
+extends Node
 
 var move_tween: Tween
 var aim_tween: Tween

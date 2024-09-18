@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://j0585521habw"]
+[gd_scene load_steps=16 format=3 uid="uid://j0585521habw"]
 
 [ext_resource type="Script" path="res://player.gd" id="1_83kd4"]
 [ext_resource type="Resource" uid="uid://sy1amvuhsyeo" path="res://scripts/move_states/idle.tres" id="2_tc54y"]
@@ -12,6 +12,7 @@
 [ext_resource type="Resource" uid="uid://d0fxd7unks3p1" path="res://scripts/player_states/disabled.tres" id="9_085gu"]
 [ext_resource type="Script" path="res://scripts/move_controller.gd" id="11_qjfjj"]
 [ext_resource type="Script" path="res://health.gd" id="13_3wql2"]
+[ext_resource type="Script" path="res://scripts/animation_controller.gd" id="13_rrm0i"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_y2tno"]
 radius = 0.839578
@@ -78,9 +79,11 @@ unique_name_in_owner = true
 
 [node name="Skeleton3D" parent="MeshRoot/Guy/Armature" index="0"]
 bones/0/position = Vector3(0, 0.127686, -0.0757272)
+bones/0/rotation = Quaternion(-0.127041, 0, 0, 0.991898)
 bones/1/rotation = Quaternion(0.0881443, 1.18745e-07, 1.05076e-08, 0.996108)
 bones/2/rotation = Quaternion(0.0391161, -1.19118e-07, 4.66301e-09, 0.999235)
 bones/3/rotation = Quaternion(2.11345e-22, 1.19209e-07, -5.7903e-24, 1)
+bones/3/scale = Vector3(1, 1, 1)
 bones/4/rotation = Quaternion(0.161997, 1.13971e-14, 3.8623e-08, 0.986791)
 bones/4/scale = Vector3(1, 1, 1)
 bones/5/rotation = Quaternion(-0.115915, -1.18406e-07, -1.38181e-08, 0.993259)
@@ -137,7 +140,7 @@ bones/42/rotation = Quaternion(-0.0218794, -0.00270206, -0.0337067, 0.999189)
 bones/43/rotation = Quaternion(0.00803014, -0.00844163, 0.722212, 0.691574)
 
 [node name="GunAttachment" parent="MeshRoot/Guy/Armature/Skeleton3D" index="6"]
-transform = Transform3D(-0.840119, -0.456458, 0.292999, 0.521333, -0.530432, 0.668473, -0.149714, 0.714346, 0.683592, -1.21468, 1.28146, 0.136737)
+transform = Transform3D(-0.811379, -0.486153, 0.324543, 0.567554, -0.522401, 0.636386, -0.139839, 0.700543, 0.699781, -1.25749, 1.3176, 0.133038)
 
 [node name="SpineIK" parent="MeshRoot/Guy/Armature/Skeleton3D" index="7"]
 target_node = NodePath("../../../../../IKTarget")
@@ -148,6 +151,8 @@ target_node = NodePath("../../../../../IKTarget/ArmIKTarget")
 [node name="MoveController" type="Node" parent="."]
 unique_name_in_owner = true
 script = ExtResource("11_qjfjj")
+current_player_state = ExtResource("6_vmwx6")
+old_player_state = ExtResource("6_vmwx6")
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_iy1fq")
@@ -171,5 +176,9 @@ unique_name_in_owner = true
 script = ExtResource("13_3wql2")
 
 [node name="FmodListener3D" type="FmodListener3D" parent="."]
+
+[node name="AnimController" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("13_rrm0i")
 
 [editable path="MeshRoot/Guy"]

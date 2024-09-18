@@ -1,7 +1,10 @@
-[gd_scene load_steps=8 format=3 uid="uid://cs0os6w6n40w6"]
+[gd_scene load_steps=11 format=3 uid="uid://cs0os6w6n40w6"]
 
 [ext_resource type="PackedScene" uid="uid://0n5kcw8f6ntr" path="res://wip_models/crabbo/crabbo.blend" id="1_7hqhc"]
 [ext_resource type="Script" path="res://scripts/ai/basic_ai.gd" id="1_s5u4j"]
+[ext_resource type="Script" path="res://scripts/move_controller.gd" id="3_fi5g2"]
+[ext_resource type="Script" path="res://scripts/animation_controller.gd" id="4_0hrvt"]
+[ext_resource type="Resource" uid="uid://dom41en6j6htm" path="res://scripts/player_states/neutral.tres" id="4_wpjma"]
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_7qh5e"]
 animation = &"Idle"
@@ -12,7 +15,6 @@ animation = &"Idle"
 animation = &"punch"
 
 [sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_3y8gi"]
-graph_offset = Vector2(-289.749, 32.1394)
 nodes/Idle/node = SubResource("AnimationNodeAnimation_7qh5e")
 nodes/Idle/position = Vector2(120, 160)
 nodes/PUNCH/node = SubResource("AnimationNodeOneShot_q1q00")
@@ -26,10 +28,11 @@ node_connections = [&"PUNCH", 0, &"Idle", &"PUNCH", 1, &"punch_anim", &"output",
 radius = 1.219
 height = 3.55415
 
-[node name="Crab" type="CharacterBody3D"]
+[node name="Enemy" type="CharacterBody3D"]
 script = ExtResource("1_s5u4j")
 
 [node name="MeshRoot" parent="." instance=ExtResource("1_7hqhc")]
+unique_name_in_owner = true
 
 [node name="Skeleton3D" parent="MeshRoot/Armature" index="0"]
 bones/7/rotation = Quaternion(0.267082, 0.654727, 0.654727, -0.267082)
@@ -62,5 +65,15 @@ parameters/PUNCH/request = 0
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.68466, 0)
 shape = SubResource("CapsuleShape3D_dpi4b")
+
+[node name="MoveController" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("3_fi5g2")
+current_player_state = ExtResource("4_wpjma")
+old_player_state = ExtResource("4_wpjma")
+
+[node name="AnimController" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("4_0hrvt")
 
 [editable path="MeshRoot"]

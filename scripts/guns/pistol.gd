@@ -29,12 +29,12 @@ func _physics_process(delta):
 		#instance new firing sfx: if we just set a node then whenever we play it it cuts itself off
 		
 		#this should probably be its own class that handles instancing oneshot sfx, leaving it here for now as an example
-		sfx = FmodServer.create_event_instance("event:/sfx/players/weapons/placeholder_gun/placeholder_gun")
-		sfx.set_parameter_by_name_with_label("room_muffling", "close", true)
-		sfx.set_parameter_by_name_with_label("reverb", "medium_room", true)
-		sfx.set_3d_attributes(self.global_transform)
-		sfx.set_volume(1)
-		sfx.start()
+		#sfx = FmodServer.create_event_instance("event:/sfx/players/weapons/placeholder_gun/placeholder_gun")
+		#sfx.set_parameter_by_name_with_label("room_muffling", "close", true)
+		#sfx.set_parameter_by_name_with_label("reverb", "medium_room", true)
+		#sfx.set_3d_attributes(self.global_transform)
+		#sfx.set_volume(1)
+		#sfx.start()
 
 
 		#raycast
