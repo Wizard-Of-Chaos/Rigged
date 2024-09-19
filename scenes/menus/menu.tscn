@@ -1,0 +1,109 @@
+[gd_scene load_steps=3 format=3 uid="uid://c3s2nqdpbt8rd"]
+
+[ext_resource type="Theme" uid="uid://c8ustssjawosr" path="res://main_theme.tres" id="1_eul7t"]
+[ext_resource type="Script" path="res://scripts/ui/main_menu.gd" id="2_5h2u5"]
+
+[node name="Menu" type="PanelContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_eul7t")
+theme_type_variation = &"MenuPanelContainerBackground"
+
+[node name="UI" type="MarginContainer" parent="."]
+layout_mode = 2
+script = ExtResource("2_5h2u5")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="UI"]
+layout_mode = 2
+
+[node name="TitleAndButtons" type="VBoxContainer" parent="UI/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+alignment = 1
+
+[node name="Name" type="RichTextLabel" parent="UI/HBoxContainer/TitleAndButtons"]
+layout_mode = 2
+size_flags_vertical = 2
+theme_override_font_sizes/normal_font_size = 96
+bbcode_enabled = true
+text = "[center]Rigged Alpha[/center]
+"
+fit_content = true
+autowrap_mode = 0
+
+[node name="Start" type="Button" parent="UI/HBoxContainer/TitleAndButtons"]
+unique_name_in_owner = true
+layout_mode = 2
+focus_neighbor_bottom = NodePath("../Multiplayer")
+focus_next = NodePath("../Multiplayer")
+theme_override_font_sizes/font_size = 60
+text = "Start"
+
+[node name="Multiplayer" type="Button" parent="UI/HBoxContainer/TitleAndButtons"]
+layout_mode = 2
+focus_neighbor_top = NodePath("../Start")
+focus_neighbor_bottom = NodePath("../Options")
+focus_next = NodePath("../Options")
+focus_previous = NodePath("../Start")
+theme_override_font_sizes/font_size = 60
+text = "Multiplayer"
+
+[node name="Options" type="Button" parent="UI/HBoxContainer/TitleAndButtons"]
+layout_mode = 2
+focus_neighbor_top = NodePath("../Multiplayer")
+focus_neighbor_bottom = NodePath("../Quit")
+focus_next = NodePath("../Quit")
+focus_previous = NodePath("../Multiplayer")
+theme_override_font_sizes/font_size = 60
+text = "Options"
+
+[node name="Quit" type="Button" parent="UI/HBoxContainer/TitleAndButtons"]
+layout_mode = 2
+focus_neighbor_top = NodePath("../Options")
+focus_previous = NodePath("../Options")
+theme_override_font_sizes/font_size = 60
+text = "Quit
+"
+
+[node name="PlayersContainer" type="VBoxContainer" parent="UI/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="TopSpacer" type="Control" parent="UI/HBoxContainer/PlayersContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.33
+
+[node name="PlayersList" type="VBoxContainer" parent="UI/HBoxContainer/PlayersContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="AddPlayerButton" type="Button" parent="UI/HBoxContainer/PlayersContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+focus_mode = 0
+disabled = true
+text = "Press Start to Add a new Player"
+
+[node name="BottomSpacer" type="Control" parent="UI/HBoxContainer/PlayersContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.66
+
+[node name="PlaceholderMusic" type="FmodBankLoader" parent="."]
+bank_paths = ["res://assets/audio/Build/Desktop/Master.strings.bank", "res://assets/audio/Build/Desktop/Master.bank", "res://assets/audio/Build/Desktop/mess_hall.bank"]
+
+[node name="FmodEventEmitter2D" type="FmodEventEmitter2D" parent="PlaceholderMusic"]
+event_name = "event:/placeholder/mess_default"
+event_guid = "{3e29ee58-616b-42fd-a277-4f798d15091f}"
+autoplay = true
+
+[node name="FmodListener2D" type="FmodListener2D" parent="PlaceholderMusic"]
+
+[connection signal="pressed" from="UI/HBoxContainer/TitleAndButtons/Start" to="UI" method="_on_start_pressed"]
+[connection signal="pressed" from="UI/HBoxContainer/TitleAndButtons/Multiplayer" to="UI" method="_on_multiplayer_pressed"]
+[connection signal="pressed" from="UI/HBoxContainer/TitleAndButtons/Options" to="UI" method="_on_options_pressed"]
+[connection signal="pressed" from="UI/HBoxContainer/TitleAndButtons/Quit" to="UI" method="_on_quit_pressed"]

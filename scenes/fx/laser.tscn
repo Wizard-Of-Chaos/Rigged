@@ -1,0 +1,60 @@
+[gd_scene load_steps=8 format=3 uid="uid://dig84dkfev14o"]
+
+[ext_resource type="Script" path="res://scripts/fx/laser.gd" id="1_co305"]
+[ext_resource type="Texture2D" uid="uid://c8qyqf2hyq6j4" path="res://scripts/fx/laser.png" id="2_8umke"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_670fy"]
+flip_faces = true
+top_radius = 0.1
+bottom_radius = 0.1
+height = 0.1
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_v7en0"]
+transparency = 1
+albedo_color = Color(0.34, 0.0442, 0.0442, 1)
+emission_enabled = true
+emission = Color(1, 0.129412, 0.129412, 1)
+emission_energy_multiplier = 10.0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_miutv"]
+transparency = 1
+albedo_color = Color(1, 0.37, 0.37, 1)
+albedo_texture = ExtResource("2_8umke")
+emission_enabled = true
+emission = Color(1, 0.293816, 0.132616, 1)
+billboard_mode = 3
+billboard_keep_scale = true
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = false
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_ug3v7"]
+angle_min = 338.5
+angle_max = 338.5
+spread = 180.0
+initial_velocity_min = 2.0
+initial_velocity_max = 2.0
+gravity = Vector3(0, 0, 0)
+
+[sub_resource type="QuadMesh" id="QuadMesh_xiivn"]
+size = Vector2(0.25, 0.25)
+
+[node name="Laser" type="RayCast3D"]
+transform = Transform3D(1.00204, 0, 0, 0, 1.00204, 0, 0, 0, 1.00204, 0, 0, 0)
+target_position = Vector3(0, 0, -30)
+script = ExtResource("1_co305")
+
+[node name="BeamMesh" type="MeshInstance3D" parent="."]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+layers = 3
+mesh = SubResource("CylinderMesh_670fy")
+surface_material_override/0 = SubResource("StandardMaterial3D_v7en0")
+
+[node name="EndParticles" type="GPUParticles3D" parent="BeamMesh"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0)
+material_override = SubResource("StandardMaterial3D_miutv")
+amount = 16
+process_material = SubResource("ParticleProcessMaterial_ug3v7")
+draw_pass_1 = SubResource("QuadMesh_xiivn")
