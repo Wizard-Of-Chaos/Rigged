@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://cs0os6w6n40w6"]
+[gd_scene load_steps=18 format=3 uid="uid://cs0os6w6n40w6"]
 
 [ext_resource type="PackedScene" uid="uid://0n5kcw8f6ntr" path="res://assets/actors/crabbo/crabbo.blend" id="1_7hqhc"]
 [ext_resource type="Script" path="res://scripts/ai/basic_ai.gd" id="1_s5u4j"]
@@ -9,6 +9,7 @@
 [ext_resource type="Resource" uid="uid://dom41en6j6htm" path="res://scripts/player_states/neutral.tres" id="4_wpjma"]
 [ext_resource type="Resource" uid="uid://gn7fl86jhk5x" path="res://scripts/ai/ai_states/idle.tres" id="4_wwcp3"]
 [ext_resource type="Resource" uid="uid://ctsfymsid3bd6" path="res://scripts/ai/ai_states/pursuit.tres" id="5_5uimy"]
+[ext_resource type="Script" path="res://scripts/nodes/health.gd" id="10_jinnk"]
 
 [sub_resource type="AnimationNodeTimeScale" id="AnimationNodeTimeScale_2ega0"]
 
@@ -39,6 +40,7 @@ radius = 1.219
 height = 3.55415
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_1uqp7"]
+radius = 25.0
 
 [node name="Enemy" type="CharacterBody3D"]
 script = ExtResource("1_s5u4j")
@@ -100,8 +102,11 @@ anim_tree = NodePath("../MeshRoot/AnimationTree")
 [node name="DetectionRadius" type="Area3D" parent="."]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="DetectionRadius"]
-transform = Transform3D(50, 0, 0, 0, 50, 0, 0, 0, 50, 0, 0, 0)
 shape = SubResource("SphereShape3D_1uqp7")
+
+[node name="Health" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("10_jinnk")
 
 [connection signal="move_state_set" from="MoveController" to="AnimController" method="_on_set_move_state"]
 [connection signal="body_entered" from="DetectionRadius" to="." method="_on_body_entered"]
