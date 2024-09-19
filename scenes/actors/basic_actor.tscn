@@ -1,0 +1,23 @@
+[gd_scene load_steps=5 format=3 uid="uid://drgx362yg0d2f"]
+
+[ext_resource type="Script" path="res://scripts/nodes/move_controller.gd" id="1_yid41"]
+[ext_resource type="Resource" uid="uid://dom41en6j6htm" path="res://scripts/player_states/neutral.tres" id="2_8hm6o"]
+[ext_resource type="Script" path="res://scripts/nodes/animation_controller.gd" id="3_7fuhn"]
+[ext_resource type="Script" path="res://scripts/nodes/health.gd" id="4_lw3ko"]
+
+[node name="BasicActor" type="CharacterBody3D"]
+
+[node name="MoveController" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("1_yid41")
+current_player_state = ExtResource("2_8hm6o")
+old_player_state = ExtResource("2_8hm6o")
+
+[node name="AnimController" type="Node" parent="." node_paths=PackedStringArray("anim_tree")]
+unique_name_in_owner = true
+script = ExtResource("3_7fuhn")
+anim_tree = NodePath("")
+
+[node name="Health" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("4_lw3ko")
