@@ -13,7 +13,7 @@ config_version=5
 General/auto_initialize=true
 General/channel_count=1024
 General/is_live_update_enabled=true
-General/is_memory_tracking_enabled=false
+General/is_memory_tracking_enabled=true
 "Software Format/sample_rate"=48000
 "Software Format/speaker_mode"=3
 "Software Format/raw_speaker_count"=0
@@ -40,6 +40,7 @@ SteamGlobal="*res://scripts/steam_integration/steam_global.gd"
 SteamInputGlobal="*res://scripts/input/steam_input_global.gd"
 SteamLobbyGlobal="*res://scripts/multiplayer/steam_lobby_global.gd"
 FmodManager="*res://addons/fmod/FmodManager.gd"
+MasterBank="*res://master_bank.tscn"
 
 [debug]
 

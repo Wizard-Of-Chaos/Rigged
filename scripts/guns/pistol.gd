@@ -11,7 +11,7 @@ var _time_since_last_shot: float = 0.0
 var _current_clip_count: int
 var _time_reloading: float = 0.0
 var sfx: FmodEvent = null
-
+var bank
 func _ready():
 	_current_clip_count = stats.max_clip
 	if !stats.uses_ammo:
@@ -26,15 +26,8 @@ func _physics_process(delta):
 			_current_clip_count -= 1
 		_time_since_last_shot -= stats.firing_speed
 		print("Blam! Blam!")
-		#instance new firing sfx: if we just set a node then whenever we play it it cuts itself off
-		
+		$PistolSfx.fire()
 		#this should probably be its own class that handles instancing oneshot sfx, leaving it here for now as an example
-		#sfx = FmodServer.create_event_instance("event:/sfx/players/weapons/placeholder_gun/placeholder_gun")
-		#sfx.set_parameter_by_name_with_label("room_muffling", "close", true)
-		#sfx.set_parameter_by_name_with_label("reverb", "medium_room", true)
-		#sfx.set_3d_attributes(self.global_transform)
-		#sfx.set_volume(1)
-		#sfx.start()
 
 
 		#raycast

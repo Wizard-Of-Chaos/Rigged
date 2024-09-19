@@ -1,0 +1,11 @@
+*.dll
+*.a
+*.dylib
+*.so
+
+
+!libs/android/arm64
+!libs/iOS/
+!libs/linux/
+!libs/macos/
+!libs/windows/
