@@ -25,7 +25,7 @@ func _on_lobby_members_fetched() -> void:
 
 func _on_leave_pressed() -> void:
 	SteamLobbyGlobal.leave_lobby()
-	get_tree().change_scene_to_file("res://multiplayer.tscn")
+	get_tree().change_scene_to_file("res://scenes/menus/multiplayer.tscn")
 
 
 func _on_start_pressed() -> void:
@@ -35,4 +35,4 @@ func _on_start_pressed() -> void:
 
 @rpc("call_local", "any_peer", "reliable")
 func start_game():
-	get_tree().change_scene_to_file("res://basic.tscn")
+	get_tree().change_scene_to_file("res://scenes/environments/basic.tscn")

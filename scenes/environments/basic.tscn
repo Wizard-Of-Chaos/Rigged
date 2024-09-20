@@ -1,0 +1,83 @@
+[gd_scene load_steps=13 format=3 uid="uid://hmt035h6sxel"]
+
+[ext_resource type="Script" path="res://scenes/environments/basic.gd" id="1_cwyym"]
+[ext_resource type="Texture2D" uid="uid://cc35sv25ejsrv" path="res://placeholder.png" id="2_7l2rk"]
+[ext_resource type="Texture2D" uid="uid://ctp4itiqnj44y" path="res://assets/skies/comet_base.png" id="3_0hj3v"]
+[ext_resource type="PackedScene" uid="uid://dsgx05iom5ut2" path="res://assets/exshock_imports/arthur/arthur.blend" id="4_hwiw7"]
+[ext_resource type="Script" path="res://scripts/nodes/health.gd" id="5_3c1qt"]
+[ext_resource type="PackedScene" uid="uid://d2alkgfjssua2" path="res://assets/objects/panel/panel.tscn" id="6_gguy7"]
+[ext_resource type="PackedScene" uid="uid://cs0os6w6n40w6" path="res://scenes/actors/crab_enemy.tscn" id="7_orjix"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_q73ef"]
+albedo_color = Color(0.918308, 0.905436, 0.896871, 1)
+albedo_texture = ExtResource("2_7l2rk")
+uv1_triplanar = true
+uv1_world_triplanar = true
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_tpcud"]
+panorama = ExtResource("3_0hj3v")
+
+[sub_resource type="Sky" id="Sky_4ws1p"]
+sky_material = SubResource("PanoramaSkyMaterial_tpcud")
+
+[sub_resource type="Environment" id="Environment_vah5s"]
+background_mode = 2
+sky = SubResource("Sky_4ws1p")
+ambient_light_source = 3
+ambient_light_color = Color(0.856067, 0.856067, 0.856067, 1)
+ambient_light_energy = 8.0
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_f5euy"]
+radius = 2.34222
+height = 8.06716
+
+[node name="MainScene" type="Node3D"]
+script = ExtResource("1_cwyym")
+
+[node name="Floor" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.2369, 0.00443175, -1.7427)
+material_override = SubResource("StandardMaterial3D_q73ef")
+use_collision = true
+size = Vector3(174.71, 0.155884, 160.123)
+
+[node name="Brick" type="CSGBox3D" parent="Floor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.43481, 4.515, 1.7006)
+material_override = SubResource("StandardMaterial3D_q73ef")
+use_collision = true
+size = Vector3(5.02672, 9.0706, 28.9605)
+
+[node name="ICallThisEnemyTheSun" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -0.690769, 0.723076, 0, -0.723076, -0.690769, 0, 0, 0.114616)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_vah5s")
+
+[node name="Players" type="Node" parent="."]
+unique_name_in_owner = true
+
+[node name="PlayerSpawner" type="MultiplayerSpawner" parent="."]
+spawn_path = NodePath("../Players")
+
+[node name="UI" type="Node" parent="."]
+unique_name_in_owner = true
+
+[node name="ArthurDummy" type="RigidBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 50.7496, 0, -2.57314)
+freeze = true
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ArthurDummy"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 4.68521, -0.937475)
+shape = SubResource("CapsuleShape3D_f5euy")
+
+[node name="model" parent="ArthurDummy" instance=ExtResource("4_hwiw7")]
+transform = Transform3D(0.4, 0, 0, 0, 0.4, 0, 0, 0, 0.4, 0, 4.5766, 0)
+
+[node name="Health" type="Node" parent="ArthurDummy"]
+unique_name_in_owner = true
+script = ExtResource("5_3c1qt")
+
+[node name="Panel" parent="." instance=ExtResource("6_gguy7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.8376, 0.0823732, -16.7965)
+
+[node name="Enemy" parent="." instance=ExtResource("7_orjix")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -69.6206, 0.0823736, -42.9853)

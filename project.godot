@@ -29,7 +29,7 @@ General/banks_path="res://assets/audio/Build/Desktop"
 [application]
 
 config/name="RiggedTest"
-run/main_scene="res://menu.tscn"
+run/main_scene="res://scenes/menus/menu.tscn"
 config/features=PackedStringArray("4.3", "Forward Plus")
 config/icon="res://icon.svg"
 

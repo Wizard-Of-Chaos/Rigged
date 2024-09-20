@@ -5,7 +5,7 @@ class_name Weapon
 @export var firing: bool = false
 @export var camera: Camera3D
 
-var _laser_fx := preload("res://scripts/fx/laser.tscn")
+var _laser_fx := preload("res://scenes/fx/laser.tscn")
 
 var _time_since_last_shot: float = 0.0
 var _current_clip_count: int
