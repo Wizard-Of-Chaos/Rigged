@@ -12,7 +12,7 @@ script = ExtResource("1_nmd45")
 [node name="CamPitch" type="Node3D" parent="CamYaw"]
 
 [node name="Camera3D" type="Camera3D" parent="CamYaw/CamPitch"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.405, -0.619611, 1.75552)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.8, -0.1, 0.9)
 
 [node name="AimRay" type="RayCast3D" parent="CamYaw/CamPitch/Camera3D"]
 transform = Transform3D(1, 0, -3.82137e-15, -3.82137e-15, 4.37114e-08, -1, 0, 1, 4.37114e-08, 0, 0, 0)
