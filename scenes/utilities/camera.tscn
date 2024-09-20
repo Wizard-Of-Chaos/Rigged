@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://qgu18kyl7iao" path="res://assets/ui/crosshair.png" id="2_oc48f"]
 
 [node name="CameraRoot" type="Node3D"]
-transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, 4.65702, 0)
+transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, 2.2, 0)
 script = ExtResource("1_nmd45")
 
 [node name="CamYaw" type="Node3D" parent="."]
