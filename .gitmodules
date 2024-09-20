@@ -1,8 +1,1 @@
-[submodule "addons/godot-steam-audio-fmod"]
-	path = addons/godot-steam-audio-fmod
-	url = https://github.com/whatislostinthemines/godot-steam-audio-fmod
-	
-[submodule "addons/fmod-gdextension"]
-	path = addons/fmod-gdextension
-	url = https://github.com/whatislostinthemines/fmod-gdextension
-	
+
