@@ -95,7 +95,7 @@ bones/43/rotation = Quaternion(0.00803014, -0.00844163, 0.722212, 0.691574)
 bones/43/scale = Vector3(1, 1, 1)
 
 [node name="GunAttachment" type="BoneAttachment3D" parent="Armature/Skeleton3D" index="6"]
-transform = Transform3D(-0.758768, -0.53258, 0.375025, 0.640832, -0.507196, 0.576281, -0.116704, 0.677587, 0.726133, -1.32342, 1.38372, 0.131132)
+transform = Transform3D(-0.757141, -0.533876, 0.376458, 0.642886, -0.506676, 0.574441, -0.115937, 0.676951, 0.726844, -1.32524, 1.38576, 0.131161)
 bone_name = "Hand.r"
 bone_idx = 23
 
@@ -103,6 +103,9 @@ bone_idx = 23
 transform = Transform3D(-0.906829, 0.337338, 0.252715, 0.229446, -0.107872, 0.967325, 0.353577, 0.935182, 0.0204204, -0.0313469, 0.406276, -0.108262)
 script = ExtResource("3_xvjds")
 stats = ExtResource("4_eppp4")
+
+[node name="FmodBankLoader" type="FmodBankLoader" parent="Armature/Skeleton3D/GunAttachment/Pistol" index="1"]
+bank_paths = ["res://assets/audio/Build/Desktop/Master.strings.bank", "res://assets/audio/Build/Desktop/Master.bank", "res://assets/audio/Build/Desktop/weapon.bank"]
 
 [node name="SpineIK" type="SkeletonIK3D" parent="Armature/Skeleton3D" index="7"]
 root_bone = &"Spine0"

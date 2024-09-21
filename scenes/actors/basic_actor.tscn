@@ -13,10 +13,9 @@ script = ExtResource("1_yid41")
 current_player_state = ExtResource("2_8hm6o")
 old_player_state = ExtResource("2_8hm6o")
 
-[node name="AnimController" type="Node" parent="." node_paths=PackedStringArray("anim_tree")]
+[node name="AnimController" type="Node" parent="."]
 unique_name_in_owner = true
 script = ExtResource("3_7fuhn")
-anim_tree = NodePath("")
 
 [node name="Health" type="Node" parent="."]
 unique_name_in_owner = true

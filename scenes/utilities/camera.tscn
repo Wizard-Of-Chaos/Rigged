@@ -35,6 +35,9 @@ grow_vertical = 2
 layout_mode = 2
 texture = ExtResource("2_oc48f")
 
+[node name="FmodListener3D" type="FmodListener3D" parent="CamYaw/CamPitch/Camera3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.405, 0.619611, -1.75552)
+
 [node name="RemoteTransform3D" type="RemoteTransform3D" parent="CamYaw/CamPitch"]
 transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, 0, 0)
 update_position = false

@@ -4,18 +4,26 @@ class_name Weapon
 @export var stats: WeaponStats
 @export var firing: bool = false
 @export var camera: Camera3D
+@export var room_muffling = "close"
+@export var reverb = "medium_room"
+
+
+
 
 var _laser_fx := preload("res://scenes/fx/laser.tscn")
 
 var _time_since_last_shot: float = 0.0
 var _current_clip_count: int
 var _time_reloading: float = 0.0
-var sfx: FmodEvent = null
+var sfx: FmodEventEmitter3D = null
 var bank
 func _ready():
 	_current_clip_count = stats.max_clip
 	if !stats.uses_ammo:
 		_current_clip_count = 1
+	#bank = FmodBankLoader.new()
+	#bank.set_bank_paths(["bank:/Master.strings","bank:/Master","bank:/sfx/placeholder/weapon"])
+	#self.add_child(bank)
 	
 	
 func _physics_process(delta):
@@ -26,7 +34,7 @@ func _physics_process(delta):
 			_current_clip_count -= 1
 		_time_since_last_shot -= stats.firing_speed
 		print("Blam! Blam!")
-		$PistolSfx.fire()
+		self.fire()
 		#this should probably be its own class that handles instancing oneshot sfx, leaving it here for now as an example
 
 
@@ -72,3 +80,15 @@ func _physics_process(delta):
 			_current_clip_count = stats.max_clip
 			_time_reloading = 0.0
 			print("Reloaded!")
+
+func fire():
+	#this will be changed, this is just so the audio actually plays
+	sfx = FmodEventEmitter3D.new()
+	sfx.set_attached(true)
+	sfx.set_auto_release(true) #this deletes the node after it plays once
+	sfx.set_autoplay(true)
+	sfx.set_event_name("event:/sfx/players/weapons/placeholder_gun/placeholder_gun")
+	#sfx.set_event_guid("{b88fa08e-5eea-4c9f-bd44-a6b1e7d65fcf}")
+	sfx.set_parameter("room_muffling", room_muffling)
+	sfx.set_parameter("reverb", reverb)
+	$FmodBankLoader.add_child(sfx)
