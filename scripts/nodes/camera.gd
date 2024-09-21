@@ -65,6 +65,7 @@ func cam_input(event: InputEventMouseMotion) -> void:
 
 
 func _physics_process(delta) -> void:
+	print(position)
 	pitch = clamp(pitch, pitch_min, pitch_max)
 	yaw_node.rotation_degrees.y = lerp(yaw_node.rotation_degrees.y, yaw, yaw_acceleration * delta)
 	pitch_node.rotation_degrees.x = lerp(yaw_node.rotation_degrees.x, pitch, pitch_acceleration * delta)
