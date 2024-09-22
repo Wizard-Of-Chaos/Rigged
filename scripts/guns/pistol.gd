@@ -85,6 +85,8 @@ func fire():
 	#this will be changed, this is just so the audio actually plays
 	sfx = FmodEventEmitter3D.new()
 	sfx.set_attached(true)
+	#we need to set this even if it's already attached apparently?
+	sfx.global_transform = self.global_transform
 	sfx.set_auto_release(true) #this deletes the node after it plays once
 	sfx.set_autoplay(true)
 	sfx.set_event_name("event:/sfx/players/weapons/placeholder_gun/placeholder_gun")
