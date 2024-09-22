@@ -9,6 +9,10 @@
 
 [node name="Guy" instance=ExtResource("1_km4ds")]
 
+[node name="FmodBankLoader" type="FmodBankLoader" parent="." index="0"]
+bank_paths = ["res://assets/audio/Build/Desktop/weapon.bank"]
+unique_name_in_owner = true
+
 [node name="Skeleton3D" parent="Armature" index="0"]
 bones/0/position = Vector3(0, 0.127686, -0.0757272)
 bones/1/rotation = Quaternion(0.0881443, 1.18745e-07, 1.05076e-08, 0.996108)
@@ -95,7 +99,7 @@ bones/43/rotation = Quaternion(0.00803014, -0.00844163, 0.722212, 0.691574)
 bones/43/scale = Vector3(1, 1, 1)
 
 [node name="GunAttachment" type="BoneAttachment3D" parent="Armature/Skeleton3D" index="6"]
-transform = Transform3D(-0.838908, -0.457785, 0.294396, 0.523314, -0.529754, 0.667463, -0.149597, 0.714001, 0.68398, -1.2166, 1.28302, 0.136515)
+transform = Transform3D(-0.749633, -0.539781, 0.383001, 0.65221, -0.504019, 0.566207, -0.112588, 0.674244, 0.729879, -1.33351, 1.39522, 0.131299)
 bone_name = "Hand.r"
 bone_idx = 23
 
@@ -114,7 +118,7 @@ root_bone = &"Shoulder.r"
 tip_bone = &"Hand.r"
 script = ExtResource("3_mu5i5")
 
-[node name="AnimationTree" type="AnimationTree" parent="." index="2"]
+[node name="AnimationTree" type="AnimationTree" parent="." index="3"]
 tree_root = ExtResource("4_p38ux")
 anim_player = NodePath("../AnimationPlayer")
 parameters/aim_blend/blend_amount = 0
@@ -123,9 +127,5 @@ parameters/jump/internal_active = false
 parameters/jump/request = 0
 parameters/move_anim_speed/scale = 1.0
 parameters/move_blend/blend_position = 3.0
-
-[node name="SoundBank" type="FmodBankLoader" parent="." index="3"]
-bank_paths = ["res://assets/audio/Build/Desktop/Master.strings.bank", "res://assets/audio/Build/Desktop/Master.bank", "res://assets/audio/Build/Desktop/weapon.bank"]
-unique_name_in_owner = true
 
 [editable path="Armature/Skeleton3D/GunAttachment/Pistol"]
