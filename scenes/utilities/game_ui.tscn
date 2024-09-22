@@ -10,9 +10,16 @@ anchors_preset = 0
 script = ExtResource("1_lyhgi")
 
 [node name="TextureProgressBar" type="TextureProgressBar" parent="."]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 40.0
+offset_top = 950.0
+offset_right = 449.0
+offset_bottom = 1039.0
+grow_horizontal = 2
+grow_vertical = 2
 max_value = 500.0
 texture_under = ExtResource("2_0xuoh")
 texture_progress = ExtResource("3_vvu63")
