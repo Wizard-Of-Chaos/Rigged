@@ -9,6 +9,7 @@ signal set_cam_rotation(_cam_rotation: float)
 @onready var remote_transform: RemoteTransform3D = $CamYaw/CamPitch/RemoteTransform3D
 @onready var crosshair: CenterContainer = $CamYaw/CamPitch/Camera3D/Crosshair
 @onready var aim_ray: RayCast3D = $CamYaw/CamPitch/Camera3D/AimRay
+@onready var ui_scene := preload("res://scenes/utilities/game_ui.tscn")
 @export var yaw_sensitivity: float = 0.07
 @export var pitch_sensitivity: float = 0.07
 @export var yaw_acceleration: float = 15
@@ -31,6 +32,9 @@ func _ready():
 		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	crosshair.visible = false
 
+	# Instance the UI and add it to the camera's view
+	var ui_instance = ui_scene.instantiate()
+	camera.add_child(ui_instance) # Add the UI to the camera so it's superimposed
 
 func _on_set_move_state(move_state: MoveState):
 	if move_tween:
