@@ -95,7 +95,7 @@ bones/43/rotation = Quaternion(0.00803014, -0.00844163, 0.722212, 0.691574)
 bones/43/scale = Vector3(1, 1, 1)
 
 [node name="GunAttachment" type="BoneAttachment3D" parent="Armature/Skeleton3D" index="6"]
-transform = Transform3D(-0.835842, -0.461112, 0.297903, 0.528306, -0.528147, 0.664798, -0.149209, 0.713049, 0.685055, -1.22141, 1.28695, 0.135968)
+transform = Transform3D(-0.838908, -0.457785, 0.294396, 0.523314, -0.529754, 0.667463, -0.149597, 0.714001, 0.68398, -1.2166, 1.28302, 0.136515)
 bone_name = "Hand.r"
 bone_idx = 23
 
@@ -124,7 +124,7 @@ parameters/jump/request = 0
 parameters/move_anim_speed/scale = 1.0
 parameters/move_blend/blend_position = 3.0
 
-[node name="SoundHandler" type="FmodBankLoader" parent="." index="3"]
+[node name="SoundBank" type="FmodBankLoader" parent="." index="3"]
 bank_paths = ["res://assets/audio/Build/Desktop/Master.strings.bank", "res://assets/audio/Build/Desktop/Master.bank", "res://assets/audio/Build/Desktop/weapon.bank"]
 unique_name_in_owner = true
 
