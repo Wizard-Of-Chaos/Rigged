@@ -3,6 +3,7 @@ extends CharacterBody3D
 
 @export var move_states: Dictionary
 @export var player_states: Dictionary
+@onready var health_node = get_node("Health")
 @onready var mesh_root: Node3D = %MeshRoot
 @onready var anim_tree: AnimationTree = $MeshRoot/Guy/AnimationTree
 @onready var move_controller: MoveController = %MoveController
@@ -124,6 +125,8 @@ func _input(event: InputEvent):
 	
 	if event.is_action_pressed("debug_float_toggle"):
 		set_floating(not _floating)
+	if event.is_action_pressed("take_damage"):
+		health_node.damage(50)  # Call the take_damage function, reduce 50 HP for testing
 
 func _physics_process(delta: float):
 	if moving():

@@ -28,13 +28,13 @@ var devices: Array[int] = []
 
 func _ready():
 	if 0 in devices:
-		print("this camera belongs to the mouse player")
+		print("This camera belongs to the mouse player")
 		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	crosshair.visible = false
 
 	# Instance the UI and add it to the camera's view
 	var ui_instance = ui_scene.instantiate()
-	camera.add_child(ui_instance) # Add the UI to the camera so it's superimposed
+	camera.add_child(ui_instance)  # Add the UI to the camera so it's superimposed
 
 func _on_set_move_state(move_state: MoveState):
 	if move_tween:
