@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://qelma86n56jo"]
+
+[ext_resource type="Script" path="res://scripts/globals/sound_handler.gd" id="1_e33wi"]
+
+[node name="SoundHandler" type="FmodBankLoader"]
+bank_paths = ["res://assets/audio/Build/Desktop/Master.strings.bank", "res://assets/audio/Build/Desktop/Master.bank"]
+script = ExtResource("1_e33wi")

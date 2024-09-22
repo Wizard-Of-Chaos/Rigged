@@ -40,7 +40,8 @@ SteamGlobal="*res://scripts/steam_integration/steam_global.gd"
 SteamInputGlobal="*res://scripts/input/steam_input_global.gd"
 SteamLobbyGlobal="*res://scripts/multiplayer/steam_lobby_global.gd"
 FmodManager="*res://addons/fmod/FmodManager.gd"
-MasterBank="*res://master_bank.tscn"
+MasterBank="*res://scenes/utilities/master_bank.tscn"
+SoundHandler="*res://scripts/globals/sound_handler.gd"
 
 [debug]
 
