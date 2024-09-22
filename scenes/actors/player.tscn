@@ -151,7 +151,7 @@ bones/42/rotation = Quaternion(-0.0218794, -0.00270206, -0.0337067, 0.999189)
 bones/43/rotation = Quaternion(0.00803014, -0.00844163, 0.722212, 0.691574)
 
 [node name="GunAttachment" parent="MeshRoot/Guy/Armature/Skeleton3D" index="6"]
-transform = Transform3D(-0.744865, -0.543454, 0.387087, 0.658044, -0.502487, 0.560791, -0.110258, 0.672433, 0.731901, -1.33864, 1.40121, 0.131497)
+transform = Transform3D(-0.755673, -0.535043, 0.377749, 0.644736, -0.506206, 0.572781, -0.115243, 0.676381, 0.727485, -1.32688, 1.38761, 0.131191)
 
 [node name="SpineIK" parent="MeshRoot/Guy/Armature/Skeleton3D" index="7"]
 target_node = NodePath("../../../../../IKTarget")
@@ -193,3 +193,4 @@ unique_name_in_owner = true
 script = ExtResource("13_rrm0i")
 
 [editable path="MeshRoot/Guy"]
+[editable path="MeshRoot/Guy/Armature/Skeleton3D/GunAttachment/Pistol"]
