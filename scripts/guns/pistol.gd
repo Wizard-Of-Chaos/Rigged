@@ -10,6 +10,9 @@ class_name Weapon
 
 
 
+
+
+
 var _laser_fx := preload("res://scenes/fx/laser.tscn")
 
 var _time_since_last_shot: float = 0.0
@@ -18,8 +21,12 @@ var _time_reloading: float = 0.0
 var sfx: FmodEventEmitter3D = null
 
 #sfx
-var fire_sfx = "event:/sfx/players/weapons/placeholder_gun/fire"
-var reload_sfx = "event:/sfx/players/weapons/placeholder_gun/reload"
+#found the agonizing bug that this library doesn't properly update guids if you initialize events by the event name
+#"event:/sfx/players/weapons/placeholder_gun/fire"
+
+var _sfx_script := preload("res://scripts/audio/sound_handler_3d.gd")
+var _fire_sfx = "event:/sfx/player/weapons/placeholder_gun/fire"
+var _reload_sfx = "event:/sfx/player/weapons/placeholder_gun/reload"
 
 func _ready():
 	_current_clip_count = stats.max_clip
@@ -38,10 +45,8 @@ func _physics_process(delta):
 			_current_clip_count -= 1
 		_time_since_last_shot -= stats.firing_speed
 		print("Blam! Blam!")
-		self.play_sfx(fire_sfx)
-		#this should probably be its own class that handles instancing oneshot sfx, leaving it here for now as an example
-
-
+		self.play_sfx(_fire_sfx)
+		
 		#raycast
 		var space_state = get_world_3d().direct_space_state
 		var mousepos = get_viewport().get_mouse_position()
@@ -79,7 +84,7 @@ func _physics_process(delta):
 	#reloading logic
 	if _current_clip_count == 0:
 		if _time_reloading == 0:
-			self.play_sfx(reload_sfx)
+			self.play_sfx(_reload_sfx)
 		_time_reloading += delta
 		print(_time_reloading)
 		if _time_reloading >= stats.reload_time:
@@ -88,4 +93,9 @@ func _physics_process(delta):
 			print("Reloaded!")
 
 func play_sfx(event):
-	SoundHandler.make_one_shot(self, event, {"room_muffling": room_muffling, "reverb": reverb}, true)
+	var sfx = FmodEventEmitter3D.new()
+	sfx.set_script(_sfx_script)
+	print(%FmodBankLoader.get_bank_paths())
+	sfx.make_one_shot(event, {"room_muffling": room_muffling, "reverb": reverb}, true)
+	self.add_child(sfx)
+	sfx.play()

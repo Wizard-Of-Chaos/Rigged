@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://c3s2nqdpbt8rd"]
+[gd_scene load_steps=4 format=3 uid="uid://c3s2nqdpbt8rd"]
 
 [ext_resource type="Theme" uid="uid://c8ustssjawosr" path="res://main_theme.tres" id="1_eul7t"]
 [ext_resource type="Script" path="res://scripts/ui/main_menu.gd" id="2_5h2u5"]
+[ext_resource type="Script" path="res://scripts/audio/sound_handler_2d.gd" id="3_bqni3"]
 
 [node name="Menu" type="PanelContainer"]
 anchors_preset = 15
@@ -11,6 +12,9 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_eul7t")
 theme_type_variation = &"MenuPanelContainerBackground"
+
+[node name="FmodBankLoader" type="FmodBankLoader" parent="."]
+bank_paths = ["res://assets/audio/Build/Desktop/menu_music.bank"]
 
 [node name="UI" type="MarginContainer" parent="."]
 layout_mode = 2
@@ -93,15 +97,19 @@ layout_mode = 2
 size_flags_vertical = 3
 size_flags_stretch_ratio = 0.66
 
-[node name="Audio" type="FmodBankLoader" parent="."]
-bank_paths = ["res://assets/audio/Build/Desktop/mess_hall.bank"]
-
-[node name="FmodEventEmitter2D" type="FmodEventEmitter2D" parent="Audio"]
-event_name = "event:/placeholder/mess_default"
+[node name="Music" type="FmodEventEmitter2D" parent="UI"]
+event_name = "event:/music/placeholder/mess_default"
 event_guid = "{3e29ee58-616b-42fd-a277-4f798d15091f}"
-autoplay = true
+event_parameter/fade/id = -942396644094877613
+event_parameter/fade/value = 1.0
+event_parameter/fade/min_value = 0.0
+event_parameter/fade/max_value = 1.0
+event_parameter/fade/default_value = 1.0
+event_parameter/fade/variant_type = 3
+unique_name_in_owner = true
+script = ExtResource("3_bqni3")
 
-[node name="FmodListener2D" type="FmodListener2D" parent="Audio"]
+[node name="FmodListener2D" type="FmodListener2D" parent="UI"]
 
 [connection signal="pressed" from="UI/HBoxContainer/TitleAndButtons/Start" to="UI" method="_on_start_pressed"]
 [connection signal="pressed" from="UI/HBoxContainer/TitleAndButtons/Multiplayer" to="UI" method="_on_multiplayer_pressed"]
