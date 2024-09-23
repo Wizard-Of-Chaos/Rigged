@@ -5,8 +5,7 @@
 [ext_resource type="Script" path="res://scripts/nodes/interactable.gd" id="3_sthl0"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_elljn"]
-radius = 1.23419
-height = 3.87977
+radius = 1.0
 
 [node name="Panel" instance=ExtResource("1_ge4cb")]
 
@@ -14,11 +13,11 @@ height = 3.87977
 freeze = true
 
 [node name="Collider" type="CollisionShape3D" parent="Body" index="0"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.74788, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.949399, 0)
 shape = SubResource("CapsuleShape3D_elljn")
 
 [node name="InteractSprite" type="Sprite3D" parent="." index="2"]
-transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 4.35171, 0)
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 2.2, 0)
 visibility_range_end = 10.0
 visibility_range_end_margin = 5.0
 visibility_range_fade_mode = 1

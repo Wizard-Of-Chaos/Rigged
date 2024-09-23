@@ -1,18 +1,12 @@
-[gd_scene load_steps=13 format=3 uid="uid://hmt035h6sxel"]
+[gd_scene load_steps=12 format=3 uid="uid://hmt035h6sxel"]
 
 [ext_resource type="Script" path="res://scenes/environments/basic.gd" id="1_cwyym"]
-[ext_resource type="Texture2D" uid="uid://cc35sv25ejsrv" path="res://placeholder.png" id="2_7l2rk"]
+[ext_resource type="Material" uid="uid://btlqdxcflxlg5" path="res://scenes/box_placeholder_res.tres" id="2_a5p5j"]
 [ext_resource type="Texture2D" uid="uid://ctp4itiqnj44y" path="res://assets/skies/comet_base.png" id="3_0hj3v"]
 [ext_resource type="PackedScene" uid="uid://dsgx05iom5ut2" path="res://assets/exshock_imports/arthur/arthur.blend" id="4_hwiw7"]
 [ext_resource type="Script" path="res://scripts/nodes/health.gd" id="5_3c1qt"]
-[ext_resource type="PackedScene" uid="uid://d2alkgfjssua2" path="res://assets/objects/panel/panel.tscn" id="6_gguy7"]
+[ext_resource type="PackedScene" uid="uid://d2alkgfjssua2" path="res://scenes/objects/panel.tscn" id="6_gguy7"]
 [ext_resource type="PackedScene" uid="uid://cs0os6w6n40w6" path="res://scenes/actors/crab_enemy.tscn" id="7_orjix"]
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_q73ef"]
-albedo_color = Color(0.918308, 0.905436, 0.896871, 1)
-albedo_texture = ExtResource("2_7l2rk")
-uv1_triplanar = true
-uv1_world_triplanar = true
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_tpcud"]
 panorama = ExtResource("3_0hj3v")
@@ -36,13 +30,13 @@ script = ExtResource("1_cwyym")
 
 [node name="Floor" type="CSGBox3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.2369, 0.00443175, -1.7427)
-material_override = SubResource("StandardMaterial3D_q73ef")
+material_override = ExtResource("2_a5p5j")
 use_collision = true
 size = Vector3(174.71, 0.155884, 160.123)
 
 [node name="Brick" type="CSGBox3D" parent="Floor"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.43481, 4.515, 1.7006)
-material_override = SubResource("StandardMaterial3D_q73ef")
+material_override = ExtResource("2_a5p5j")
 use_collision = true
 size = Vector3(5.02672, 9.0706, 28.9605)
 
