@@ -1,15 +1,21 @@
-[gd_scene load_steps=4 format=3 uid="uid://dlxnqy4nceqmx"]
+[gd_scene load_steps=5 format=3 uid="uid://dlxnqy4nceqmx"]
 
 [ext_resource type="Script" path="res://scenes/utilities/health_ui.gd" id="1_lyhgi"]
 [ext_resource type="Texture2D" uid="uid://dx4qss4bohdcn" path="res://assets/ui/health_empty.png" id="2_0xuoh"]
 [ext_resource type="Texture2D" uid="uid://domfx2sjwo1hj" path="res://assets/ui/health_filled.png" id="3_vvu63"]
+[ext_resource type="Texture2D" uid="uid://bwa56qdwh0kqs" path="res://assets/ui/health_lazy.png" id="4_4b4rd"]
 
 [node name="GameUi" type="Control"]
 layout_mode = 3
 anchors_preset = 0
 script = ExtResource("1_lyhgi")
 
-[node name="TextureProgressBar" type="TextureProgressBar" parent="."]
+[node name="LazyHealthBar" type="Control" parent="."]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="TextureProgressBar" type="TextureProgressBar" parent="LazyHealthBar"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -22,4 +28,23 @@ grow_horizontal = 2
 grow_vertical = 2
 max_value = 500.0
 texture_under = ExtResource("2_0xuoh")
+texture_progress = ExtResource("4_4b4rd")
+
+[node name="HealthBar" type="Control" parent="."]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="TextureProgressBar" type="TextureProgressBar" parent="HealthBar"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 40.0
+offset_top = 950.0
+offset_right = 449.0
+offset_bottom = 1039.0
+grow_horizontal = 2
+grow_vertical = 2
+max_value = 500.0
 texture_progress = ExtResource("3_vvu63")
