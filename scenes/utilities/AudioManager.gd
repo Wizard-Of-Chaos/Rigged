@@ -13,7 +13,7 @@ signal faded_out
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	fade_out.connect("timeout", self._on_fade_timeout)
+	#fade_out.connect("timeout", self._on_fade_timeout)
 	pass # Replace with function body.
 
 

@@ -7,7 +7,6 @@ extends Control
 @onready var audio_manager: FmodBankLoader = MasterBank
 
 
-var _bank = "menu_music.bank"
 var _menu_music ="event:/music/placeholder/mess_default"
 
 func _ready():
