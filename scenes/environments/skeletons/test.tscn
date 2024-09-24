@@ -1,5 +1,9 @@
-[gd_scene load_steps=2 format=3 uid="uid://cm077tu1aasnc"]
+[gd_scene load_steps=3 format=3 uid="uid://cm077tu1aasnc"]
 
 [ext_resource type="PackedScene" uid="uid://c6lpcnvtlevqj" path="res://scenes/environments/ship_skeleton.tscn" id="1_cyyqe"]
+[ext_resource type="PackedScene" uid="uid://mewsdmxnjj07" path="res://scenes/environments/cells/bridge_test.tscn" id="2_yncf2"]
 
 [node name="ShipSkeleton" instance=ExtResource("1_cyyqe")]
+
+[node name="BridgeCell" parent="." index="1" instance=ExtResource("2_yncf2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1008)

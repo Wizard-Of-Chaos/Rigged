@@ -1,6 +1,9 @@
 extends Area3D
 class_name ShipCell
 
+@export var cells_x = 1
+@export var cells_y = 1
+@export var cells_z = 1
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass # Replace with function body.
