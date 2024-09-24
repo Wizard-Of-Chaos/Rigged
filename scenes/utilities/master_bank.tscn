@@ -1,4 +1,13 @@
-[gd_scene format=3 uid="uid://qelma86n56jo"]
+[gd_scene load_steps=2 format=3 uid="uid://qelma86n56jo"]
+
+[ext_resource type="Script" path="res://scenes/utilities/AudioManager.gd" id="1_0s4ba"]
 
 [node name="MasterBank" type="FmodBankLoader"]
-bank_paths = ["res://assets/audio/Build/Desktop/Master.strings.bank", "res://assets/audio/Build/Desktop/Master.bank"]
+bank_paths = ["res://assets/audio/Build/Desktop/Master.strings.bank", "res://assets/audio/Build/Desktop/Master.bank", "res://assets/audio/Build/Desktop/music.bank"]
+script = ExtResource("1_0s4ba")
+
+[node name="Fade" type="Timer" parent="."]
+wait_time = 0.34
+one_shot = true
+
+[connection signal="timeout" from="Fade" to="." method="_on_fade_timeout"]
