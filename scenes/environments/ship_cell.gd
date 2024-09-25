@@ -1,9 +1,9 @@
 extends Area3D
 class_name ShipCell
 
-@export var cells_x = 1
-@export var cells_y = 1
-@export var cells_z = 1
+@export_range(1, 6) var cells_x = 1
+@export_range(1, 6) var cells_y = 1
+@export_range(1, 6) var cells_z = 1
 
 func _ready():
 	

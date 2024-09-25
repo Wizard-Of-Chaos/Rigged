@@ -4,6 +4,9 @@
 [ext_resource type="PackedScene" uid="uid://mewsdmxnjj07" path="res://scenes/environments/cells/bridge_test.tscn" id="2_yncf2"]
 
 [node name="ShipSkeleton" instance=ExtResource("1_cyyqe")]
+cells_wide = 4
+cells_long = 8
+cells_tall = 2
 
 [node name="BridgeCell" parent="." index="0" instance=ExtResource("2_yncf2")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1008)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 128)

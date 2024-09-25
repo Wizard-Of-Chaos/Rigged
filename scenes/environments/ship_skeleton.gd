@@ -1,9 +1,9 @@
 extends Area3D
 class_name ShipSkeleton
 
-@export var cells_wide: int = 32
-@export var cells_long: int = 64
-@export var cells_tall: int = 8
+@export_range(1, 32) var cells_wide: int = 32
+@export_range(1, 64) var cells_long: int = 64
+@export_range(1, 8) var cells_tall: int = 8
 
 @export var bridge_position: Vector3 = Vector3(0,0,0)
 @export var bridge_size: Vector3 = Vector3(0,0,0)
