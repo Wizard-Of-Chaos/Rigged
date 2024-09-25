@@ -5,9 +5,3 @@
 [node name="MasterBank" type="FmodBankLoader"]
 bank_paths = ["res://assets/audio/Build/Desktop/Master.strings.bank", "res://assets/audio/Build/Desktop/Master.bank", "res://assets/audio/Build/Desktop/music.bank"]
 script = ExtResource("1_0s4ba")
-
-[node name="Fade" type="Timer" parent="."]
-wait_time = 0.34
-one_shot = true
-
-[connection signal="timeout" from="Fade" to="." method="_on_fade_timeout"]

@@ -2,11 +2,13 @@ extends FmodBankLoader
 
 
 @onready var music_script = preload("res://scripts/audio/sound_handler_2d.gd")
-@onready var fade_out = $Fade
+#@onready var fade_out = $Fade
 #make it nicer...
 const bank_path = "res://assets/audio/Build/"
+const fade_time = 0.34
 var current_song: FmodEventEmitter2D = null
 var fading_song: FmodEventEmitter2D = null
+
 
 signal faded_out
 
@@ -41,13 +43,10 @@ func fade_out_song():
 		fading_song = current_song
 		current_song = null
 		fading_song.set_parameter("fade", 0)
-		fade_out.start()
+		await get_tree().create_timer(fade_time).timeout
+		#fading song is silent, we're safe to murder it
+		self.remove_child(fading_song)
+		fading_song.queue_free()
+		emit_signal("faded_out")
 		
 		
-
-
-func _on_fade_timeout() -> void:
-	#fading song is silent, we're safe to murder it
-	self.remove_child(fading_song)
-	fading_song.queue_free()
-	emit_signal("faded_out")
