@@ -1,0 +1,20 @@
+[gd_resource type="StandardMaterial3D" load_steps=6 format=3 uid="uid://ddqx00k2h33qj"]
+
+[ext_resource type="Texture2D" uid="uid://btdfsrihagvvy" path="res://assets/materials/metal_test_mat/Metal_BaseColor.png" id="1_j8y3f"]
+[ext_resource type="Texture2D" uid="uid://chnqaxracxq0m" path="res://assets/materials/metal_test_mat/Metal_Height.png" id="2_pphy7"]
+[ext_resource type="Texture2D" uid="uid://c3lwij6lac42g" path="res://assets/materials/metal_test_mat/Metal_Metallic.png" id="3_vv4lp"]
+[ext_resource type="Texture2D" uid="uid://3dcmd1cvv2u7" path="res://assets/materials/metal_test_mat/Metal_Normal.png" id="4_7rx4v"]
+[ext_resource type="Texture2D" uid="uid://ceyartehrsejo" path="res://assets/materials/metal_test_mat/Metal_Roughness.png" id="5_55jnp"]
+
+[resource]
+albedo_texture = ExtResource("1_j8y3f")
+metallic = 1.0
+metallic_texture = ExtResource("3_vv4lp")
+roughness_texture = ExtResource("5_55jnp")
+normal_enabled = true
+normal_texture = ExtResource("4_7rx4v")
+heightmap_enabled = true
+heightmap_texture = ExtResource("2_pphy7")
+uv1_scale = Vector3(0.25, 0.25, 0.25)
+uv1_triplanar = true
+uv1_world_triplanar = true

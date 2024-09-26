@@ -1,20 +1,23 @@
-[gd_scene load_steps=2 format=3 uid="uid://rvlhiy2650w2"]
+[gd_scene load_steps=3 format=3 uid="uid://rvlhiy2650w2"]
 
 [ext_resource type="Material" uid="uid://btlqdxcflxlg5" path="res://scenes/box_placeholder_res.tres" id="1_dcv48"]
+[ext_resource type="Material" uid="uid://ddqx00k2h33qj" path="res://assets/materials/metal_test_mat/metal.tres" id="1_l8wtm"]
 
 [node name="DoorZSmall" type="Node3D"]
 
 [node name="CSGBox3D" type="CSGBox3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 1.5, 0)
+material_override = ExtResource("1_l8wtm")
 size = Vector3(0.2, 3, 0.2)
 material = ExtResource("1_dcv48")
 
 [node name="CSGBox3D2" type="CSGBox3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1.5, 0)
+material_override = ExtResource("1_l8wtm")
 size = Vector3(0.2, 3, 0.2)
 material = ExtResource("1_dcv48")
 
 [node name="CSGBox3D3" type="CSGBox3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.9, 0)
 size = Vector3(2, 0.2, 0.2)
-material = ExtResource("1_dcv48")
+material = ExtResource("1_l8wtm")
