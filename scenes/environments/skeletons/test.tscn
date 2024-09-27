@@ -1,16 +1,36 @@
-[gd_scene load_steps=4 format=3 uid="uid://cm077tu1aasnc"]
+[gd_scene load_steps=6 format=3 uid="uid://cm077tu1aasnc"]
 
 [ext_resource type="PackedScene" uid="uid://c6lpcnvtlevqj" path="res://scenes/environments/ship_skeleton.tscn" id="1_cyyqe"]
 [ext_resource type="PackedScene" uid="uid://itbwpfugyuhq" path="res://scenes/environments/cells/engine_test.tscn" id="2_uq48t"]
 [ext_resource type="PackedScene" uid="uid://mewsdmxnjj07" path="res://scenes/environments/cells/bridge_test.tscn" id="2_yncf2"]
+[ext_resource type="PackedScene" uid="uid://l1sxxvsqpd8s" path="res://scenes/environments/cells/airlock_test.tscn" id="4_nn1po"]
+[ext_resource type="PackedScene" uid="uid://bcwlupfy4s8sf" path="res://scenes/environments/cells/oxygen_test.tscn" id="5_jxwci"]
 
 [node name="ShipSkeleton" instance=ExtResource("1_cyyqe")]
 cells_wide = 4
 cells_long = 8
 cells_tall = 2
+bridge_position = Vector3(0, 0, 4)
+bridge_size = Vector3(2, 1, 1)
+engines_position = Vector3(0, 0, -4)
+engines_size = Vector3(2, 1, 1)
+oxygen_position = Vector3(-1, 0, -1)
+airlock_positions = {
+0: Vector3(2, 0, 0),
+1: Vector3(-2, 0, 0)
+}
 
 [node name="EngineCell" parent="." index="0" instance=ExtResource("2_uq48t")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -112)
 
 [node name="BridgeCell" parent="." index="1" instance=ExtResource("2_yncf2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 112)
+
+[node name="AirlockCell" parent="." index="2" instance=ExtResource("4_nn1po")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 48, 0, 0)
+
+[node name="AirlockCell2" parent="." index="3" instance=ExtResource("4_nn1po")]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -48, 0, 0)
+
+[node name="OxygenCell" parent="." index="4" instance=ExtResource("5_jxwci")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16, 0, -32)
