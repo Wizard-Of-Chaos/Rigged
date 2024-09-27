@@ -9,8 +9,6 @@ class_name ShipCell
 @export var entry_positions: Dictionary
 enum ENTRY_SIZE {SMALL, LARGE, VENT}
 @export var entry_position_sizes: Dictionary
-enum ENTRY_POS_LOCATION {UP, DOWN, LEFT, RIGHT, FORWARD, BACK}
-@export var entry_position_type: Dictionary
 
 func _ready():
 	
