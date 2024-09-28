@@ -1,11 +1,8 @@
-[gd_scene load_steps=12 format=3 uid="uid://hmt035h6sxel"]
+[gd_scene load_steps=8 format=3 uid="uid://hmt035h6sxel"]
 
 [ext_resource type="Script" path="res://scenes/environments/basic.gd" id="1_cwyym"]
-[ext_resource type="Material" uid="uid://btlqdxcflxlg5" path="res://scenes/box_placeholder_res.tres" id="2_a5p5j"]
 [ext_resource type="Texture2D" uid="uid://ctp4itiqnj44y" path="res://assets/skies/comet_base.png" id="3_0hj3v"]
-[ext_resource type="PackedScene" uid="uid://dsgx05iom5ut2" path="res://assets/exshock_imports/arthur/arthur.blend" id="4_hwiw7"]
-[ext_resource type="Script" path="res://scripts/nodes/health.gd" id="5_3c1qt"]
-[ext_resource type="PackedScene" uid="uid://d2alkgfjssua2" path="res://scenes/objects/panel.tscn" id="6_gguy7"]
+[ext_resource type="PackedScene" uid="uid://cm077tu1aasnc" path="res://scenes/environments/skeletons/test.tscn" id="6_efa4a"]
 [ext_resource type="PackedScene" uid="uid://cs0os6w6n40w6" path="res://scenes/actors/crab_enemy.tscn" id="7_orjix"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_tpcud"]
@@ -21,24 +18,8 @@ ambient_light_source = 3
 ambient_light_color = Color(0.856067, 0.856067, 0.856067, 1)
 ambient_light_energy = 8.0
 
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_f5euy"]
-radius = 2.34222
-height = 8.06716
-
 [node name="MainScene" type="Node3D"]
 script = ExtResource("1_cwyym")
-
-[node name="Floor" type="CSGBox3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.2369, 0.00443175, -1.7427)
-material_override = ExtResource("2_a5p5j")
-use_collision = true
-size = Vector3(174.71, 0.155884, 160.123)
-
-[node name="Brick" type="CSGBox3D" parent="Floor"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.43481, 4.515, 1.7006)
-material_override = ExtResource("2_a5p5j")
-use_collision = true
-size = Vector3(5.02672, 9.0706, 28.9605)
 
 [node name="ICallThisEnemyTheSun" type="DirectionalLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, -0.690769, 0.723076, 0, -0.723076, -0.690769, 0, 0, 0.114616)
@@ -55,23 +36,7 @@ spawn_path = NodePath("../Players")
 [node name="UI" type="Node" parent="."]
 unique_name_in_owner = true
 
-[node name="ArthurDummy" type="RigidBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 50.7496, 0, -2.57314)
-freeze = true
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="ArthurDummy"]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 4.68521, -0.937475)
-shape = SubResource("CapsuleShape3D_f5euy")
-
-[node name="model" parent="ArthurDummy" instance=ExtResource("4_hwiw7")]
-transform = Transform3D(0.4, 0, 0, 0, 0.4, 0, 0, 0, 0.4, 0, 4.5766, 0)
-
-[node name="Health" type="Node" parent="ArthurDummy"]
-unique_name_in_owner = true
-script = ExtResource("5_3c1qt")
-
-[node name="Panel" parent="." instance=ExtResource("6_gguy7")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.8376, 0.0823732, -16.7965)
-
 [node name="Enemy" parent="." instance=ExtResource("7_orjix")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -69.6206, 0.0823736, -42.9853)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14.3345, 0.0968523, 109.395)
+
+[node name="ShipSkeleton" parent="." instance=ExtResource("6_efa4a")]

@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1_kajnf")
 id = 2
-speed = 21.0
+speed = 14.0
 acceleration = 8.0
 rotation_speed = 6.0
 fov = 90.0

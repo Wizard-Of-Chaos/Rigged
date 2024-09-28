@@ -11,8 +11,8 @@ func _ready() -> void:
 			print("setting up player %s" % player)
 			var player_instance := player_scene.instantiate()
 			player_instance.name = "Player%s" % player.peer_id
-			player_instance.position.x = randi_range(-60, 60)
-			player_instance.position.z = randi_range(-60, 60)
+			player_instance.position.x = randi_range(-20, 20)
+			player_instance.position.z = randi_range(106, 118)
 			player_instance.position.y = 10
 			players.add_child(player_instance, true)
 			player_instance.set_up.rpc(player)

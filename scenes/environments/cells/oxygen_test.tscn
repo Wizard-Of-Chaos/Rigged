@@ -18,6 +18,7 @@ entry_position_sizes = {
 [node name="CSGBox3D" type="CSGBox3D" parent="." index="0"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, 0)
 material_override = ExtResource("2_dd0kj")
+use_collision = true
 size = Vector3(32, 0.1, 32)
 
 [node name="DoorZSmall" parent="." index="1" instance=ExtResource("3_ua5c7")]

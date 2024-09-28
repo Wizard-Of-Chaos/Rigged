@@ -6,7 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://l1sxxvsqpd8s" path="res://scenes/environments/cells/airlock_test.tscn" id="4_nn1po"]
 [ext_resource type="PackedScene" uid="uid://bcwlupfy4s8sf" path="res://scenes/environments/cells/oxygen_test.tscn" id="5_jxwci"]
 
-[node name="ShipSkeleton" instance=ExtResource("1_cyyqe")]
+[node name="TestShipSkeleton" instance=ExtResource("1_cyyqe")]
 cells_wide = 4
 cells_long = 8
 cells_tall = 2
