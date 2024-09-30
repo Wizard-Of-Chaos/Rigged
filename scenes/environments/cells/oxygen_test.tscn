@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://bcwlupfy4s8sf"]
 
 [ext_resource type="PackedScene" uid="uid://bcaeq3clth6ce" path="res://scenes/environments/ship_cell.tscn" id="1_lahsi"]
-[ext_resource type="Material" uid="uid://ddqx00k2h33qj" path="res://assets/materials/metal_test_mat/metal.tres" id="2_dd0kj"]
+[ext_resource type="Material" uid="uid://ddqx00k2h33qj" path="res://assets/materials/material_resources/metal.tres" id="2_dd0kj"]
 [ext_resource type="PackedScene" uid="uid://rvlhiy2650w2" path="res://scenes/objects/door_z_small.tscn" id="3_ua5c7"]
 [ext_resource type="PackedScene" uid="uid://d2alkgfjssua2" path="res://scenes/objects/panel.tscn" id="4_h478l"]
 
