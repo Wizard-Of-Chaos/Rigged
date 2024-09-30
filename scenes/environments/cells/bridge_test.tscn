@@ -21,18 +21,18 @@ material_override = ExtResource("2_bx8yr")
 use_collision = true
 size = Vector3(64, 16, 32)
 
-[node name="CSGBox3D" type="CSGBox3D" parent="CSGBox3D" index="0"]
+[node name="Subtractifier" type="CSGBox3D" parent="CSGBox3D" index="0"]
 operation = 2
 use_collision = true
 size = Vector3(63, 15, 31)
 
-[node name="CSGBox3D3" type="CSGBox3D" parent="CSGBox3D" index="1"]
+[node name="Door1" type="CSGBox3D" parent="CSGBox3D" index="1"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, -6, -15.75)
 operation = 2
 use_collision = true
 size = Vector3(2, 3, 0.5)
 
-[node name="CSGBox3D2" type="CSGBox3D" parent="CSGBox3D" index="2"]
+[node name="Door2" type="CSGBox3D" parent="CSGBox3D" index="2"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12, -6, -15.75)
 operation = 2
 use_collision = true
