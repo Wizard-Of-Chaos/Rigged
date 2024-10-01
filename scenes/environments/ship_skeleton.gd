@@ -13,7 +13,10 @@ class_name ShipSkeleton
 
 @export var oxygen_position: Vector3 = Vector3(0,0,0)
 @export var airlock_positions: Dictionary
- 
+
+@export var minimum_timer: float = 1200.0
+@export var maximum_timer: float = 1800.0
+
 func _ready():
 	var collision_shape: CollisionShape3D = CollisionShape3D.new()
 	var box = BoxShape3D.new()

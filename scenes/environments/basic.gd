@@ -3,6 +3,9 @@ extends Node3D
 @onready var players := %Players
 @onready var UI := %UI
 
+var timer: float = 0
+var objectives: Array
+
 func _ready() -> void:
 	GameState.set_state(GameState.State.IN_GAME)
 	if multiplayer.is_server():
