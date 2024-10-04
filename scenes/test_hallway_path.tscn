@@ -1,0 +1,29 @@
+[gd_scene load_steps=3 format=3 uid="uid://bwgnyvkmxixhl"]
+
+[ext_resource type="Material" uid="uid://ddqx00k2h33qj" path="res://assets/materials/material_resources/metal.tres" id="1_gh8jh"]
+
+[sub_resource type="Curve3D" id="Curve3D_55oi8"]
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0, 0, -2, 0, 0, 0, 0, 0, 0, 0, 0, 2.65745),
+"tilts": PackedFloat32Array(0, 0)
+}
+point_count = 2
+
+[node name="TestHallwayPath" type="Path3D"]
+transform = Transform3D(0.999646, 0, 0, 0, 0.999646, 0, 0, 0, 0.999646, 0, 0, 0)
+curve = SubResource("Curve3D_55oi8")
+
+[node name="CSGPolygon3D" type="CSGPolygon3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.20813)
+material_override = ExtResource("1_gh8jh")
+polygon = PackedVector2Array(-1, 0, -1, 0.1, 1, 0.1, 1, 0)
+mode = 2
+path_node = NodePath("..")
+path_interval_type = 0
+path_interval = 2.0
+path_simplify_angle = 0.0
+path_rotation = 2
+path_local = false
+path_continuous_u = true
+path_u_distance = 1.0
+path_joined = false
