@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://cm077tu1aasnc"]
+[gd_scene load_steps=9 format=3 uid="uid://cm077tu1aasnc"]
 
 [ext_resource type="PackedScene" uid="uid://c6lpcnvtlevqj" path="res://scenes/environments/ship_skeleton.tscn" id="1_cyyqe"]
 [ext_resource type="PackedScene" uid="uid://itbwpfugyuhq" path="res://scenes/environments/cells/engine_test.tscn" id="2_uq48t"]
@@ -10,6 +10,13 @@
 [sub_resource type="Curve3D" id="Curve3D_mvcyx"]
 _data = {
 "points": PackedVector3Array(0, 0, 0, 0, 0, 0, 12, 0.5, 96.5, 0, 0, 0, 0, 0, 0, 12, 0.5, 80, 0, 0, 0, 0, 0, 0, 16, 0.5, 0, 0, 0, 0, 0, 0, 0, 16, 0, -16),
+"tilts": PackedFloat32Array(0, 0, 0, 0)
+}
+point_count = 4
+
+[sub_resource type="Curve3D" id="Curve3D_qgdb3"]
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, -12, 0.5, 96.5, 0, 0, 0, 3.355, 0, 0, -12, 0.5, 70, 0, 0, 0, 0, 0, 0, -12, 0.5, 0, 0, 0, 0, 0, 0, 0, -32, 0.5, 0),
 "tilts": PackedFloat32Array(0, 0, 0, 0)
 }
 point_count = 4
@@ -60,4 +67,22 @@ path_node = NodePath("../..")
 [node name="CEILING" parent="Path3D/TestHallwayPath" index="3"]
 path_node = NodePath("../..")
 
+[node name="Path3D2" type="Path3D" parent="." index="6"]
+curve = SubResource("Curve3D_qgdb3")
+
+[node name="TestHallwayPath" parent="Path3D2" index="0" instance=ExtResource("6_tul8q")]
+
+[node name="FLOOR" parent="Path3D2/TestHallwayPath" index="0"]
+path_node = NodePath("../..")
+
+[node name="RIGHT_WALL" parent="Path3D2/TestHallwayPath" index="1"]
+path_node = NodePath("../..")
+
+[node name="LEFT_WALL" parent="Path3D2/TestHallwayPath" index="2"]
+path_node = NodePath("../..")
+
+[node name="CEILING" parent="Path3D2/TestHallwayPath" index="3"]
+path_node = NodePath("../..")
+
 [editable path="Path3D/TestHallwayPath"]
+[editable path="Path3D2/TestHallwayPath"]
