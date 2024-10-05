@@ -1,10 +1,18 @@
-[gd_scene load_steps=6 format=3 uid="uid://cm077tu1aasnc"]
+[gd_scene load_steps=8 format=3 uid="uid://cm077tu1aasnc"]
 
 [ext_resource type="PackedScene" uid="uid://c6lpcnvtlevqj" path="res://scenes/environments/ship_skeleton.tscn" id="1_cyyqe"]
 [ext_resource type="PackedScene" uid="uid://itbwpfugyuhq" path="res://scenes/environments/cells/engine_test.tscn" id="2_uq48t"]
 [ext_resource type="PackedScene" uid="uid://mewsdmxnjj07" path="res://scenes/environments/cells/bridge_test.tscn" id="2_yncf2"]
 [ext_resource type="PackedScene" uid="uid://l1sxxvsqpd8s" path="res://scenes/environments/cells/airlock_test.tscn" id="4_nn1po"]
 [ext_resource type="PackedScene" uid="uid://bcwlupfy4s8sf" path="res://scenes/environments/cells/oxygen_test.tscn" id="5_jxwci"]
+[ext_resource type="PackedScene" uid="uid://bwgnyvkmxixhl" path="res://scenes/test_hallway_path.tscn" id="6_tul8q"]
+
+[sub_resource type="Curve3D" id="Curve3D_mvcyx"]
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 12, 0.5, 96.5, 0, 0, 0, 0, 0, 0, 12, 0.5, 80, 0, 0, 0, 0, 0, 0, 16, 0.5, 0, 0, 0, 0, 0, 0, 0, 16, 0, -16),
+"tilts": PackedFloat32Array(0, 0, 0, 0)
+}
+point_count = 4
 
 [node name="TestShipSkeleton" instance=ExtResource("1_cyyqe")]
 cells_wide = 4
@@ -34,3 +42,22 @@ transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -48, 0
 
 [node name="OxygenCell" parent="." index="4" instance=ExtResource("5_jxwci")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16, 0, -32)
+
+[node name="Path3D" type="Path3D" parent="." index="5"]
+curve = SubResource("Curve3D_mvcyx")
+
+[node name="TestHallwayPath" parent="Path3D" index="0" instance=ExtResource("6_tul8q")]
+
+[node name="FLOOR" parent="Path3D/TestHallwayPath" index="0"]
+path_node = NodePath("../..")
+
+[node name="RIGHT_WALL" parent="Path3D/TestHallwayPath" index="1"]
+path_node = NodePath("../..")
+
+[node name="LEFT_WALL" parent="Path3D/TestHallwayPath" index="2"]
+path_node = NodePath("../..")
+
+[node name="CEILING" parent="Path3D/TestHallwayPath" index="3"]
+path_node = NodePath("../..")
+
+[editable path="Path3D/TestHallwayPath"]
