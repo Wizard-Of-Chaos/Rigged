@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://bcaeq3clth6ce" path="res://scenes/environments/ship_cell.tscn" id="1_p6tgl"]
 [ext_resource type="Material" uid="uid://ddqx00k2h33qj" path="res://assets/materials/material_resources/metal.tres" id="2_bx8yr"]
-[ext_resource type="PackedScene" uid="uid://d2alkgfjssua2" path="res://scenes/objects/panel.tscn" id="3_jd2g3"]
+[ext_resource type="PackedScene" uid="uid://bub6wpasaqt0m" path="res://scenes/objectives/hack_panel.tscn" id="3_bdki7"]
 
 [node name="BridgeCell" instance=ExtResource("1_p6tgl")]
 cells_x = 2
@@ -38,5 +38,5 @@ operation = 2
 use_collision = true
 size = Vector3(2, 3, 0.5)
 
-[node name="Panel" parent="." index="1" instance=ExtResource("3_jd2g3")]
-transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 12.902)
+[node name="HackPanel" parent="Objectives" index="0" instance=ExtResource("3_bdki7")]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0.5, 12)

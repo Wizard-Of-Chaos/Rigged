@@ -84,5 +84,6 @@ path_node = NodePath("../..")
 [node name="CEILING" parent="Path3D2/TestHallwayPath" index="3"]
 path_node = NodePath("../..")
 
+[editable path="BridgeCell"]
 [editable path="Path3D/TestHallwayPath"]
 [editable path="Path3D2/TestHallwayPath"]

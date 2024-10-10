@@ -1,4 +1,4 @@
-extends Node
+class_name Objective extends Node
 
 #Signal to something else that the objective is done
 signal completed_objective()
@@ -9,6 +9,7 @@ signal completed_objective()
 var value: int
 
 func _ready():
+	value = RandomNumberGenerator.new().randf_range(min_value, max_value)
 	pass
 
 #Override the is_complete bool to determine whether or not the objective was successful

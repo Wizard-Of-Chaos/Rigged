@@ -4,6 +4,7 @@ extends Node3D
 @onready var UI := %UI
 
 var timer: float = 0
+var max_timer: float = 0
 var objectives: Array
 
 func _ready() -> void:
