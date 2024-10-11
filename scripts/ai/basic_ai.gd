@@ -64,6 +64,8 @@ func _physics_process(delta: float):
 	if moving():
 		move_controller.set_move_dir(move_dir)
 		move_controller.set_move_state(move_states["run"])
+		if(_sprinting):
+			move_controller.set_move_state(move_states["sprint"])
 	else:
 		move_controller.set_move_dir(Vector3(0,0,0))
 		move_controller.set_move_state(move_states["idle"])

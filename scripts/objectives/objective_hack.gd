@@ -9,7 +9,6 @@ var current_time_hacking: float = 0
 func _ready():
 	pass # Replace with function body.
 
-#Override the is_complete bool to determine whether or not the objective was successful
 func _is_complete() -> bool:
 	return hacked
 
@@ -21,6 +20,5 @@ func _physics_process(delta: float):
 			hacked = true
 			print("Hacked!")
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
+func _process(_delta):
 	pass

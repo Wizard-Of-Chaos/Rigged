@@ -9,12 +9,12 @@ signal completed_objective()
 var value: int
 
 func _ready():
-	value = RandomNumberGenerator.new().randf_range(min_value, max_value)
+	value = RandomNumberGenerator.new().randi_range(min_value, max_value)
 	pass
 
 #Override the is_complete bool to determine whether or not the objective was successful
 func _is_complete() -> bool:
 	return false
 
-func _process(delta):
+func _process(_delta):
 	pass

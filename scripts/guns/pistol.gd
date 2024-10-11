@@ -93,7 +93,7 @@ func _physics_process(delta):
 			print("Reloaded!")
 
 func play_sfx(event):
-	var sfx = FmodEventEmitter3D.new()
+	sfx = FmodEventEmitter3D.new()
 	sfx.set_script(_sfx_script)
 	print(%FmodBankLoader.get_bank_paths())
 	sfx.make_one_shot(event, {"room_muffling": room_muffling, "reverb": reverb}, true)
