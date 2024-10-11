@@ -1,4 +1,5 @@
-class_name Objective extends Node
+class_name Objective 
+extends Node
 
 #Signal to something else that the objective is done
 signal completed_objective()

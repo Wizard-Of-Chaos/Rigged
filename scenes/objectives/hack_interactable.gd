@@ -1,4 +1,5 @@
-class_name HackInteractable extends Interactable
+class_name HackInteractable 
+extends Interactable
 @onready var hack_obj: HackObjective = %HackObjective 
 func _interact(clicker: Player):
 	interacted.emit(clicker)

@@ -1,4 +1,5 @@
-class_name HackObjective extends Objective
+class_name HackObjective 
+extends Objective
 
 var hacked: bool = false
 var activated: bool = false
