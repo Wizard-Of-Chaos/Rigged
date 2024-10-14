@@ -15,15 +15,18 @@ signal faded_out
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	#fade_out.connect("timeout", self._on_fade_timeout)
+	#FmodServer.load_bank("bank:/music", FmodServer.FMOD_STUDIO_LOAD_BANK_NORMAL)
+	#FmodServer.banks_still_loading()
 	pass # Replace with function body.
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	pass
 
 func play_song(music_event):
+	while FmodServer.banks_still_loading():
+		pass
 	#if song is playing, let it fade out first
 	if current_song != null:
 		self.fade_out_song()

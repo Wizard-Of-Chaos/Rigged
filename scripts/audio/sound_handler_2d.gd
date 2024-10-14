@@ -15,17 +15,18 @@ func _process(_delta: float) -> void:
 		#emit_signal("silent")
 		
 
-func make_one_shot(event_name: String, params: Dictionary = {}, attached: bool = true):
+func make_one_shot(sfx_name: String, params: Dictionary = {}, attach: bool = true):
 	self.sfx.set_auto_release(true) #this deletes the node after it plays once
-	self.set_event_name(event_name)
-	for name in params:
+	self.sfx.set_attached(attach)
+	self.set_event_name(sfx_name)
+	for p in params:
 		self.set_parameter(name, params[name])
 		
-func make_loop(event_name: String, params: Dictionary = {}, attached: bool = true):
-	self.set_event_name(event_name)
-	self.set_attached(attached)
-	for name in params:
-		self.set_parameter(name, params[name])
+func make_loop(sfx_name: String, params: Dictionary = {}, attach: bool = true):
+	self.set_event_name(sfx_name)
+	self.set_attached(attach)
+	for p in params:
+		self.set_parameter(p, params[name])
 		
 
 func fade_in() -> void:
