@@ -1,0 +1,61 @@
+[gd_scene load_steps=2 format=3 uid="uid://bleksfnlrvcr5"]
+
+[ext_resource type="Material" uid="uid://ddqx00k2h33qj" path="res://assets/materials/material_resources/metal.tres" id="1_jghsr"]
+
+[node name="SmallMediumHallIntersect" type="Node3D"]
+
+[node name="Small" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.5)
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Small"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, 0)
+material_override = ExtResource("1_jghsr")
+size = Vector3(2, 0.1, 1)
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="Small"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1.6, 0)
+material_override = ExtResource("1_jghsr")
+size = Vector3(0.1, 3.2, 1)
+
+[node name="CSGBox3D3" type="CSGBox3D" parent="Small"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 1.6, 0)
+material_override = ExtResource("1_jghsr")
+size = Vector3(0.1, 3.2, 1)
+
+[node name="CSGBox3D4" type="CSGBox3D" parent="Small"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.15, 0)
+material_override = ExtResource("1_jghsr")
+size = Vector3(2, 0.1, 1)
+
+[node name="Medium" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.5)
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Medium"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, 0)
+material_override = ExtResource("1_jghsr")
+size = Vector3(4.5, 0.1, 1)
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="Medium"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.25, 1.6, 0)
+material_override = ExtResource("1_jghsr")
+size = Vector3(0.1, 3.2, 1)
+
+[node name="CSGBox3D3" type="CSGBox3D" parent="Medium"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.25, 1.6, 0)
+material_override = ExtResource("1_jghsr")
+size = Vector3(0.1, 3.2, 1)
+
+[node name="CSGBox3D4" type="CSGBox3D" parent="Medium"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.15, 0)
+material_override = ExtResource("1_jghsr")
+size = Vector3(4.5, 0.1, 1)
+
+[node name="CSGBox3D5" type="CSGBox3D" parent="Medium"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.6, 1.6, 0.5)
+material_override = ExtResource("1_jghsr")
+size = Vector3(1.25, 3.2, 0.1)
+
+[node name="CSGBox3D6" type="CSGBox3D" parent="Medium"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.6, 1.6, 0.5)
+material_override = ExtResource("1_jghsr")
+size = Vector3(1.25, 3.2, 0.1)
