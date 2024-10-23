@@ -3,6 +3,9 @@ extends Node3D
 @onready var players := %Players
 @onready var UI := %UI
 
+#TODO: Set up this when loading a skeleton in ready rather than straight from the start
+@onready var skeleton := $ShipSkeleton
+
 var timer: float = 0
 var max_timer: float = 0
 var objectives: Array
@@ -21,7 +24,15 @@ func _ready() -> void:
 			player_instance.position.y = 10
 			player_instance.set_up.rpc(player)
 		camera_setup.rpc()
-
+	
+	#TODO: this should be set up from the loaded ship skeleton
+	#so we should, like, load the ship skeleton here
+	for child in skeleton.get_children():
+		if child is ShipCell:
+			for obj in child.get_node("%Objectives").get_children():
+				objectives.push_back(obj)
+	max_timer = skeleton.minimum_timer + randi_range(0, skeleton.maximum_timer - skeleton.minimum_timer)
+	
 
 @rpc("any_peer", "call_local", "reliable")
 func camera_setup():
@@ -52,3 +63,9 @@ func camera_setup():
 		
 		#TODO: there has to be a better way of maintaining access to the camera from the gun with possible gun swaps
 		player.pistol.camera = player.camera_root.camera
+		
+func _physics_process(delta):
+	timer += delta
+	if timer >= max_timer:
+		pass
+		#TODO: determine end-game state for max timeout
