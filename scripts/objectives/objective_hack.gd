@@ -17,7 +17,7 @@ func _physics_process(delta: float):
 	if activated and not hacked:
 		current_time_hacking += delta
 		if current_time_hacking >= time_to_hack:
-			completed_objective.emit()
+			completed_objective_set.emit(self)
 			hacked = true
 			print("Hacked!")
 

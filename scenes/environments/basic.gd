@@ -9,6 +9,14 @@ extends Node3D
 var timer: float = 0
 var max_timer: float = 0
 var objectives: Array
+var total_score: int = 0
+
+func _on_add_score(obj: Objective):
+	if obj.completed == true:
+		return
+	obj.completed = true
+	total_score += obj.value
+	max_timer += obj.time_added
 
 func _ready() -> void:
 	GameState.set_state(GameState.State.IN_GAME)
@@ -31,6 +39,10 @@ func _ready() -> void:
 		if child is ShipCell:
 			for obj in child.get_node("%Objectives").get_children():
 				objectives.push_back(obj)
+				
+	for obj: Objective in objectives:
+		#hook up each objective to the added score
+		obj.completed_objective_set.connect(_on_add_score)
 	max_timer = skeleton.minimum_timer + randi_range(0, skeleton.maximum_timer - skeleton.minimum_timer)
 	
 
