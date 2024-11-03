@@ -1,6 +1,6 @@
 class_name HackInteractable 
 extends Interactable
-@onready var hack_obj: HackObjective = %HackObjective 
+@onready var hack_obj: HackObjective = %Objective 
 func _interact(clicker: Player):
 	interacted.emit(clicker)
 	print("Hacking this node!")
