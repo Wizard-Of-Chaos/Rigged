@@ -54,7 +54,7 @@ func update_players(p_players: Array[Dictionary]):
 		# gotta make sure to copy over the local data
 		if player.peer_id == multiplayer.get_unique_id():
 			player.devices = local_active_players[current_player_to_update].devices
-			player.player_node = local_active_players[current_player_to_update]
+			player.player_node = local_active_players[current_player_to_update].player_node
 			current_player_to_update += 1
 		else:
 			player.devices = []
