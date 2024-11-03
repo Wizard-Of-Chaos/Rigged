@@ -48,3 +48,18 @@ grow_horizontal = 2
 grow_vertical = 2
 max_value = 500.0
 texture_progress = ExtResource("3_vvu63")
+
+[node name="Timer" type="Label" parent="."]
+unique_name_in_owner = true
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+text = "Current Time: 0/0"
+
+[node name="Score" type="Label" parent="."]
+unique_name_in_owner = true
+layout_mode = 0
+offset_top = 25.0
+offset_right = 40.0
+offset_bottom = 48.0
+text = "Current Score: 0"

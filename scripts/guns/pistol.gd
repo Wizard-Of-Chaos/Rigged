@@ -7,19 +7,12 @@ class_name Weapon
 @export var room_muffling = "close"
 @export var reverb = "medium_room"
 
-
-
-
-
-
-
 var _laser_fx := preload("res://scenes/fx/laser.tscn")
 
 var _time_since_last_shot: float = 0.0
 var _current_clip_count: int
 var _time_reloading: float = 0.0
 var sfx: FmodEventEmitter3D = null
-
 #sfx
 #found the agonizing bug that this library doesn't properly update guids if you initialize events by the event name
 #"event:/sfx/players/weapons/placeholder_gun/fire"
@@ -35,7 +28,6 @@ func _ready():
 	#bank = FmodBankLoader.new()
 	#bank.set_bank_paths(["bank:/Master.strings","bank:/Master","bank:/sfx/placeholder/weapon"])
 	#self.add_child(bank)
-	
 	
 func _physics_process(delta):
 	

@@ -2,6 +2,8 @@ extends Control
 
 @onready var health_bar := $HealthBar/TextureProgressBar
 @onready var lazy_health_bar := $LazyHealthBar/TextureProgressBar
+@onready var timer := %Timer
+@onready var score := %Score
 
 var player_health: Health = null
 var lazy_health: float = 500
