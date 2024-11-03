@@ -37,7 +37,8 @@ func _ready() -> void:
 	#so we should, like, load the ship skeleton here
 	for child in skeleton.get_children():
 		if child is ShipCell:
-			for obj in child.get_node("%Objectives").get_children():
+			for obj_scene in child.get_node("%Objectives").get_children():
+				var obj: Objective = obj_scene.get_node("%Objective")
 				objectives.push_back(obj)
 				
 	for obj: Objective in objectives:

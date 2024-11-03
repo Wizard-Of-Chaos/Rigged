@@ -19,6 +19,6 @@ texture = ExtResource("2_g7hw0")
 unique_name_in_owner = true
 script = ExtResource("3_letk0")
 
-[node name="HackObjective" type="Node" parent="." index="4"]
+[node name="Objective" type="Node" parent="." index="4"]
 unique_name_in_owner = true
 script = ExtResource("4_1hrdi")

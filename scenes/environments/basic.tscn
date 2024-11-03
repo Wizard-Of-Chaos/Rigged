@@ -31,6 +31,7 @@ environment = SubResource("Environment_vah5s")
 unique_name_in_owner = true
 
 [node name="PlayerSpawner" type="MultiplayerSpawner" parent="."]
+_spawnable_scenes = PackedStringArray("")
 spawn_path = NodePath("../Players")
 
 [node name="UI" type="Node" parent="."]
