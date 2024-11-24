@@ -4,7 +4,7 @@ extends Node
 signal lobby_list_fetched
 signal lobby_members_fetched
 signal lobby_created
-signal lobby_joined
+signal lobby_joined(owner_id: int)
 
 const LOBBY_CMDLINE_ARG := "+connect_lobby"
 var lobby_id: int = 0
@@ -110,13 +110,14 @@ func fetch_lobbies() -> void:
 
 @rpc("call_local", "any_peer", "reliable")
 func register_player(p_steam_id: int, p_num_players: int) -> void:
+	print("Received %s players from client")
 	if p_num_players > 1:
 		# decrease our lobby limit if we get multiple players connecting on one peer
 		Steam.setLobbyMemberLimit(lobby_id, lobby_max - (p_num_players - 1))
 	var id := multiplayer.get_remote_sender_id()
 	GameState.add_remote_players(p_num_players, id)
 	players[id] = p_steam_id
-	client_register_player(GameState.players, p_steam_id, id)
+	client_register_player.rpc(GameState.players, p_steam_id, id)
 
 
 @rpc("call_remote", "authority", "reliable")
@@ -133,6 +134,7 @@ func _on_multiplayer_peer_connected(id: int):
 	if id == 1:
 		#get_tree().get_first_node_in_group("main").set_multiplayer_authority(1)
 		var local_active_players := GameState.players.filter(func(player_info): return player_info.is_active and player_info.peer_id == multiplayer.get_unique_id())
+		print("Sending %s local actives to host" % local_active_players.size())
 		register_player.rpc_id(id, SteamGlobal.steam_id, local_active_players.size())
 
 
@@ -192,7 +194,7 @@ func _on_lobby_joined(p_lobby_id: int, _permissions: int, _locked: bool, p_respo
 		var peer := SteamMultiplayerPeer.new()
 		peer.create_client(owner_id, 0)
 		multiplayer.set_multiplayer_peer(peer)
-	lobby_joined.emit()
+	lobby_joined.emit(owner_id)
 	get_lobby_members()
 	# TODO: force a scene transition somewhere to actually join the lobby
 

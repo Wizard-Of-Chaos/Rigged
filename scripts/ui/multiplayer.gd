@@ -9,7 +9,7 @@ var _selected_lobby: int
 func _ready() -> void:
 	SteamLobbyGlobal.lobby_list_fetched.connect(_on_lobby_list_fetched)
 	SteamLobbyGlobal.lobby_created.connect(_on_lobby_created)
-	#SteamLobbyGlobal.lobby_joined.connect(_on_lobby_joined)
+	SteamLobbyGlobal.lobby_joined.connect(_on_lobby_joined)
 	SteamLobbyGlobal.fetch_lobbies()
 
 
@@ -63,7 +63,8 @@ func _on_lobby_created() -> void:
 	#get_tree().change_scene_to_file("res://multiplayer_lobby.tscn")
 
 
-func _on_lobby_joined() -> void:
-	get_tree().get_first_node_in_group("main").change_to_scene(load("res://scenes/menus/multiplayer_lobby.tscn"))
+func _on_lobby_joined(owner_id: int) -> void:
+	if (SteamGlobal.steam_id == owner_id):
+		get_tree().get_first_node_in_group("main").change_to_scene(load("res://scenes/menus/multiplayer_lobby.tscn"))
 
 	#get_tree().change_scene_to_file("res://scenes/menus/multiplayer_lobby.tscn")
