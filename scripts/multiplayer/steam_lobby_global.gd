@@ -110,7 +110,7 @@ func fetch_lobbies() -> void:
 
 @rpc("call_local", "any_peer", "reliable")
 func register_player(p_steam_id: int, p_num_players: int) -> void:
-	print("Received %s players from client")
+	print("Received %s players from client" % p_num_players)
 	if p_num_players > 1:
 		# decrease our lobby limit if we get multiple players connecting on one peer
 		Steam.setLobbyMemberLimit(lobby_id, lobby_max - (p_num_players - 1))
@@ -133,6 +133,7 @@ func unregister_player(p_peer_id: int):
 func _on_multiplayer_peer_connected(id: int):
 	if id == 1:
 		#get_tree().get_first_node_in_group("main").set_multiplayer_authority(1)
+		GameState.change_my_peer_id(multiplayer.get_unique_id())
 		var local_active_players := GameState.players.filter(func(player_info): return player_info.is_active and player_info.peer_id == multiplayer.get_unique_id())
 		print("Sending %s local actives to host" % local_active_players.size())
 		register_player.rpc_id(id, SteamGlobal.steam_id, local_active_players.size())

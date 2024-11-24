@@ -8,6 +8,7 @@ var players: Array[Dictionary] = []
 var active_players: int
 const MAX_PLAYERS: int = 4
 var current_state: State = State.MAIN_MENU
+var old_peer: int = 1
 
 func _ready() -> void:
 	for i in range(0, MAX_PLAYERS):
@@ -71,6 +72,13 @@ func add_remote_players(p_num_players: int, p_peer_id: int) -> void:
 			players_to_register -= 1
 			if players_to_register == 0:
 				break
+
+func change_my_peer_id(p_new_peer_id: int) -> void:
+	for player in players:
+		if player.peer_id == old_peer:
+			player.peer_id = p_new_peer_id
+	
+	old_peer = p_new_peer_id
 
 enum State {
 	MAIN_MENU,
