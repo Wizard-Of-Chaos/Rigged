@@ -131,6 +131,7 @@ func unregister_player(p_peer_id: int):
 
 func _on_multiplayer_peer_connected(id: int):
 	if id == 1:
+		#get_tree().get_first_node_in_group("main").set_multiplayer_authority(1)
 		var local_active_players := GameState.players.filter(func(player_info): return player_info.is_active and player_info.peer_id == multiplayer.get_unique_id())
 		register_player.rpc_id(id, SteamGlobal.steam_id, local_active_players.size())
 
@@ -184,7 +185,8 @@ func _on_lobby_joined(p_lobby_id: int, _permissions: int, _locked: bool, p_respo
 		print("Failed to join lobby: %s" % fail_reason)
 		return
 	lobby_id = p_lobby_id
-	get_tree().get_first_node_in_group("main").change_to_scene(load("res://scenes/menus/multiplayer_lobby.tscn"))
+	#get_tree().get_first_node_in_group("main").change_to_scene(load("res://scenes/menus/multiplayer_lobby.tscn"))
+	get_tree().get_first_node_in_group("main").remove_active_scene()
 	var owner_id := Steam.getLobbyOwner(p_lobby_id)
 	if owner_id != SteamGlobal.steam_id:
 		var peer := SteamMultiplayerPeer.new()
