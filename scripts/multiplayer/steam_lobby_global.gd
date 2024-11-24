@@ -186,9 +186,9 @@ func _on_lobby_joined(p_lobby_id: int, _permissions: int, _locked: bool, p_respo
 		return
 	lobby_id = p_lobby_id
 	#get_tree().get_first_node_in_group("main").change_to_scene(load("res://scenes/menus/multiplayer_lobby.tscn"))
-	get_tree().get_first_node_in_group("main").remove_active_scene()
 	var owner_id := Steam.getLobbyOwner(p_lobby_id)
 	if owner_id != SteamGlobal.steam_id:
+		get_tree().get_first_node_in_group("main").remove_active_scene()
 		var peer := SteamMultiplayerPeer.new()
 		peer.create_client(owner_id, 0)
 		multiplayer.set_multiplayer_peer(peer)
