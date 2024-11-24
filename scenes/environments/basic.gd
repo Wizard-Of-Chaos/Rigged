@@ -2,6 +2,7 @@ extends Node3D
 
 @onready var players := %Players
 @onready var UI := %UI
+@onready var player_spawner := %PlayerSpawner
 
 #TODO: Set up this when loading a skeleton in ready rather than straight from the start
 @onready var skeleton := $ShipSkeleton
@@ -24,13 +25,7 @@ func _ready() -> void:
 		var player_scene := preload("res://scenes/actors/player.tscn")
 		for player in GameState.players.filter(func(player_info): return player_info.is_active):
 			print("setting up player %s" % player)
-			var player_instance := player_scene.instantiate()
-			player_instance.name = "Player%s" % player.peer_id
-			player_instance.position.x = randi_range(-20, 20)
-			player_instance.position.z = randi_range(106, 118)
-			player_instance.position.y = 10
-			player_instance.set_multiplayer_authority(player.peer_id)
-			players.add_child(player_instance, true)
+			player_spawner.spawn(player)
 			#player_instance.set_up.rpc(player)
 		camera_setup.rpc()
 	

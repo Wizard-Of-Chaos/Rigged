@@ -1,7 +1,8 @@
-[gd_scene load_steps=8 format=3 uid="uid://hmt035h6sxel"]
+[gd_scene load_steps=9 format=3 uid="uid://hmt035h6sxel"]
 
 [ext_resource type="Script" path="res://scenes/environments/basic.gd" id="1_cwyym"]
 [ext_resource type="Texture2D" uid="uid://ctp4itiqnj44y" path="res://assets/skies/comet_base.png" id="3_0hj3v"]
+[ext_resource type="Script" path="res://scripts/nodes/player_spawner.gd" id="3_kgn0s"]
 [ext_resource type="PackedScene" uid="uid://cm077tu1aasnc" path="res://scenes/environments/skeletons/test.tscn" id="6_efa4a"]
 [ext_resource type="PackedScene" uid="uid://cs0os6w6n40w6" path="res://scenes/actors/crab_enemy.tscn" id="7_orjix"]
 
@@ -31,8 +32,10 @@ environment = SubResource("Environment_vah5s")
 unique_name_in_owner = true
 
 [node name="PlayerSpawner" type="MultiplayerSpawner" parent="."]
+unique_name_in_owner = true
 _spawnable_scenes = PackedStringArray("res://scenes/actors/player.tscn")
 spawn_path = NodePath("../Players")
+script = ExtResource("3_kgn0s")
 
 [node name="UI" type="Node" parent="."]
 unique_name_in_owner = true

@@ -150,7 +150,7 @@ bones/42/rotation = Quaternion(-0.0218794, -0.00270206, -0.0337067, 0.999189)
 bones/43/rotation = Quaternion(0.00803014, -0.00844163, 0.722212, 0.691574)
 
 [node name="GunAttachment" parent="MeshRoot/Guy/Armature/Skeleton3D" index="6"]
-transform = Transform3D(-0.841555, -0.454878, 0.291328, 0.518588, -0.529419, 0.671404, -0.151172, 0.716103, 0.681429, -1.21238, 1.27981, 0.136871)
+transform = Transform3D(-0.800809, -0.496235, 0.335377, 0.583414, -0.519628, 0.624209, -0.135482, 0.695528, 0.705626, -1.27192, 1.33087, 0.132193)
 
 [node name="SpineIK" parent="MeshRoot/Guy/Armature/Skeleton3D" index="7"]
 target_node = NodePath("../../../../../IKTarget")
