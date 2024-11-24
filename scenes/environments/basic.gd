@@ -29,8 +29,9 @@ func _ready() -> void:
 			player_instance.position.x = randi_range(-20, 20)
 			player_instance.position.z = randi_range(106, 118)
 			player_instance.position.y = 10
+			player_instance.set_multiplayer_authority(player.peer_id)
 			players.add_child(player_instance, true)
-			player_instance.set_up.rpc(player)
+			#player_instance.set_up.rpc(player)
 		camera_setup.rpc()
 	
 	#TODO: this should be set up from the loaded ship skeleton

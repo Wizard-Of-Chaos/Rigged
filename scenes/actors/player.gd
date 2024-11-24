@@ -24,6 +24,18 @@ func _ready():
 	move_controller.move_state_set.connect(anim_controller._on_set_move_state)
 	anim_controller.set_tree(anim_tree)
 	pistol.visible = false
+	if get_multiplayer_authority() == multiplayer.get_unique_id():
+		var player_info
+		for player in GameState.players:
+			# TODO: kinda hacky, find a better way
+			if player.peer_id == multiplayer.get_unique_id() and player.player_node == null:
+				player_info = player
+				break
+		player_info.player_node = self
+		devices = player_info.devices
+		move_controller.player_state_set.connect(anim_controller._on_set_player_state)
+		pistol.visible = false
+		ik_arm.stop()
 
 var move_direction: Vector3: 
 	get:
@@ -54,13 +66,13 @@ func moving() -> bool:
 
 @rpc("any_peer", "call_local", "reliable")
 func set_up(player_info: Dictionary) -> void:
-	set_multiplayer_authority(player_info.peer_id)
+	print("setting up a player!")
 	if player_info.peer_id == multiplayer.get_unique_id():
 		player_info.player_node = self
 		devices = player_info.devices
 		move_controller.player_state_set.connect(anim_controller._on_set_player_state)
 		pistol.visible = false
-		ik_arm.stop() 
+		ik_arm.stop()
 
 
 func _input(event: InputEvent):
