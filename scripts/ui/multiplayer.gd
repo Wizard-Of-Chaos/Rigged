@@ -9,7 +9,7 @@ var _selected_lobby: int
 func _ready() -> void:
 	SteamLobbyGlobal.lobby_list_fetched.connect(_on_lobby_list_fetched)
 	SteamLobbyGlobal.lobby_created.connect(_on_lobby_created)
-	SteamLobbyGlobal.lobby_joined.connect(_on_lobby_joined)
+	#SteamLobbyGlobal.lobby_joined.connect(_on_lobby_joined)
 	SteamLobbyGlobal.fetch_lobbies()
 
 
@@ -19,7 +19,7 @@ func _on_back_pressed() -> void:
 
 #	get_tree().change_scene_to_file("res://scenes/menus/menu.tscn")
 
-
+ 
 func _on_host_pressed() -> void:
 	# TODO: add some loading graphic or something so user knows game hasn't frozen up
 	# TODO: pop up a modal to let user customize some attributes of the lobby?

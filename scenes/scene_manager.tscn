@@ -6,7 +6,7 @@
 script = ExtResource("1_bktow")
 
 [node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
-_spawnable_scenes = PackedStringArray("res://scenes/environments/basic.tscn", "res://scenes/menus/menu.tscn", "res://scenes/menus/multiplayer_lobby.tscn", "res://scenes/menus/multiplayer.tscn", "")
+_spawnable_scenes = PackedStringArray("res://scenes/environments/basic.tscn", "res://scenes/menus/menu.tscn", "res://scenes/menus/multiplayer_lobby.tscn", "res://scenes/menus/multiplayer.tscn")
 spawn_path = NodePath("../CurrentScene")
 
 [node name="CurrentScene" type="Node" parent="."]
