@@ -29,7 +29,7 @@ General/banks_path="res://assets/audio/Build/Desktop"
 [application]
 
 config/name="RiggedTest"
-run/main_scene="res://scenes/menus/menu.tscn"
+run/main_scene="res://scenes/scene_manager.tscn"
 config/features=PackedStringArray("4.3", "Forward Plus")
 config/icon="res://icon.svg"
 
@@ -60,6 +60,10 @@ version_control/autoload_on_startup=true
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/fmod/plugin.cfg")
+
+[global_group]
+
+main="mainNode"
 
 [gui]
 

@@ -15,7 +15,9 @@ func _ready() -> void:
 
 func _on_back_pressed() -> void:
 	# TODO: implement a scene manager and preload all these menus
-	get_tree().change_scene_to_file("res://scenes/menus/menu.tscn")
+	get_tree().get_first_node_in_group("main").change_to_scene(load("res://scenes/menus/menu.tscn"))
+
+#	get_tree().change_scene_to_file("res://scenes/menus/menu.tscn")
 
 
 func _on_host_pressed() -> void:
@@ -62,4 +64,6 @@ func _on_lobby_created() -> void:
 
 
 func _on_lobby_joined() -> void:
-	get_tree().change_scene_to_file("res://scenes/menus/multiplayer_lobby.tscn")
+	get_tree().get_first_node_in_group("main").change_to_scene(load("res://scenes/menus/multiplayer_lobby.tscn"))
+
+	#get_tree().change_scene_to_file("res://scenes/menus/multiplayer_lobby.tscn")

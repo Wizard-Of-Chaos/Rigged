@@ -30,7 +30,9 @@ func _input(event: InputEvent) -> void:
 
 func _on_start_pressed():
 	audio_manager.fade_out_song()
-	get_tree().change_scene_to_file("res://scenes/environments/basic.tscn")
+	get_tree().get_first_node_in_group("main").change_to_scene(load("res://scenes/environments/basic.tscn"))
+
+	#get_tree().change_scene_to_file("res://scenes/environments/basic.tscn")
 	
 func _on_options_pressed():
 	pass
@@ -41,7 +43,9 @@ func _on_quit_pressed():
 
 func _on_multiplayer_pressed():
 	audio_manager.fade_out_song()
-	get_tree().change_scene_to_file("res://scenes/menus/multiplayer.tscn")
+	get_tree().get_first_node_in_group("main").change_to_scene(load("res://scenes/menus/multiplayer.tscn"))
+
+	#get_tree().change_scene_to_file("res://scenes/menus/multiplayer.tscn")
 
 
 func _on_new_player_registered(slot: int):

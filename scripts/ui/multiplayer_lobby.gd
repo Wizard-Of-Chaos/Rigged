@@ -25,14 +25,17 @@ func _on_lobby_members_fetched() -> void:
 
 func _on_leave_pressed() -> void:
 	SteamLobbyGlobal.leave_lobby()
-	get_tree().change_scene_to_file("res://scenes/menus/multiplayer.tscn")
+	get_tree().get_first_node_in_group("main").change_to_scene(load("res://scenes/menus/multiplayer.tscn"))
+	#get_tree().change_scene_to_file("res://scenes/menus/multiplayer.tscn")
 
 
 func _on_start_pressed() -> void:
 	# clients should not be here
 	assert(multiplayer.is_server())
-	start_game.rpc()
+	get_tree().get_first_node_in_group("main").change_to_scene(load("res://scenes/environments/basic.tscn"))
 
-@rpc("call_local", "any_peer", "reliable")
-func start_game():
-	get_tree().change_scene_to_file("res://scenes/environments/basic.tscn")
+	#start_game.rpc()
+
+#@rpc("call_local", "any_peer", "reliable")
+#func start_game():
+#	get_tree().change_scene_to_file("res://scenes/environments/basic.tscn")

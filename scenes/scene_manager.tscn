@@ -1,0 +1,13 @@
+[gd_scene load_steps=2 format=3 uid="uid://r02ja7wi8uu3"]
+
+[ext_resource type="Script" path="res://scenes/scene_manager.gd" id="1_bktow"]
+
+[node name="SceneManager" type="Node" groups=["main"]]
+script = ExtResource("1_bktow")
+
+[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
+_spawnable_scenes = PackedStringArray("res://scenes/environments/basic.tscn", "res://scenes/menus/menu.tscn", "res://scenes/menus/multiplayer_lobby.tscn", "res://scenes/menus/multiplayer.tscn", "")
+spawn_path = NodePath("../CurrentScene")
+
+[node name="CurrentScene" type="Node" parent="."]
+unique_name_in_owner = true
