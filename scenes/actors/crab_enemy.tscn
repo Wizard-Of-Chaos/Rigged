@@ -46,10 +46,10 @@ radius = 25.0
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_qrlff"]
 properties/0/path = NodePath("Health:current_health")
 properties/0/spawn = true
-properties/0/replication_mode = 1
+properties/0/replication_mode = 2
 properties/1/path = NodePath("Health:max_health")
 properties/1/spawn = true
-properties/1/replication_mode = 1
+properties/1/replication_mode = 2
 properties/2/path = NodePath(".:position")
 properties/2/spawn = true
 properties/2/replication_mode = 1
@@ -58,13 +58,13 @@ properties/3/spawn = true
 properties/3/replication_mode = 1
 properties/4/path = NodePath(".:scale")
 properties/4/spawn = true
-properties/4/replication_mode = 1
+properties/4/replication_mode = 2
 properties/5/path = NodePath("MeshRoot/AnimationTree:parameters/move_blend/blend_position")
 properties/5/spawn = true
-properties/5/replication_mode = 1
+properties/5/replication_mode = 2
 properties/6/path = NodePath("MeshRoot/AnimationTree:parameters/move_anim_speed/scale")
 properties/6/spawn = true
-properties/6/replication_mode = 1
+properties/6/replication_mode = 2
 
 [node name="Enemy" type="CharacterBody3D"]
 script = ExtResource("1_s5u4j")
