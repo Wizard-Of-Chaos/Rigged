@@ -62,7 +62,7 @@ func _physics_process(delta):
 				# print(hp.current_health)
 		else:
 			print("Whiffed!")
-		gun_effect_spawner.spawn([stats, global_position, hit_point])
+		gun_effect_spawner.spawn([stats.weapon_range, global_position, hit_point])
 	
 	_time_since_last_shot += delta
 	if _time_since_last_shot > stats.firing_speed:
