@@ -6,7 +6,7 @@ class_name Weapon
 @export var camera: Camera3D
 @export var room_muffling = "close"
 @export var reverb = "medium_room"
-@onready var effect_node: Node = %EffectNode
+@onready var effect_node: Node = $EffectNode
 
 var _laser_fx := preload("res://scenes/fx/laser.tscn")
 
@@ -65,7 +65,7 @@ func _physics_process(delta):
 		var laser: Laser = _laser_fx.instantiate()
 		laser.wep_stats = stats
 		laser.position = global_position
-		laser.look_at(hit_point)
+		laser.look_at_from_position(global_position, hit_point)
 		effect_node.add_child(laser)
 		
 	_time_since_last_shot += delta
