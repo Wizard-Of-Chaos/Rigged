@@ -56,8 +56,8 @@ func _physics_process(delta):
 			if collider.has_node("%Health"):
 				print("Hit something with a health node!")
 				var hp: Health = collider.get_node("%Health")
-				hp.damage(stats.damage)
-				print(hp.current_health)
+				hp.damage.rpc_id(hp.get_multiplayer_authority(), stats.damage)
+				# print(hp.current_health)
 		else:
 			print("Whiffed!")
 		

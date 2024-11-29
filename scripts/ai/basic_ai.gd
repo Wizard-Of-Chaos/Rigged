@@ -37,6 +37,9 @@ var _floating: bool = false
 func moving() -> bool:
 	return abs(move_direction.x) > 0 or abs(move_direction.y) > 0 or abs(move_direction.z) > 0
 
+func _on_health_changed(old: int, new: int):
+	print("Took damage - %s, %s" % [old, new])
+
 func _on_body_entered(body: Node3D):
 	print("Player...?")
 	if body.has_node("Health"):
@@ -49,7 +52,7 @@ func _on_body_exited(body: Node3D):
 		current_ai_state = ai_states["idle"]
 		_pursuit_target = null
 
-func _physics_process(delta: float):
+func ai_state_update(delta: float):
 	var move_dir = move_direction
 	if current_ai_state.name == "pursuit":
 		_forward_strength = 1.0
@@ -73,4 +76,9 @@ func _physics_process(delta: float):
 	mesh_root.rotation.y = lerp_angle(mesh_root.rotation.y, target_rotation, move_controller.rotation_speed * delta)
 	velocity = velocity.lerp(move_controller.get_velocity(is_on_floor()), move_controller.acceleration * delta)
 	_jumped = false
+
+func _physics_process(delta: float):
+	
+	if get_multiplayer_authority() == multiplayer.get_unique_id():
+		ai_state_update(delta)
 	move_and_slide()

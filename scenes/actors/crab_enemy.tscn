@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://cs0os6w6n40w6"]
+[gd_scene load_steps=19 format=3 uid="uid://cs0os6w6n40w6"]
 
 [ext_resource type="PackedScene" uid="uid://0n5kcw8f6ntr" path="res://assets/actors/crabbo/crabbo.blend" id="1_7hqhc"]
 [ext_resource type="Script" path="res://scripts/ai/basic_ai.gd" id="1_s5u4j"]
@@ -29,6 +29,7 @@ snap = 1.0
 
 [sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_njux4"]
 resource_local_to_scene = true
+graph_offset = Vector2(-184.781, -3.13976)
 nodes/move_anim_speed/node = SubResource("AnimationNodeTimeScale_2ega0")
 nodes/move_anim_speed/position = Vector2(100, 80)
 nodes/move_blend/node = SubResource("AnimationNodeBlendSpace1D_3ltxe")
@@ -41,6 +42,29 @@ height = 3.55415
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_1uqp7"]
 radius = 25.0
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_qrlff"]
+properties/0/path = NodePath("Health:current_health")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath("Health:max_health")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+properties/2/path = NodePath(".:position")
+properties/2/spawn = true
+properties/2/replication_mode = 1
+properties/3/path = NodePath(".:rotation")
+properties/3/spawn = true
+properties/3/replication_mode = 1
+properties/4/path = NodePath(".:scale")
+properties/4/spawn = true
+properties/4/replication_mode = 1
+properties/5/path = NodePath("MeshRoot/AnimationTree:parameters/move_blend/blend_position")
+properties/5/spawn = true
+properties/5/replication_mode = 1
+properties/6/path = NodePath("MeshRoot/AnimationTree:parameters/move_anim_speed/scale")
+properties/6/spawn = true
+properties/6/replication_mode = 1
 
 [node name="Enemy" type="CharacterBody3D"]
 script = ExtResource("1_s5u4j")
@@ -108,8 +132,12 @@ shape = SubResource("SphereShape3D_1uqp7")
 unique_name_in_owner = true
 script = ExtResource("10_jinnk")
 
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_qrlff")
+
 [connection signal="move_state_set" from="MoveController" to="AnimController" method="_on_set_move_state"]
 [connection signal="body_entered" from="DetectionRadius" to="." method="_on_body_entered"]
 [connection signal="body_exited" from="DetectionRadius" to="." method="_on_body_exited"]
+[connection signal="health_changed" from="Health" to="." method="_on_health_changed"]
 
 [editable path="MeshRoot"]
