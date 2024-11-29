@@ -150,7 +150,7 @@ func _physics_process(delta: float):
 		else:
 			move_controller.set_move_state(move_states["sprint"] if _sprinting else move_states["run"])
 	else:
-		move_controller.set_move_dir(Vector3(0,0,0))
+		#move_controller.set_move_dir(Vector3(0,0,0))
 		move_controller.set_move_state(move_states["float"] if _floating else move_states["idle"])
 	var target_rotation: float = atan2(move_controller.direction.x, move_controller.direction.z) - rotation.y
 	mesh_root.rotation.y = lerp_angle(mesh_root.rotation.y, target_rotation, move_controller.rotation_speed * delta)
