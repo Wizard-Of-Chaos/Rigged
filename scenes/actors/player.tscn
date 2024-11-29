@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://j0585521habw"]
+[gd_scene load_steps=19 format=3 uid="uid://j0585521habw"]
 
 [ext_resource type="Script" path="res://scenes/actors/player.gd" id="1_83kd4"]
 [ext_resource type="Resource" uid="uid://sy1amvuhsyeo" path="res://scripts/move_states/idle.tres" id="2_tc54y"]
@@ -12,6 +12,7 @@
 [ext_resource type="Resource" uid="uid://i2x300gyt23r" path="res://scripts/player_states/weapon_equipped.tres" id="8_kwc1u"]
 [ext_resource type="Resource" uid="uid://d0fxd7unks3p1" path="res://scripts/player_states/disabled.tres" id="9_085gu"]
 [ext_resource type="Script" path="res://scripts/nodes/move_controller.gd" id="11_qjfjj"]
+[ext_resource type="Script" path="res://scripts/guns/gun_effect_spawner.gd" id="12_3n7k8"]
 [ext_resource type="Script" path="res://scripts/nodes/health.gd" id="13_3wql2"]
 [ext_resource type="Script" path="res://scripts/nodes/animation_controller.gd" id="13_rrm0i"]
 
@@ -150,11 +151,12 @@ bones/42/rotation = Quaternion(-0.0218794, -0.00270206, -0.0337067, 0.999189)
 bones/43/rotation = Quaternion(0.00803014, -0.00844163, 0.722212, 0.691574)
 
 [node name="GunAttachment" parent="MeshRoot/Guy/Armature/Skeleton3D" index="6"]
-transform = Transform3D(-0.809997, -0.487501, 0.325986, 0.569671, -0.522049, 0.634789, -0.139278, 0.699876, 0.700567, -1.25942, 1.31933, 0.132913)
+transform = Transform3D(-0.842129, -0.454241, 0.29066, 0.517684, -0.529952, 0.67168, -0.151069, 0.716112, 0.681441, -1.21146, 1.27905, 0.136995)
 
-[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="MeshRoot/Guy/Armature/Skeleton3D/GunAttachment/Pistol" index="1"]
+[node name="GunSpawner" type="MultiplayerSpawner" parent="MeshRoot/Guy/Armature/Skeleton3D/GunAttachment/Pistol" index="1"]
 _spawnable_scenes = PackedStringArray("res://scenes/fx/laser.tscn")
 spawn_path = NodePath("../EffectNode")
+script = ExtResource("12_3n7k8")
 
 [node name="EffectNode" type="Node" parent="MeshRoot/Guy/Armature/Skeleton3D/GunAttachment/Pistol" index="2"]
 
