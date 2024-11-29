@@ -6,6 +6,7 @@ class_name Weapon
 @export var camera: Camera3D
 @export var room_muffling = "close"
 @export var reverb = "medium_room"
+@onready var effect_node: Node = %EffectNode
 
 var _laser_fx := preload("res://scenes/fx/laser.tscn")
 
@@ -62,12 +63,12 @@ func _physics_process(delta):
 			print("Whiffed!")
 		
 		var laser: Laser = _laser_fx.instantiate()
-		get_tree().current_scene.add_child(laser)
 		laser.position = global_position
 		laser.target_position = Vector3(0, stats.weapon_range, 0)
 		laser.look_at(hit_point)
 		laser.length = stats.weapon_range
 		laser.beam_mesh.mesh.height = stats.weapon_range
+		effect_node.add_child(laser)
 		
 	_time_since_last_shot += delta
 	if _time_since_last_shot > stats.firing_speed:

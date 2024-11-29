@@ -150,7 +150,14 @@ bones/42/rotation = Quaternion(-0.0218794, -0.00270206, -0.0337067, 0.999189)
 bones/43/rotation = Quaternion(0.00803014, -0.00844163, 0.722212, 0.691574)
 
 [node name="GunAttachment" parent="MeshRoot/Guy/Armature/Skeleton3D" index="6"]
-transform = Transform3D(-0.746042, -0.542553, 0.386081, 0.656512, -0.502266, 0.562781, -0.111423, 0.673325, 0.730904, -1.33738, 1.39979, 0.131281)
+transform = Transform3D(-0.789912, -0.5062, 0.346153, 0.599121, -0.516605, 0.611714, -0.130824, 0.69058, 0.711341, -1.28613, 1.34456, 0.131574)
+
+[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="MeshRoot/Guy/Armature/Skeleton3D/GunAttachment/Pistol" index="1"]
+_spawnable_scenes = PackedStringArray("res://scenes/fx/laser.tscn")
+spawn_path = NodePath("../EffectNode")
+
+[node name="EffectNode" type="Node" parent="MeshRoot/Guy/Armature/Skeleton3D/GunAttachment/Pistol" index="2"]
+unique_name_in_owner = true
 
 [node name="SpineIK" parent="MeshRoot/Guy/Armature/Skeleton3D" index="7"]
 target_node = NodePath("../../../../../IKTarget")

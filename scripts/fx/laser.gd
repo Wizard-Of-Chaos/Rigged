@@ -22,7 +22,8 @@ func _process(delta):
 		#beam_mesh.position.y = length / 2
 	current_lifetime += delta
 	if(current_lifetime >= max_lifetime):
-		queue_free()
+		if get_multiplayer_authority() == multiplayer.get_unique_id():
+			queue_free()
 		return
 	
 	beam_mesh.mesh.height = length * (1 - (current_lifetime / max_lifetime))
