@@ -11,6 +11,7 @@ var timer: float = 0
 var max_timer: float = 0
 var objectives: Array
 var total_score: int = 0
+var _is_camera_setup: bool = false
 
 func _on_add_score(obj: Objective):
 	if obj.completed == true:
@@ -27,7 +28,6 @@ func _ready() -> void:
 			print("setting up player %s" % player)
 			player_spawner.spawn(player)
 			#player_instance.set_up.rpc(player)
-		camera_setup.rpc()
 	
 	#TODO: this should be set up from the loaded ship skeleton
 	#so we should, like, load the ship skeleton here
@@ -74,6 +74,9 @@ func camera_setup():
 		player.pistol.camera = player.camera_root.camera
 		
 func _physics_process(delta):
+	if not _is_camera_setup:
+		camera_setup.rpc()
+		_is_camera_setup = true
 	timer += delta
 	if timer >= max_timer:
 		pass
