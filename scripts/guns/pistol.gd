@@ -63,11 +63,9 @@ func _physics_process(delta):
 			print("Whiffed!")
 		
 		var laser: Laser = _laser_fx.instantiate()
+		laser.wep_stats = stats
 		laser.position = global_position
-		laser.target_position = Vector3(0, stats.weapon_range, 0)
 		laser.look_at(hit_point)
-		laser.length = stats.weapon_range
-		laser.beam_mesh.mesh.height = stats.weapon_range
 		effect_node.add_child(laser)
 		
 	_time_since_last_shot += delta
