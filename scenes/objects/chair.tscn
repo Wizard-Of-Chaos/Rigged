@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://bbyqsdy0xoc5p"]
+
+[ext_resource type="PackedScene" uid="uid://c6ep4ana1gt18" path="res://assets/objects/chair/chair.blend" id="1_a15cu"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_plkuy"]
+size = Vector3(0.5, 1.447, 0.905)
+
+[node name="chair" instance=ExtResource("1_a15cu")]
+
+[node name="RigidBody3D" type="RigidBody3D" parent="." index="1"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBody3D" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.741882, -0.190134)
+shape = SubResource("BoxShape3D_plkuy")

@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://ke6h8wl4tlrl"]
+
+[ext_resource type="PackedScene" uid="uid://dg7iwlu4ookm4" path="res://assets/objects/large_screen/screen.blend" id="1_kmivw"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_52d5p"]
+size = Vector3(3.5, 2.33606, 1.277)
+
+[node name="screen" instance=ExtResource("1_kmivw")]
+
+[node name="RigidBody3D" type="RigidBody3D" parent="." index="1"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBody3D" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.16803, -0.576111)
+shape = SubResource("BoxShape3D_52d5p")
