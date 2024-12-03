@@ -41,6 +41,6 @@ script = ExtResource("3_kgn0s")
 unique_name_in_owner = true
 
 [node name="Enemy" parent="." instance=ExtResource("7_orjix")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14.3345, 0.0968523, 109.395)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14.3345, 0.0968523, 102.395)
 
 [node name="ShipSkeleton" parent="." instance=ExtResource("6_efa4a")]

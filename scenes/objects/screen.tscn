@@ -8,6 +8,7 @@ size = Vector3(3.5, 2.33606, 1.277)
 [node name="screen" instance=ExtResource("1_kmivw")]
 
 [node name="RigidBody3D" type="RigidBody3D" parent="." index="1"]
+freeze = true
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBody3D" index="0"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.16803, -0.576111)

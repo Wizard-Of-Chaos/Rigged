@@ -37,8 +37,8 @@ nodes/move_blend/position = Vector2(-220, 120)
 node_connections = [&"move_anim_speed", 0, &"move_blend", &"output", 0, &"move_anim_speed"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_dpi4b"]
-radius = 1.219
-height = 3.55415
+radius = 0.704419
+height = 1.9011
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_1uqp7"]
 radius = 25.0
@@ -80,6 +80,7 @@ current_ai_state = ExtResource("4_wwcp3")
 
 [node name="MeshRoot" parent="." instance=ExtResource("1_7hqhc")]
 unique_name_in_owner = true
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
 
 [node name="Skeleton3D" parent="MeshRoot/Armature" index="0"]
 bones/7/rotation = Quaternion(0.267082, 0.654727, 0.654727, -0.267082)
@@ -109,7 +110,7 @@ parameters/move_anim_speed/scale = 1.0
 parameters/move_blend/blend_position = 0.0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.68466, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.88466, 0)
 shape = SubResource("CapsuleShape3D_dpi4b")
 
 [node name="MoveController" type="Node" parent="."]
