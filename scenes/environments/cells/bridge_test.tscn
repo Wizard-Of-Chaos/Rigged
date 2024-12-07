@@ -1,6 +1,7 @@
-[gd_scene load_steps=8 format=3 uid="uid://mewsdmxnjj07"]
+[gd_scene load_steps=9 format=3 uid="uid://mewsdmxnjj07"]
 
 [ext_resource type="PackedScene" uid="uid://bcaeq3clth6ce" path="res://scenes/environments/ship_cell.tscn" id="1_p6tgl"]
+[ext_resource type="Material" uid="uid://1dtlb2e3ypc6" path="res://assets/materials/material_resources/metal_tiles.tres" id="2_4ls33"]
 [ext_resource type="Material" uid="uid://ddqx00k2h33qj" path="res://assets/materials/material_resources/metal.tres" id="2_bx8yr"]
 [ext_resource type="PackedScene" uid="uid://bub6wpasaqt0m" path="res://scenes/objectives/hack_panel.tscn" id="3_bdki7"]
 [ext_resource type="PackedScene" uid="uid://c5ljf8vpdygo6" path="res://scenes/objects/table.tscn" id="4_crxra"]
@@ -21,7 +22,7 @@ entry_position_sizes = {
 
 [node name="CSGBox3D" type="CSGBox3D" parent="." index="0"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, -8)
-material_override = ExtResource("2_bx8yr")
+material_override = ExtResource("2_4ls33")
 use_collision = true
 size = Vector3(40, 0.5, 16)
 
