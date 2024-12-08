@@ -2,7 +2,7 @@ class_name Objective
 extends Node
 
 #Signal to something else that the objective is done
-signal completed_objective_set(Objective)
+signal completed_objective_set(obj: Objective)
 
 @export var min_value: int = 30
 @export var max_value: int = 60

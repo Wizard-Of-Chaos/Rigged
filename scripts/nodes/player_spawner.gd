@@ -4,12 +4,6 @@ extends MultiplayerSpawner
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	self.spawn_function = spawn_player
-	pass # Replace with function body.
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
 
 func spawn_player(data: Dictionary) -> Node:
 	var player_scene = preload("res://scenes/actors/player.tscn")

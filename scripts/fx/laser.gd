@@ -5,10 +5,10 @@ class_name Laser
 var max_lifetime: float = 0.75
 var current_lifetime: float = 0.0
 var length: float = 0.0
-var range: float
+var laser_range: float
 
 func _ready():
-	beam_mesh.mesh.height = range
+	beam_mesh.mesh.height = laser_range
 
 func we_are_in_the_beam(start: Vector3, end: Vector3):
 	position = start

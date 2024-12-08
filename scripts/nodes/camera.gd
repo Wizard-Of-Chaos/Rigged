@@ -56,6 +56,7 @@ func _on_set_player_state(player_state: PlayerStateChange):
 		player_tween.tween_property(camera, "position", camera.position + Vector3(0, 0, .75), .1).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
 		#player_tween.parallel().tween_property(camera, "fov", camera.fov + 60, .1).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
 	else:
+		player_tween.kill()
 		printerr("Unknown state combo [%s, %s]" % [player_state.old_state.name, player_state.new_state.name])
 
 

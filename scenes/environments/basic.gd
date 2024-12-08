@@ -23,7 +23,6 @@ func _on_add_score(obj: Objective):
 func _ready() -> void:
 	GameState.set_state(GameState.State.IN_GAME)
 	if multiplayer.is_server():
-		var player_scene := preload("res://scenes/actors/player.tscn")
 		for player in GameState.players.filter(func(player_info): return player_info.is_active):
 			print("setting up player %s" % player)
 			player_spawner.spawn(player)
