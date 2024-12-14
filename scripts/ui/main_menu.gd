@@ -4,10 +4,9 @@ extends Control
 @onready var add_player_button: Button = %AddPlayerButton
 @onready var start_button: Button = %Start
 #@onready var music: FmodEventEmitter2D = %Music
-@onready var audio_manager: FmodBankLoader = MasterBank
 
 
-var _menu_music ="event:/music/placeholder/mess_default"
+var _menu_music := "event:/music/placeholder/mess_default"
 
 func _ready():
 	var player_count: int = 1
@@ -19,7 +18,7 @@ func _ready():
 	start_button.grab_focus()
 	GameState.new_player_registered.connect(_on_new_player_registered)
 	#only o
-	audio_manager.play_song(_menu_music)
+	MasterBank.play_song(_menu_music)
 	#audio_manager.stop_song()
 	#music.play()
 	
@@ -29,7 +28,7 @@ func _input(event: InputEvent) -> void:
 		GameState.register_player(GameState.active_players, [event.device])
 
 func _on_start_pressed():
-	audio_manager.fade_out_song()
+	MasterBank.fade_out_song()
 	get_tree().get_first_node_in_group("main").change_to_scene(load("res://scenes/environments/basic.tscn"))
 
 	#get_tree().change_scene_to_file("res://scenes/environments/basic.tscn")
@@ -42,7 +41,7 @@ func _on_quit_pressed():
 	get_tree().quit()
 
 func _on_multiplayer_pressed():
-	audio_manager.fade_out_song()
+	MasterBank.fade_out_song()
 	get_tree().get_first_node_in_group("main").change_to_scene(load("res://scenes/menus/multiplayer.tscn"))
 
 	#get_tree().change_scene_to_file("res://scenes/menus/multiplayer.tscn")
