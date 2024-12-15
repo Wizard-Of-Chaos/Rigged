@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://b4merjo4t8747"]
+
+[ext_resource type="PackedScene" uid="uid://c6lpcnvtlevqj" path="res://scenes/environments/ship_skeleton.tscn" id="1_dth83"]
+
+[node name="ShipSkeleton" instance=ExtResource("1_dth83")]
+max_rooms = 10
+generate_on_ready = true

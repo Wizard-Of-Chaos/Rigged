@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://scenes/environments/basic.gd" id="1_cwyym"]
 [ext_resource type="Texture2D" uid="uid://ctp4itiqnj44y" path="res://assets/skies/comet_base.png" id="3_0hj3v"]
 [ext_resource type="Script" path="res://scripts/nodes/player_spawner.gd" id="3_kgn0s"]
-[ext_resource type="PackedScene" uid="uid://cm077tu1aasnc" path="res://scenes/environments/skeletons/test.tscn" id="6_efa4a"]
+[ext_resource type="PackedScene" uid="uid://b4merjo4t8747" path="res://scenes/environments/skeletons/proc_gen_test.tscn" id="5_7mwej"]
 [ext_resource type="PackedScene" uid="uid://cs0os6w6n40w6" path="res://scenes/actors/crab_enemy.tscn" id="7_orjix"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_tpcud"]
@@ -43,4 +43,4 @@ unique_name_in_owner = true
 [node name="Enemy" parent="." instance=ExtResource("7_orjix")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14.3345, 0.0968523, 102.395)
 
-[node name="ShipSkeleton" parent="." instance=ExtResource("6_efa4a")]
+[node name="ShipSkeleton" parent="." instance=ExtResource("5_7mwej")]

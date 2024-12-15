@@ -26,9 +26,7 @@ cells_wide = 4
 cells_long = 8
 cells_tall = 2
 bridge_position = Vector3(0, 0, 4)
-bridge_size = Vector3(2, 1, 1)
 engines_position = Vector3(0, 0, -4)
-engines_size = Vector3(2, 1, 1)
 oxygen_position = Vector3(-1, 0, -1)
 airlock_positions = {
 0: Vector3(2, 0, 0),
