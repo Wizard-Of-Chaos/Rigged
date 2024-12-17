@@ -1,0 +1,22 @@
+[gd_resource type="StandardMaterial3D" load_steps=7 format=3 uid="uid://dx7w1fbamu83"]
+
+[ext_resource type="Texture2D" uid="uid://ducc72nune3gv" path="res://assets/materials/metal_walls/Substance_graph_basecolor.png" id="1_kb302"]
+[ext_resource type="Texture2D" uid="uid://b5loiqlj6x33n" path="res://assets/materials/metal_walls/Substance_graph_ambientocclusion.png" id="2_5df6j"]
+[ext_resource type="Texture2D" uid="uid://sudmhsmvwra4" path="res://assets/materials/metal_walls/Substance_graph_height.png" id="3_evsrm"]
+[ext_resource type="Texture2D" uid="uid://dsqs7ul2ip0mx" path="res://assets/materials/metal_walls/Substance_graph_metallic.png" id="4_hmo77"]
+[ext_resource type="Texture2D" uid="uid://djtyji7h8awyt" path="res://assets/materials/metal_walls/Substance_graph_normal.png" id="5_nnlte"]
+[ext_resource type="Texture2D" uid="uid://ddcm008pubuh4" path="res://assets/materials/metal_walls/Substance_graph_roughness.png" id="6_acuvc"]
+
+[resource]
+albedo_texture = ExtResource("1_kb302")
+metallic = 1.0
+metallic_texture = ExtResource("4_hmo77")
+roughness_texture = ExtResource("6_acuvc")
+normal_enabled = true
+normal_texture = ExtResource("5_nnlte")
+ao_enabled = true
+ao_texture = ExtResource("2_5df6j")
+heightmap_enabled = true
+heightmap_texture = ExtResource("3_evsrm")
+uv1_scale = Vector3(0.18, 0.18, 0.18)
+uv1_triplanar = true

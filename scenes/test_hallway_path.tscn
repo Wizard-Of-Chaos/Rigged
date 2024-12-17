@@ -1,12 +1,14 @@
-[gd_scene load_steps=2 format=3 uid="uid://bwgnyvkmxixhl"]
+[gd_scene load_steps=4 format=3 uid="uid://bwgnyvkmxixhl"]
 
+[ext_resource type="Material" uid="uid://1dtlb2e3ypc6" path="res://assets/materials/material_resources/metal_tiles.tres" id="1_ep42j"]
 [ext_resource type="Material" uid="uid://ddqx00k2h33qj" path="res://assets/materials/material_resources/metal.tres" id="1_gh8jh"]
+[ext_resource type="Material" uid="uid://dx7w1fbamu83" path="res://assets/materials/material_resources/metal_walls.tres" id="2_mgu4d"]
 
 [node name="TestHallwayPath" type="Node3D"]
 transform = Transform3D(0.999646, 0, 0, 0, 0.999646, 0, 0, 0, 0.999646, 0, 0, 0)
 
 [node name="FLOOR" type="CSGPolygon3D" parent="."]
-material_override = ExtResource("1_gh8jh")
+material_override = ExtResource("1_ep42j")
 use_collision = true
 polygon = PackedVector2Array(-2.25, 0, -2.25, 0.1, 2.25, 0.1, 2.25, 0)
 mode = 2
@@ -21,7 +23,7 @@ path_u_distance = 1.0
 path_joined = false
 
 [node name="RIGHT_WALL" type="CSGPolygon3D" parent="."]
-material_override = ExtResource("1_gh8jh")
+material_override = ExtResource("2_mgu4d")
 use_collision = true
 polygon = PackedVector2Array(-2.35, 0, -2.35, 4.5, -2.25, 4.5, -2.25, 0)
 mode = 2
@@ -36,7 +38,7 @@ path_u_distance = 1.0
 path_joined = false
 
 [node name="LEFT_WALL" type="CSGPolygon3D" parent="."]
-material_override = ExtResource("1_gh8jh")
+material_override = ExtResource("2_mgu4d")
 use_collision = true
 polygon = PackedVector2Array(2.35, 0, 2.35, 4.5, 2.25, 4.5, 2.25, 0)
 mode = 2
