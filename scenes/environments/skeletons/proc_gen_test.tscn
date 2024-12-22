@@ -1,7 +1,10 @@
-[gd_scene load_steps=2 format=3 uid="uid://b4merjo4t8747"]
+[gd_scene load_steps=3 format=3 uid="uid://b4merjo4t8747"]
 
 [ext_resource type="PackedScene" uid="uid://c6lpcnvtlevqj" path="res://scenes/environments/ship_skeleton.tscn" id="1_dth83"]
+[ext_resource type="MeshLibrary" uid="uid://dngrp0d0y51ei" path="res://scenes/environments/cells/proc_gen_test_mesh_library.tres" id="2_1jhvf"]
 
 [node name="ShipSkeleton" instance=ExtResource("1_dth83")]
+mesh_library = ExtResource("2_1jhvf")
 max_rooms = 10
+room_types = Array[String]([])
 generate_on_ready = true

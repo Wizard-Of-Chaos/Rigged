@@ -1,14 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://c6lpcnvtlevqj"]
+[gd_scene load_steps=3 format=3 uid="uid://c6lpcnvtlevqj"]
 
 [ext_resource type="Script" path="res://scenes/environments/ship_skeleton.gd" id="1_vyora"]
 [ext_resource type="PackedScene" uid="uid://bcwlupfy4s8sf" path="res://scenes/environments/cells/oxygen_test.tscn" id="2_6rkph"]
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_kmu2j"]
-
-[node name="ShipSkeleton" type="Area3D"]
+[node name="ShipSkeleton" type="GridMap"]
 script = ExtResource("1_vyora")
 room_types = Array[PackedScene]([ExtResource("2_6rkph")])
-
-[node name="ShipBox" type="CollisionShape3D" parent="."]
-unique_name_in_owner = true
-shape = SubResource("BoxShape3D_kmu2j")
+metadata/_editor_floor_ = Vector3(0, 0, 0)
