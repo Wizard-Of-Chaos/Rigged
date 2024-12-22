@@ -27,3 +27,9 @@ unique_name_in_owner = true
 
 [node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_mbaou")
+
+[node name="Equipment" type="Node" parent="."]
+unique_name_in_owner = true
+
+[node name="Inventory" type="Node" parent="."]
+unique_name_in_owner = true
