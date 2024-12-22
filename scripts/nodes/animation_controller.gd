@@ -15,11 +15,11 @@ func _on_set_move_state(move_state: MoveState):
 	move_tween.tween_property(anim_tree, "parameters/move_blend/blend_position", move_state.id, .25)
 	move_tween.parallel().tween_property(anim_tree, "parameters/move_anim_speed/scale", move_state.animation_speed, .7)
 
-func _on_set_player_state(player_state: PlayerStateChange):
+func _on_set_actor_state(actor_state_change: ActorStateChange):
 	if aim_tween:
 		aim_tween.kill()
 	aim_tween = anim_tree.create_tween()
 	var blend_factor = 0
-	if player_state.new_state.name == "weapon_aiming":
+	if actor_state_change.new_state == ActorStateList.weapon_aiming:
 		blend_factor = 1
 	aim_tween.tween_property(anim_tree, "parameters/aim_blend/blend_amount", blend_factor, .15)

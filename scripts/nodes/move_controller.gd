@@ -2,23 +2,24 @@ class_name MoveController
 extends Node
 
 signal move_state_set(MoveState)
-signal player_state_set(PlayerStateChange)
+signal actor_state_set(ActorStateChange)
 
-@export var current_player_state: PlayerState
-@export var old_player_state: PlayerState
+@export var current_actor_state: ActorState
+@export var old_actor_state: ActorState
 @export var rotation_speed: float = 8
 @export var direction: Vector3
 @export var acceleration: float
 @export var speed: float
 @export var rotation: float = 0
+
 var up: Vector3 = Vector3.UP
 var jump_speed = 1200
 var fall_speed = 40
 var grounded := true
 
-func get_state_change(new_state: PlayerState) -> PlayerStateChange:
-	var ret: PlayerStateChange = PlayerStateChange.new()
-	ret.old_state = old_player_state
+func get_state_change(new_state: ActorState) -> ActorStateChange:
+	var ret: ActorStateChange = ActorStateChange.new()
+	ret.old_state = old_actor_state
 	ret.new_state = new_state
 	return ret
 
@@ -29,10 +30,10 @@ func set_move_state(p_move_state: MoveState):
 	grounded = p_move_state.grounded
 	move_state_set.emit(p_move_state)
 
-func set_player_state(p_playerstate: PlayerState):
-	old_player_state = current_player_state
-	current_player_state = p_playerstate
-	player_state_set.emit(get_state_change(p_playerstate))
+func set_actor_state(p_actorstate: ActorState):
+	old_actor_state = current_actor_state
+	current_actor_state = p_actorstate
+	actor_state_set.emit(get_state_change(p_actorstate))
 
 func set_move_dir(p_direction: Vector3):
 	direction = p_direction.rotated(up, rotation)

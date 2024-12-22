@@ -65,12 +65,12 @@ func camera_setup():
 		camera.remote_transform.remote_path = player.ik_target.get_path()
 				
 		player.move_controller.move_state_set.connect(camera._on_set_move_state)
-		player.move_controller.player_state_set.connect(camera._on_set_player_state)
+		player.move_controller.actor_state_set.connect(camera._on_set_actor_state)
 		camera.set_cam_rotation.connect(player._on_camera_root_set_cam_rotation)
 		player.camera_root = camera
 		
 		#TODO: there has to be a better way of maintaining access to the camera from the gun with possible gun swaps
-		player.pistol.camera = player.camera_root.camera
+		# player.pistol.camera = player.camera_root.camera
 		
 func _physics_process(delta):
 	if not _is_camera_setup:
