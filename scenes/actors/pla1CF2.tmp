@@ -17,7 +17,6 @@ shape = SubResource("CapsuleShape3D_52xqs")
 
 [node name="MeshRoot" parent="." index="1" instance=ExtResource("2_ltr6a")]
 unique_name_in_owner = true
-transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
 
 [node name="Skeleton3D" parent="MeshRoot/Armature" index="0"]
 bones/0/position = Vector3(0, 0.127686, -0.0757272)
@@ -79,14 +78,6 @@ bones/41/rotation = Quaternion(-0.412053, 0.0219237, -0.108667, 0.904391)
 bones/42/rotation = Quaternion(-0.0218794, -0.00270206, -0.0337067, 0.999189)
 bones/43/rotation = Quaternion(0.00803014, -0.00844163, 0.722212, 0.691574)
 
-[node name="ArmIK" type="SkeletonIK3D" parent="MeshRoot/Armature/Skeleton3D" index="6"]
-root_bone = &"Shoulder.r"
-tip_bone = &"Hand.r"
-
-[node name="SpineIK" type="SkeletonIK3D" parent="MeshRoot/Armature/Skeleton3D" index="7"]
-root_bone = &"Spine0"
-tip_bone = &"Spine3"
-
 [node name="AnimationTree" type="AnimationTree" parent="MeshRoot" index="2"]
 tree_root = ExtResource("3_3mx8c")
 anim_player = NodePath("../AnimationPlayer")
@@ -96,12 +87,6 @@ parameters/jump/internal_active = false
 parameters/jump/request = 0
 parameters/move_anim_speed/scale = 1.0
 parameters/move_blend/blend_position = 3.0
-
-[node name="AnimController" parent="." index="3" node_paths=PackedStringArray("anim_tree")]
-anim_tree = NodePath("../MeshRoot/AnimationTree")
-
-[node name="RemoteTransform" parent="." index="5"]
-transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 2.2, 0)
 
 [node name="FmodListener3D" type="FmodListener3D" parent="." index="7"]
 

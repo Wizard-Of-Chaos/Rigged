@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="AIState" load_steps=2 format=3 uid="uid://ctsfymsid3bd6"]
 
-[ext_resource type="Script" path="res://scripts/ai/ai_states/ai_state.gd" id="1_76yfs"]
+[ext_resource type="Script" path="res://scripts/actors/ai/ai_states/ai_state.gd" id="1_76yfs"]
 
 [resource]
 script = ExtResource("1_76yfs")

@@ -16,7 +16,6 @@ normal_enabled = true
 normal_texture = ExtResource("5_lxqed")
 ao_enabled = true
 ao_texture = ExtResource("2_ggim5")
-heightmap_enabled = true
 heightmap_texture = ExtResource("3_vt3in")
 uv1_scale = Vector3(0.25, 0.25, 0.25)
 uv1_triplanar = true

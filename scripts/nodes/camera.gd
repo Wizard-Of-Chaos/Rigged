@@ -43,21 +43,21 @@ func _on_set_move_state(move_state: MoveState):
 	move_tween.tween_property(camera, "fov", move_state.fov, .5).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
 
 
-func _on_set_player_state(player_state: PlayerStateChange):
-	if player_state.new_state.id == player_state.old_state.id:
+func _on_set_actor_state(actor_state: ActorStateChange):
+	if actor_state.new_state == actor_state.old_state:
 		return
 	if player_tween:
 		player_tween.kill()
 	player_tween = create_tween()
-	if player_state.old_state.name == "weapon_equipped" and player_state.new_state.name == "weapon_aiming":
+	if actor_state.old_state == ActorStateList.weapon_equipped and actor_state.new_state == ActorStateList.weapon_aiming:
 		player_tween.tween_property(camera, "position", camera.position + Vector3(0, 0, -.75), .1).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
 		#player_tween.parallel().tween_property(camera, "fov", camera.fov - 60, .1).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
-	elif player_state.old_state.name == "weapon_aiming":
+	elif actor_state.old_state == ActorStateList.weapon_aiming:
 		player_tween.tween_property(camera, "position", camera.position + Vector3(0, 0, .75), .1).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
 		#player_tween.parallel().tween_property(camera, "fov", camera.fov + 60, .1).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
 	else:
 		player_tween.kill()
-		printerr("Unknown state combo [%s, %s]" % [player_state.old_state.name, player_state.new_state.name])
+		printerr("Unknown state combo [%s, %s]" % [actor_state.old_state.name, actor_state.new_state.name])
 
 
 func cam_input(event: InputEventMouseMotion) -> void:
