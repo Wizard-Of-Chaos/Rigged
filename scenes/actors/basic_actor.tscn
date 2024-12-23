@@ -1,9 +1,11 @@
-[gd_scene load_steps=6 format=3 uid="uid://drgx362yg0d2f"]
+[gd_scene load_steps=8 format=3 uid="uid://drgx362yg0d2f"]
 
 [ext_resource type="Script" path="res://scripts/actors/base_actor.gd" id="1_vj5q8"]
 [ext_resource type="Script" path="res://scripts/nodes/move_controller.gd" id="1_yid41"]
 [ext_resource type="Script" path="res://scripts/nodes/animation_controller.gd" id="3_7fuhn"]
 [ext_resource type="Script" path="res://scripts/nodes/health.gd" id="4_lw3ko"]
+[ext_resource type="Script" path="res://scripts/actors/equipment.gd" id="5_wmoxt"]
+[ext_resource type="Script" path="res://scripts/actors/inventory.gd" id="6_cy5uw"]
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_mbaou"]
 
@@ -30,6 +32,8 @@ replication_config = SubResource("SceneReplicationConfig_mbaou")
 
 [node name="Equipment" type="Node" parent="."]
 unique_name_in_owner = true
+script = ExtResource("5_wmoxt")
 
 [node name="Inventory" type="Node" parent="."]
 unique_name_in_owner = true
+script = ExtResource("6_cy5uw")
