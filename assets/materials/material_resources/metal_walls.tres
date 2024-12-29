@@ -1,4 +1,4 @@
-[gd_resource type="StandardMaterial3D" load_steps=7 format=3 uid="uid://dx7w1fbamu83"]
+[gd_resource type="StandardMaterial3D" load_steps=7 format=3 uid="uid://dmnuk314mqfu"]
 
 [ext_resource type="Texture2D" uid="uid://ducc72nune3gv" path="res://assets/materials/metal_walls/Substance_graph_basecolor.png" id="1_kb302"]
 [ext_resource type="Texture2D" uid="uid://b5loiqlj6x33n" path="res://assets/materials/metal_walls/Substance_graph_ambientocclusion.png" id="2_5df6j"]

@@ -1,8 +1,7 @@
-[gd_scene load_steps=9 format=3 uid="uid://mewsdmxnjj07"]
+[gd_scene load_steps=8 format=3 uid="uid://mewsdmxnjj07"]
 
 [ext_resource type="PackedScene" uid="uid://bcaeq3clth6ce" path="res://scenes/environments/ship_cell.tscn" id="1_p6tgl"]
-[ext_resource type="Material" uid="uid://1dtlb2e3ypc6" path="res://assets/materials/material_resources/metal_tiles.tres" id="2_4ls33"]
-[ext_resource type="Material" uid="uid://ddqx00k2h33qj" path="res://assets/materials/material_resources/metal.tres" id="2_bx8yr"]
+[ext_resource type="PackedScene" uid="uid://gvgqbyqvype" path="res://assets/environments/bridgecell/bridge_cell.blend" id="2_1xo0m"]
 [ext_resource type="PackedScene" uid="uid://bub6wpasaqt0m" path="res://scenes/objectives/hack_panel.tscn" id="3_bdki7"]
 [ext_resource type="PackedScene" uid="uid://c5ljf8vpdygo6" path="res://scenes/objects/table.tscn" id="4_crxra"]
 [ext_resource type="PackedScene" uid="uid://bbyqsdy0xoc5p" path="res://scenes/objects/chair.tscn" id="5_75duo"]
@@ -20,47 +19,25 @@ entry_position_sizes = {
 1: 0
 }
 
-[node name="CSGBox3D" type="CSGBox3D" parent="." index="0"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, -8)
-material_override = ExtResource("2_4ls33")
-use_collision = true
-size = Vector3(40, 0.5, 16)
-
-[node name="CSGBox3D" type="CSGBox3D" parent="CSGBox3D" index="0"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.2, 16)
-material_override = ExtResource("2_bx8yr")
-use_collision = true
-size = Vector3(20, 0.1, 16)
-
-[node name="CSGBox3D2" type="CSGBox3D" parent="CSGBox3D/CSGBox3D" index="0"]
-transform = Transform3D(0.573576, 0, 0.819152, 0, 1, 0, -0.819152, 0, 0.573576, 8.03574, 0, -4.83037)
-material_override = ExtResource("2_bx8yr")
-use_collision = true
-size = Vector3(18.9199, 0.1, 16)
-
-[node name="CSGBox3D3" type="CSGBox3D" parent="CSGBox3D/CSGBox3D" index="1"]
-transform = Transform3D(0.573576, 0, -0.819152, 0, 1, 0, 0.819152, 0, 0.573576, -8.036, 0, -4.83)
-material_override = ExtResource("2_bx8yr")
-use_collision = true
-size = Vector3(18.9199, 0.1, 16)
+[node name="bridge_cell" parent="." index="0" instance=ExtResource("2_1xo0m")]
 
 [node name="HackPanel" parent="Objectives" index="0" instance=ExtResource("3_bdki7")]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0.1, 5)
 
 [node name="table" parent="." index="3" instance=ExtResource("4_crxra")]
-transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0.5, -10.3096)
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0.944704, -10.3096)
 
 [node name="chair" parent="." index="4" instance=ExtResource("5_75duo")]
-transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -1.3, 0.5, -11.0814)
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -1.3, 0.944704, -11.0814)
 
 [node name="chair2" parent="." index="5" instance=ExtResource("5_75duo")]
-transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -1.3, 0.5, -9.57112)
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -1.3, 0.944704, -9.57112)
 
 [node name="chair3" parent="." index="6" instance=ExtResource("5_75duo")]
-transform = Transform3D(1.31134e-07, 0, -1, 0, 1, 0, 1, 0, 1.31134e-07, 1.3, 0.5, -9.57112)
+transform = Transform3D(1.31134e-07, 0, -1, 0, 1, 0, 1, 0, 1.31134e-07, 1.3, 0.944704, -9.57112)
 
 [node name="chair4" parent="." index="7" instance=ExtResource("5_75duo")]
-transform = Transform3D(1.31134e-07, 0, -1, 0, 1, 0, 1, 0, 1.31134e-07, 1.3, 0.5, -11.0814)
+transform = Transform3D(1.31134e-07, 0, -1, 0, 1, 0, 1, 0, 1.31134e-07, 1.3, 0.944704, -11.0814)
 
 [node name="console" parent="." index="8" instance=ExtResource("6_y807j")]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 5, 0.1, 12)
@@ -93,16 +70,16 @@ transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -11.5,
 transform = Transform3D(1.31134e-07, 0, -1, 0, 1, 0, 1, 0, 1.31134e-07, -10, 0.5, -4)
 
 [node name="table2" parent="." index="18" instance=ExtResource("4_crxra")]
-transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0.5, -4.30958)
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0.944704, -4.30958)
 
 [node name="chair9" parent="." index="19" instance=ExtResource("5_75duo")]
-transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -1.3, 0.5, -5.08137)
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -1.3, 0.944704, -5.08137)
 
 [node name="chair10" parent="." index="20" instance=ExtResource("5_75duo")]
-transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -1.3, 0.5, -3.57112)
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -1.3, 0.944704, -3.57112)
 
 [node name="chair11" parent="." index="21" instance=ExtResource("5_75duo")]
-transform = Transform3D(1.31134e-07, 0, -1, 0, 1, 0, 1, 0, 1.31134e-07, 1.3, 0.5, -3.57112)
+transform = Transform3D(1.31134e-07, 0, -1, 0, 1, 0, 1, 0, 1.31134e-07, 1.3, 0.944704, -3.57112)
 
 [node name="chair12" parent="." index="22" instance=ExtResource("5_75duo")]
-transform = Transform3D(1.31134e-07, 0, -1, 0, 1, 0, 1, 0, 1.31134e-07, 1.3, 0.5, -5.08137)
+transform = Transform3D(1.31134e-07, 0, -1, 0, 1, 0, 1, 0, 1.31134e-07, 1.3, 0.944704, -5.08137)

@@ -25,13 +25,11 @@ point_count = 4
 cells_wide = 4
 cells_long = 8
 cells_tall = 2
-bridge_position = Vector3(0, 0, 4)
-engines_position = Vector3(0, 0, -4)
-oxygen_position = Vector3(-1, 0, -1)
 airlock_positions = {
 0: Vector3(2, 0, 0),
 1: Vector3(-2, 0, 0)
 }
+room_types = Array[PackedScene]([])
 
 [node name="EngineCell" parent="." index="0" instance=ExtResource("2_uq48t")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -112)

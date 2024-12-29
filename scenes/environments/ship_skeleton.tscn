@@ -1,9 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://c6lpcnvtlevqj"]
+[gd_scene load_steps=2 format=3 uid="uid://c6lpcnvtlevqj"]
 
 [ext_resource type="Script" path="res://scenes/environments/ship_skeleton.gd" id="1_vyora"]
-[ext_resource type="PackedScene" uid="uid://bcwlupfy4s8sf" path="res://scenes/environments/cells/oxygen_test.tscn" id="2_6rkph"]
 
-[node name="ShipSkeleton" type="GridMap"]
+[node name="ShipSkeleton" type="Node3D"]
 script = ExtResource("1_vyora")
-room_types = Array[PackedScene]([ExtResource("2_6rkph")])
 metadata/_editor_floor_ = Vector3(0, 0, 0)

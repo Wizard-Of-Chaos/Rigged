@@ -6,8 +6,8 @@ func _ready() -> void:
 	self.spawn_function = spawn_player
 
 func spawn_player(data: Dictionary) -> Node:
-	var player_scene = preload("res://scenes/actors/player.tscn")
-	var player_instance = player_scene.instantiate()
+	var player_scene := preload("res://scenes/actors/player.tscn")
+	var player_instance: Player = player_scene.instantiate()
 	player_instance.name = "Player%s" % data.peer_id
 	player_instance.position.x = randi_range(-10, 10)
 	player_instance.position.z = randi_range(106, 118)
