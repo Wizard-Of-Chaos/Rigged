@@ -1,5 +1,44 @@
-[gd_scene load_steps=2 format=3 uid="uid://cmlddbedpbbhp"]
+[gd_scene load_steps=7 format=3 uid="uid://cmlddbedpbbhp"]
 
 [ext_resource type="PackedScene" uid="uid://clg4pke06evar" path="res://assets/environments/corridor_legos/hall_ramp.blend" id="1_xhubq"]
 
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_jup7m"]
+points = PackedVector3Array(2.25, 0, 4, -2.25, 0, 4, 2.25, -4, -4, -2.25, -4, -4, 2.25, -0.2, 4, -2.25, -0.2, 4, 2.25, -4.2, -4, -2.25, -4.2, -4)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_8axxx"]
+size = Vector3(4.5, 0.2, 2)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_1trw8"]
+size = Vector3(4.5, 0.2, 4.5)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_hnume"]
+size = Vector3(4.5, 0.2, 2.8)
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_djqaa"]
+points = PackedVector3Array(2.25, 0, 4, 2.25, 4, 4, 2.25, 0, -4, 2.25, -4, -4, 2.45, 0, 4, 2.45, 4, 4, 2.45, 0, -4, 2.45, -4, -4)
+
 [node name="HallRamp" instance=ExtResource("1_xhubq")]
+
+[node name="StaticBody3D" type="StaticBody3D" parent="." index="1"]
+
+[node name="Floor" type="CollisionShape3D" parent="StaticBody3D" index="0"]
+shape = SubResource("ConvexPolygonShape3D_jup7m")
+
+[node name="Ceiling1" type="CollisionShape3D" parent="StaticBody3D" index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.1, 3)
+shape = SubResource("BoxShape3D_8axxx")
+
+[node name="Ceiling2" type="CollisionShape3D" parent="StaticBody3D" index="2"]
+transform = Transform3D(1, 0, 0, 0, 0.894911, 0.446245, 0, -0.446245, 0.894911, 0, 3.1, 0)
+shape = SubResource("BoxShape3D_1trw8")
+
+[node name="Ceiling3" type="CollisionShape3D" parent="StaticBody3D" index="3"]
+transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 1.2, -2.9)
+shape = SubResource("BoxShape3D_hnume")
+
+[node name="WallLeft" type="CollisionShape3D" parent="StaticBody3D" index="4"]
+shape = SubResource("ConvexPolygonShape3D_djqaa")
+
+[node name="WallRight" type="CollisionShape3D" parent="StaticBody3D" index="5"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.7, 0, 0)
+shape = SubResource("ConvexPolygonShape3D_djqaa")

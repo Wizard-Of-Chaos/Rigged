@@ -1,5 +1,36 @@
-[gd_scene load_steps=2 format=3 uid="uid://cqxwo13cjlnxa"]
+[gd_scene load_steps=5 format=3 uid="uid://cqxwo13cjlnxa"]
 
 [ext_resource type="PackedScene" uid="uid://byu7ev8daio1p" path="res://assets/environments/corridor_legos/hall_Y.blend" id="1_7f5s2"]
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_vtucx"]
+size = Vector3(8, 0.2, 6.3)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_oaffs"]
+size = Vector3(2, 4, 0.2)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_7uf1n"]
+size = Vector3(8, 4, 0.2)
+
 [node name="HallY" instance=ExtResource("1_7f5s2")]
+
+[node name="StaticBody3D" type="StaticBody3D" parent="." index="1"]
+
+[node name="Floor" type="CollisionShape3D" parent="StaticBody3D" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0.85)
+shape = SubResource("BoxShape3D_vtucx")
+
+[node name="Ceiling" type="CollisionShape3D" parent="StaticBody3D" index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.1, 0.85)
+shape = SubResource("BoxShape3D_vtucx")
+
+[node name="FrontLeft" type="CollisionShape3D" parent="StaticBody3D" index="2"]
+transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 2.9, 2, 2.9)
+shape = SubResource("BoxShape3D_oaffs")
+
+[node name="FrontRight" type="CollisionShape3D" parent="StaticBody3D" index="3"]
+transform = Transform3D(0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, 0.707107, -2.9, 2, 2.9)
+shape = SubResource("BoxShape3D_oaffs")
+
+[node name="BackWall" type="CollisionShape3D" parent="StaticBody3D" index="4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, -2.3)
+shape = SubResource("BoxShape3D_7uf1n")

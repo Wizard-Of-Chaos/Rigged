@@ -1,5 +1,44 @@
-[gd_scene load_steps=2 format=3 uid="uid://cp4lq4xfkkp6t"]
+[gd_scene load_steps=5 format=3 uid="uid://cp4lq4xfkkp6t"]
 
 [ext_resource type="PackedScene" uid="uid://cpu4deqqentwk" path="res://assets/environments/corridor_legos/hall_L.blend" id="1_20l7r"]
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_osjyd"]
+size = Vector3(6.2, 0.2, 6.3)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ma4k3"]
+size = Vector3(0.2, 4, 2.2)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_wm5le"]
+size = Vector3(0.2, 4, 2.6)
+
 [node name="HallL" instance=ExtResource("1_20l7r")]
+
+[node name="StaticBody3D" type="StaticBody3D" parent="." index="1"]
+
+[node name="Floor" type="CollisionShape3D" parent="StaticBody3D" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.9, -0.1, 0.85)
+shape = SubResource("BoxShape3D_osjyd")
+
+[node name="Ceiling" type="CollisionShape3D" parent="StaticBody3D" index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.9, 4.1, 0.85)
+shape = SubResource("BoxShape3D_osjyd")
+
+[node name="CornerWall" type="CollisionShape3D" parent="StaticBody3D" index="2"]
+transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, -3.15, 2, 3.15)
+shape = SubResource("BoxShape3D_ma4k3")
+
+[node name="Curve1" type="CollisionShape3D" parent="StaticBody3D" index="3"]
+transform = Transform3D(0.973211, 0, 0.229914, 0, 1, 0, -0.229914, 0, 0.973211, 2.04824, 2, 2.70681)
+shape = SubResource("BoxShape3D_wm5le")
+
+[node name="Curve4" type="CollisionShape3D" parent="StaticBody3D" index="4"]
+transform = Transform3D(0.23005, 0, 0.973179, 0, 1, 0, -0.973179, 0, 0.23005, -2.707, 2, -2.048)
+shape = SubResource("BoxShape3D_wm5le")
+
+[node name="Curve2" type="CollisionShape3D" parent="StaticBody3D" index="5"]
+transform = Transform3D(0.880544, 0, 0.473965, 0, 1, 0, -0.473965, 0, 0.880544, 1.14824, 2, 0.306815)
+shape = SubResource("BoxShape3D_wm5le")
+
+[node name="Curve3" type="CollisionShape3D" parent="StaticBody3D" index="6"]
+transform = Transform3D(0.471335, 0, 0.881954, 0, 1, 0, -0.881954, 0, 0.471335, -0.307, 2, -1.148)
+shape = SubResource("BoxShape3D_wm5le")
