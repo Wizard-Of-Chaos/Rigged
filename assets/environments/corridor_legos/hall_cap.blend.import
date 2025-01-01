@@ -31,7 +31,34 @@ animation/trimming=false
 animation/remove_immutable_tracks=true
 animation/import_rest_as_RESET=false
 import_script/path=""
-_subresources={}
+_subresources={
+"nodes": {
+"PATH:Left-High": {
+"import/skip_import": true
+},
+"PATH:Left-Low": {
+"import/skip_import": true
+},
+"PATH:Right-High": {
+"import/skip_import": true
+},
+"PATH:Right-Low": {
+"import/skip_import": true
+},
+"PATH:cellbounds+x": {
+"import/skip_import": true
+},
+"PATH:cellbounds+xy": {
+"import/skip_import": true
+},
+"PATH:cellbounds-x": {
+"import/skip_import": true
+},
+"PATH:cellbounds-xy": {
+"import/skip_import": true
+}
+}
+}
 blender/nodes/visible=0
 blender/nodes/active_collection_only=false
 blender/nodes/punctual_lights=true

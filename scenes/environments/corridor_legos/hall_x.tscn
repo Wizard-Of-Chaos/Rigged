@@ -1,0 +1,5 @@
+[gd_scene load_steps=2 format=3 uid="uid://cs0762h7hti4n"]
+
+[ext_resource type="PackedScene" uid="uid://5xmu4eet5u1k" path="res://assets/environments/corridor_legos/hall_X.blend" id="1_y4ufd"]
+
+[node name="HallX" instance=ExtResource("1_y4ufd")]

@@ -1,0 +1,5 @@
+[gd_scene load_steps=2 format=3 uid="uid://cmlddbedpbbhp"]
+
+[ext_resource type="PackedScene" uid="uid://clg4pke06evar" path="res://assets/environments/corridor_legos/hall_ramp.blend" id="1_xhubq"]
+
+[node name="HallRamp" instance=ExtResource("1_xhubq")]
