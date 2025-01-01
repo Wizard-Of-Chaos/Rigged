@@ -4,6 +4,9 @@
 [ext_resource type="PackedScene" uid="uid://bcwlupfy4s8sf" path="res://scenes/environments/cells/oxygen_test.tscn" id="2_25kvy"]
 
 [node name="ShipSkeleton" instance=ExtResource("1_dth83")]
+cells_wide = 16
+cells_long = 32
+cells_tall = 1
 max_rooms = 10
 room_types = Array[PackedScene]([ExtResource("2_25kvy")])
 generate_on_ready = true

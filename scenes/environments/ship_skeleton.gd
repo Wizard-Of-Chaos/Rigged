@@ -29,6 +29,7 @@ const CELL_DIMENSIONS := Vector3i(CELL_LENGTH, CELL_HEIGHT, CELL_WIDTH)
 
 var _rng: RandomNumberGenerator
 var _tile_map: Dictionary
+var cell_at_infinity: Vector3i
 
 class ShipAStar3D extends AStar3D:
 	func _compute_cost(from_id: int, to_id: int) -> float:
@@ -48,6 +49,7 @@ class ShipAStar3D extends AStar3D:
 		return dist.x + dist.y + dist.z
 
 func _ready():
+	cell_at_infinity = Vector3i(cells_long + 1, cells_tall + 1, cells_wide + 1)
 	_rng = RandomNumberGenerator.new()
 	if rng_seed == 0:
 		_rng.randomize()
@@ -99,7 +101,7 @@ func generate():
 	var unused_verts := _tile_map.keys()
 	for key in _tile_map:
 		costs[key] = INF
-		res[key] = Vector3i(cells_long + 1, cells_tall + 1, cells_wide + 1)
+		res[key] = cell_at_infinity
 
 	while unused_verts.size() > 0:
 		# find min cost vert
@@ -115,37 +117,94 @@ func generate():
 				costs[vert] = cost
 				res[vert] = min_vert
 	var astar := ShipAStar3D.new()
-	astar.reserve_space(cells_long * cells_tall * cells_wide)
+	astar.reserve_space(64 * cells_long * cells_tall * cells_wide)
 	var id := 0
-	for x in cells_long:
-		for y in cells_tall:
-			for z in cells_wide:
-				var pos := Vector3i(x, y, z) * CELL_DIMENSIONS
+	for x in 4 * cells_wide:
+		for y in 4 * cells_tall:
+			for z in 4 * cells_long:
+				var pos := Vector3i(x, y, z) * (CELL_DIMENSIONS / 4)
 				astar.add_point(id, pos)
 				id += 1
 	id = 0
-	for x in cells_long:
-		for y in cells_tall:
-			for z in cells_wide:
-				if z != cells_wide - 1:
+	for x in 4 * cells_wide:
+		for y in 4 * cells_tall:
+			for z in 4 * cells_long:
+				if z != 4 * cells_long - 1:
 					astar.connect_points(id, id+1)
-				if y != cells_tall - 1:
-					astar.connect_points(id, id + cells_wide)
-				if x != cells_long - 1:
-					astar.connect_points(id, id + cells_tall * cells_wide)
+				if y != 4 * cells_tall - 1:
+					astar.connect_points(id, id + 4 * cells_long)
+				if x != 4 * cells_wide - 1:
+					astar.connect_points(id, id + 16 * cells_tall * cells_long)
 				id += 1
+	var hallway_graph := {}
 	for vert in res:
-		if res[vert] == Vector3i(cells_long + 1, cells_tall + 1, cells_wide + 1):
+		if res[vert] == cell_at_infinity:
+			print("not connecting root %s to %s" % [vert, res[vert]])
 			continue
-		print("vert %s points to vert %s" % [vert, res[vert]])
+		#print("vert %s points to vert %s" % [vert, res[vert]])
 		var from := astar.get_closest_point(vert * CELL_DIMENSIONS)
 		var to := astar.get_closest_point(res[vert] * CELL_DIMENSIONS)
 		var point_path := astar.get_point_path(from, to)
-		print(point_path)
+		#print(point_path)
 		for i in point_path.size()-1:
+			var hallway_from := Vector3i(point_path[i] * 4) / CELL_DIMENSIONS
+			if not hallway_graph.has(hallway_from):
+				hallway_graph[hallway_from] = []
+			var hallway_to := Vector3i(point_path[i+1] * 4) / CELL_DIMENSIONS
+			if not hallway_graph.has(hallway_to):
+				hallway_graph[hallway_to] = []
+			if not hallway_to in hallway_graph[hallway_from]:
+				hallway_graph[hallway_from].append(hallway_to)
+			if not hallway_from in hallway_graph[hallway_to]:
+				hallway_graph[hallway_to].append(hallway_from)
 			_draw_line(point_path[i], point_path[i+1])
-
-
+	
+	print(hallway_graph)
+	var hallway_i_scene := preload('res://scenes/environments/corridor_legos/hall_i.tscn')
+	var hallway_l_scene := preload('res://scenes/environments/corridor_legos/hall_l.tscn')
+	var hallway_cap_scene := preload('res://scenes/environments/corridor_legos/hall_cap.tscn')
+	var hallway_y_scene := preload('res://scenes/environments/corridor_legos/hall_y.tscn')
+	var hallway_x_scene := preload('res://scenes/environments/corridor_legos/hall_x.tscn')
+	for hallway_vertex in hallway_graph:
+		var hallway: Node3D = null
+		match hallway_graph[hallway_vertex].size():
+			1:
+				hallway = hallway_cap_scene.instantiate()
+				var cap_dir: Vector3i = hallway_vertex - hallway_graph[hallway_vertex][0]
+				hallway.look_at_from_position(Vector3(0,0,0), cap_dir)
+			2:
+				var first_dir: Vector3i = hallway_vertex - hallway_graph[hallway_vertex][0]
+				var second_dir: Vector3i = hallway_vertex - hallway_graph[hallway_vertex][1]
+				if Vector3(first_dir).dot(Vector3(second_dir)):
+					hallway = hallway_i_scene.instantiate()
+					hallway.look_at_from_position(Vector3(0,0,0), first_dir)
+				else:
+					hallway = hallway_l_scene.instantiate()
+					if Vector3(first_dir).cross(second_dir) > Vector3(0,0,0):
+						hallway.look_at_from_position(Vector3(0,0,0), second_dir)
+					else:
+						hallway.look_at_from_position(Vector3(0,0,0), first_dir)
+					
+			3:
+				hallway = hallway_y_scene.instantiate()
+				var first_dir: Vector3i = hallway_vertex - hallway_graph[hallway_vertex][0]
+				var second_dir: Vector3i = hallway_vertex - hallway_graph[hallway_vertex][1]
+				var third_dir: Vector3i = hallway_vertex - hallway_graph[hallway_vertex][2]
+				var perpindicular_dir: Vector3i
+				if Vector3(first_dir).dot(second_dir):
+					perpindicular_dir = third_dir
+				elif Vector3(first_dir).dot(third_dir):
+					perpindicular_dir = second_dir
+				else:
+					perpindicular_dir = first_dir
+				hallway.look_at_from_position(Vector3(0,0,0), perpindicular_dir)
+			4:
+				hallway = hallway_x_scene.instantiate()
+			_:
+				print('too many vertices')
+		if hallway:
+			hallway.position = hallway_vertex * (CELL_DIMENSIONS / 4)
+			add_child(hallway)
 func _draw_line(start_coords: Vector3, end_coords: Vector3, color := Color.RED):
 		var mesh_instance := MeshInstance3D.new()
 		var immediate_mesh := ImmediateMesh.new()
