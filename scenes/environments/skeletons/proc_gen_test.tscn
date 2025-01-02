@@ -5,7 +5,7 @@
 
 [node name="ShipSkeleton" instance=ExtResource("1_dth83")]
 cells_wide = 16
-cells_long = 32
+cells_long = 16
 cells_tall = 1
 max_rooms = 10
 room_types = Array[PackedScene]([ExtResource("2_25kvy")])

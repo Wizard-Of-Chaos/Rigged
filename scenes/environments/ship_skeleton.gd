@@ -6,6 +6,7 @@ const CELL_LENGTH := 32
 const CELL_WIDTH := 32
 const CELL_HEIGHT := 16
 const CELL_DIMENSIONS := Vector3i(CELL_LENGTH, CELL_HEIGHT, CELL_WIDTH)
+const HALLWAY_OFFSET := -3*Vector3i(CELL_LENGTH, 0, CELL_WIDTH)/8
 @export_range(1, 32) var cells_wide := 32
 @export_range(1, 64) var cells_long := 64
 @export_range(1, 8) var cells_tall := 8
@@ -59,11 +60,28 @@ func _ready():
 	if generate_on_ready:
 		generate()
 
+
+func _global_to_hallway(pos: Vector3) -> Vector3i:
+	return (Vector3i(pos - Vector3(HALLWAY_OFFSET))) * 4 / CELL_DIMENSIONS
+
+
+func _global_to_cell(pos: Vector3) -> Vector3i:
+	return Vector3i(pos) / CELL_DIMENSIONS
+
+
+func _cell_to_global(pos: Vector3i) -> Vector3:
+	return pos * CELL_DIMENSIONS
+
+
+func _hallway_to_global(pos: Vector3i) -> Vector3:
+	return pos * CELL_DIMENSIONS/4 + HALLWAY_OFFSET
+
+
 func _add_room(p_tile: PackedScene, p_position: Vector3i) -> int:
 	if _tile_map.has(p_position):
 		return ERR_ALREADY_IN_USE
 	var instantiated_tile := p_tile.instantiate()
-	instantiated_tile.position = p_position * CELL_DIMENSIONS
+	instantiated_tile.position = _cell_to_global(p_position)
 	add_child(instantiated_tile)
 	_tile_map[p_position] = instantiated_tile
 	return OK
@@ -74,7 +92,7 @@ func _remove_room(p_position: Vector3i) -> int:
 	_tile_map.erase(p_position)
 	return OK
 
-func generate():
+func _generate_rooms() -> void:
 	var bridge_tile := preload("res://scenes/environments/cells/bridge_test.tscn")
 	_add_room(bridge_tile, bridge_position)
 	var engine_tile := preload("res://scenes/environments/cells/engine_test.tscn")
@@ -96,6 +114,9 @@ func generate():
 			var add_room_err := _add_room(room_tile, Vector3i(x_coord, y_coord, z_coord))
 			if add_room_err == OK:
 				break
+
+
+func _generate_room_mst() -> Dictionary:
 	var costs := {}
 	var res := {}
 	var unused_verts := _tile_map.keys()
@@ -116,41 +137,60 @@ func generate():
 			if cost < costs[vert]:
 				costs[vert] = cost
 				res[vert] = min_vert
+	return res
+
+
+func _hallway_cell_is_in_room(hallway_coord: Vector3i) -> bool:
+	var cell_coord := hallway_coord/4
+	return _tile_map.has(cell_coord)
+
+
+func _generate_hallway_astar() -> AStar3D:
 	var astar := ShipAStar3D.new()
 	astar.reserve_space(64 * cells_long * cells_tall * cells_wide)
 	var id := 0
 	for x in 4 * cells_wide:
 		for y in 4 * cells_tall:
 			for z in 4 * cells_long:
-				var pos := Vector3i(x, y, z) * (CELL_DIMENSIONS / 4)
-				astar.add_point(id, pos)
+				# Check if this vertex is interior to a room
+				# Do not add if it is
+				var pos := _hallway_to_global(Vector3i(x, y, z))
+				if not _hallway_cell_is_in_room(Vector3i(x,y,z)):
+					astar.add_point(id, pos)
 				id += 1
 	id = 0
 	for x in 4 * cells_wide:
 		for y in 4 * cells_tall:
 			for z in 4 * cells_long:
-				if z != 4 * cells_long - 1:
+				if _hallway_cell_is_in_room(Vector3i(x,y,z)):
+					id += 1
+					continue
+				if z != 4 * cells_long - 1 and not _hallway_cell_is_in_room(Vector3i(x,y,z+1)):
 					astar.connect_points(id, id+1)
-				if y != 4 * cells_tall - 1:
+				if y != 4 * cells_tall - 1 and not _hallway_cell_is_in_room(Vector3i(x,y+1,z)):
 					astar.connect_points(id, id + 4 * cells_long)
-				if x != 4 * cells_wide - 1:
+				if x != 4 * cells_wide - 1 and not _hallway_cell_is_in_room(Vector3i(x+1, y, z)):
 					astar.connect_points(id, id + 16 * cells_tall * cells_long)
 				id += 1
+	return astar
+
+
+func _generate_hallway_graph(astar: AStar3D, room_mst: Dictionary) -> Dictionary:
 	var hallway_graph := {}
-	for vert in res:
-		if res[vert] == cell_at_infinity:
-			print("not connecting root %s to %s" % [vert, res[vert]])
+	for vert in room_mst:
+		if room_mst[vert] == cell_at_infinity:
+			print("not connecting root %s to %s" % [vert, room_mst[vert]])
 			continue
 		#print("vert %s points to vert %s" % [vert, res[vert]])
-		var from := astar.get_closest_point(vert * CELL_DIMENSIONS)
-		var to := astar.get_closest_point(res[vert] * CELL_DIMENSIONS)
+		var from := astar.get_closest_point(_cell_to_global(vert))
+		var to := astar.get_closest_point(_cell_to_global(room_mst[vert]))
 		var point_path := astar.get_point_path(from, to)
 		#print(point_path)
 		for i in point_path.size()-1:
-			var hallway_from := Vector3i(point_path[i] * 4) / CELL_DIMENSIONS
+			var hallway_from := _global_to_hallway(point_path[i])
 			if not hallway_graph.has(hallway_from):
 				hallway_graph[hallway_from] = []
-			var hallway_to := Vector3i(point_path[i+1] * 4) / CELL_DIMENSIONS
+			var hallway_to := _global_to_hallway(point_path[i+1])
 			if not hallway_graph.has(hallway_to):
 				hallway_graph[hallway_to] = []
 			if not hallway_to in hallway_graph[hallway_from]:
@@ -158,7 +198,10 @@ func generate():
 			if not hallway_from in hallway_graph[hallway_to]:
 				hallway_graph[hallway_to].append(hallway_from)
 			_draw_line(point_path[i], point_path[i+1])
-	
+	return hallway_graph
+
+
+func _generate_hallways(hallway_graph: Dictionary) -> void:
 	print(hallway_graph)
 	var hallway_i_scene := preload('res://scenes/environments/corridor_legos/hall_i.tscn')
 	var hallway_l_scene := preload('res://scenes/environments/corridor_legos/hall_l.tscn')
@@ -184,7 +227,6 @@ func generate():
 						hallway.look_at_from_position(Vector3(0,0,0), second_dir)
 					else:
 						hallway.look_at_from_position(Vector3(0,0,0), first_dir)
-					
 			3:
 				hallway = hallway_y_scene.instantiate()
 				var first_dir: Vector3i = hallway_vertex - hallway_graph[hallway_vertex][0]
@@ -203,8 +245,31 @@ func generate():
 			_:
 				print('too many vertices')
 		if hallway:
-			hallway.position = hallway_vertex * (CELL_DIMENSIONS / 4)
+			hallway.position = _hallway_to_global(hallway_vertex)
 			add_child(hallway)
+
+
+func generate():
+	_generate_rooms()
+	var room_mst := _generate_room_mst()
+	var astar := _generate_hallway_astar()
+	var hallway_graph := _generate_hallway_graph(astar, room_mst)
+	_generate_hallways(hallway_graph)
+	
+	for hallway in hallway_graph:
+		_draw_line(_hallway_to_global(hallway) + Vector3(CELL_LENGTH/8, 0, CELL_WIDTH/8), _hallway_to_global(hallway) + Vector3(CELL_LENGTH/8, CELL_HEIGHT/4, CELL_WIDTH/8))
+		_draw_line(_hallway_to_global(hallway) + Vector3(-CELL_LENGTH/8, 0, CELL_WIDTH/8), _hallway_to_global(hallway) + Vector3(-CELL_LENGTH/8, CELL_HEIGHT/4, CELL_WIDTH/8))
+		_draw_line(_hallway_to_global(hallway) + Vector3(CELL_LENGTH/8, 0, -CELL_WIDTH/8), _hallway_to_global(hallway) + Vector3(CELL_LENGTH/8, CELL_HEIGHT/4, -CELL_WIDTH/8))
+		_draw_line(_hallway_to_global(hallway) + Vector3(-CELL_LENGTH/8, 0, -CELL_WIDTH/8), _hallway_to_global(hallway) + Vector3(-CELL_LENGTH/8, CELL_HEIGHT/4, -CELL_WIDTH/8))
+		
+	
+	for room in _tile_map:
+		_draw_line(_cell_to_global(room) + Vector3(CELL_LENGTH/2, 0, CELL_WIDTH/2), _cell_to_global(room) + Vector3(CELL_LENGTH/2, CELL_HEIGHT, CELL_WIDTH/2))
+		_draw_line(_cell_to_global(room) + Vector3(-CELL_LENGTH/2, 0, CELL_WIDTH/2), _cell_to_global(room) + Vector3(-CELL_LENGTH/2, CELL_HEIGHT, CELL_WIDTH/2))
+		_draw_line(_cell_to_global(room) + Vector3(CELL_LENGTH/2, 0, -CELL_WIDTH/2), _cell_to_global(room) + Vector3(CELL_LENGTH/2, CELL_HEIGHT, -CELL_WIDTH/2))
+		_draw_line(_cell_to_global(room) + Vector3(-CELL_LENGTH/2, 0, -CELL_WIDTH/2), _cell_to_global(room) + Vector3(-CELL_LENGTH/2, CELL_HEIGHT, -CELL_WIDTH/2))
+		
+
 func _draw_line(start_coords: Vector3, end_coords: Vector3, color := Color.RED):
 		var mesh_instance := MeshInstance3D.new()
 		var immediate_mesh := ImmediateMesh.new()
