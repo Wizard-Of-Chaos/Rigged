@@ -18,13 +18,13 @@ size = Vector3(32, 0.2, 19.1)
 points = PackedVector3Array(-4.197, 0, 3.2, 4.197, 0, 3.2, -4.197, 0, -16, 4.197, 0, -16, -2.865, 0.857, 1.692, 2.865, 0.857, 1.692, -2.865, 0.857, -16, 2.865, 0.857, -16)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_17wj0"]
-size = Vector3(11.5, 4, 0.2)
+size = Vector3(19.5, 4, 0.2)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_wihfx"]
 size = Vector3(32, 6, 0.2)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_4kxt0"]
-size = Vector3(5.75, 4, 0.2)
+size = Vector3(1.8, 4, 0.2)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_r4iqn"]
 size = Vector3(0.2, 6, 19)
@@ -58,14 +58,6 @@ size = Vector3(18.2, 0.2, 9)
 
 [node name="BridgeCell" instance=ExtResource("1_p6tgl")]
 cells_x = 2
-entry_positions = {
-0: Vector3(12, 0, -15.9),
-1: Vector3(-12, 0, -15.9)
-}
-entry_position_sizes = {
-0: 0,
-1: 0
-}
 
 [node name="bridge_cell" parent="." index="0" instance=ExtResource("2_1xo0m")]
 
@@ -158,11 +150,11 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 7, -16.1)
 shape = SubResource("BoxShape3D_wihfx")
 
 [node name="BackWall3" type="CollisionShape3D" parent="WallCollider" index="6"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.125, 2, -16.1)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.1, 2, -16.1)
 shape = SubResource("BoxShape3D_4kxt0")
 
 [node name="BackWall4" type="CollisionShape3D" parent="WallCollider" index="7"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.125, 2, -16.1)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15.125, 2, -16.1)
 shape = SubResource("BoxShape3D_4kxt0")
 
 [node name="LeftWall" type="CollisionShape3D" parent="WallCollider" index="8"]
