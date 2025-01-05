@@ -58,6 +58,7 @@ size = Vector3(18.2, 0.2, 9)
 
 [node name="BridgeCell" instance=ExtResource("1_p6tgl")]
 cells_x = 2
+doors_in_use = Array[int]([8, 11])
 
 [node name="bridge_cell" parent="." index="0" instance=ExtResource("2_1xo0m")]
 

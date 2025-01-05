@@ -6,26 +6,22 @@
 [ext_resource type="PackedScene" uid="uid://rvlhiy2650w2" path="res://scenes/objects/door_z_small.tscn" id="4_6ev1c"]
 
 [node name="EngineCell" instance=ExtResource("1_7xhfq")]
-entry_positions = {
-0: Vector3(12, 0, 15.9),
-1: Vector3(-12, 0, 15.9)
-}
-entry_position_sizes = {
-0: 0,
-1: 0
-}
+doors_in_use = Array[int]([0, 3])
 
-[node name="CSGBox3D" type="CSGBox3D" parent="." index="0"]
+[node name="Offset" type="Node3D" parent="." index="2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16, 0, 0)
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Offset" index="0"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, 0)
 material_override = ExtResource("2_3rfu0")
 use_collision = true
 size = Vector3(64, 0.1, 32)
 
-[node name="Panel" parent="." index="1" instance=ExtResource("3_dfb2h")]
+[node name="Panel" parent="Offset" index="1" instance=ExtResource("3_dfb2h")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -12.902)
 
-[node name="DoorZSmall" parent="." index="2" instance=ExtResource("4_6ev1c")]
+[node name="DoorZSmall" parent="Offset" index="2" instance=ExtResource("4_6ev1c")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 0, 15.9)
 
-[node name="DoorZSmall2" parent="." index="3" instance=ExtResource("4_6ev1c")]
+[node name="DoorZSmall2" parent="Offset" index="3" instance=ExtResource("4_6ev1c")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12, 0, 15.9)

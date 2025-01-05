@@ -6,14 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://d2alkgfjssua2" path="res://scenes/objects/panel.tscn" id="4_h478l"]
 
 [node name="OxygenCell" instance=ExtResource("1_lahsi")]
-entry_positions = {
-0: Vector3(0, 0, 15.9),
-1: Vector3(0, 0, -15.9)
-}
-entry_position_sizes = {
-0: 0,
-1: 0
-}
+doors_in_use = Array[int]([2, 9])
 
 [node name="CSGBox3D" type="CSGBox3D" parent="." index="0"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, 0)
@@ -22,10 +15,10 @@ use_collision = true
 size = Vector3(32, 0.1, 32)
 
 [node name="DoorZSmall" parent="." index="1" instance=ExtResource("3_ua5c7")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 15.9)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, 15.9)
 
 [node name="DoorZSmall2" parent="." index="2" instance=ExtResource("3_ua5c7")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -15.9)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, -15.9)
 
 [node name="Panel" parent="." index="3" instance=ExtResource("4_h478l")]
 transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 10, 0, 0)
