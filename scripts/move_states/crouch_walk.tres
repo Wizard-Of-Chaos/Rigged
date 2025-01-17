@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="MoveState" load_steps=2 format=3 uid="uid://unvun0oxd26d"]
+
+[ext_resource type="Script" path="res://scripts/move_states/move_state.gd" id="1_1acva"]
+
+[resource]
+script = ExtResource("1_1acva")
+id = 5
+speed = 2.5
+acceleration = 4.0
+rotation_speed = 4.0
+fov = 80.0
+animation_speed = 1.0
+grounded = true
+controllable = true
