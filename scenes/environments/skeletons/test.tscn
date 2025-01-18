@@ -29,7 +29,6 @@ airlock_positions = {
 0: Vector3(2, 0, 0),
 1: Vector3(-2, 0, 0)
 }
-room_types = Array[PackedScene]([])
 
 [node name="EngineCell" parent="." index="0" instance=ExtResource("2_uq48t")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -112)
