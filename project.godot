@@ -45,6 +45,7 @@ MasterBank="*res://scenes/utilities/master_bank.tscn"
 [debug]
 
 file_logging/enable_file_logging=true
+gdscript/warnings/integer_division=0
 
 [display]
 
@@ -60,6 +61,13 @@ version_control/autoload_on_startup=true
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/fmod/plugin.cfg")
+
+[file_customization]
+
+folder_colors={
+"res://addons/": "gray",
+"res://assets/": "orange"
+}
 
 [global_group]
 

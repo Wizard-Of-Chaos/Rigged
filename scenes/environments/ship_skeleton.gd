@@ -1,3 +1,4 @@
+@tool
 extends Node3D
 class_name ShipSkeleton
 
@@ -26,7 +27,12 @@ const HALLWAY_OFFSET := -3*Vector3i(CELL_LENGTH, 0, CELL_WIDTH)/8
 @export var minimum_timer := 1200.0
 @export var maximum_timer := 1800.0
 
-@export var generate_on_ready := false
+@export var generate_hallway := false: 
+	set(value):
+		if value:
+			clear()
+			generate()
+		generate_hallway = false
 
 var _rng: RandomNumberGenerator
 var _tile_map: Dictionary
@@ -49,31 +55,37 @@ class ShipAStar3D extends AStar3D:
 		
 		return dist.x + dist.y + dist.z
 
+func clear() -> void:
+	for child in get_children():
+		child.queue_free()
+	_tile_map = {}
+	_rng = null
+
 func _ready():
 	cell_at_infinity = Vector3i(cells_long + 1, cells_tall + 1, cells_wide + 1)
-	_rng = RandomNumberGenerator.new()
-	if rng_seed == 0:
-		_rng.randomize()
-		rng_seed = _rng.seed
-	else:
-		_rng.seed = rng_seed
-	if generate_on_ready:
-		generate()
+	if not Engine.is_editor_hint():
+		_rng = RandomNumberGenerator.new()
+		if rng_seed == 0:
+			_rng.randomize()
+			rng_seed = _rng.seed
+		else:
+			_rng.seed = rng_seed
 
 
-func _global_to_hallway(pos: Vector3) -> Vector3i:
+
+static func _global_to_hallway(pos: Vector3) -> Vector3i:
 	return (Vector3i(pos - Vector3(HALLWAY_OFFSET))) * 4 / CELL_DIMENSIONS
 
 
-func _global_to_cell(pos: Vector3) -> Vector3i:
+static func _global_to_cell(pos: Vector3) -> Vector3i:
 	return Vector3i(pos) / CELL_DIMENSIONS
 
 
-func _cell_to_global(pos: Vector3i) -> Vector3:
+static func _cell_to_global(pos: Vector3i) -> Vector3:
 	return pos * CELL_DIMENSIONS
 
 
-func _hallway_to_global(pos: Vector3i) -> Vector3:
+static func _hallway_to_global(pos: Vector3i) -> Vector3:
 	return pos * CELL_DIMENSIONS/4 + HALLWAY_OFFSET
 
 
@@ -312,25 +324,22 @@ func _generate_hallways(hallway_graph: Dictionary) -> void:
 
 
 func generate():
+	print('generating')
+	if not _rng:
+		_rng = RandomNumberGenerator.new()
+		if rng_seed == 0:
+			_rng.randomize()
+		else:
+			_rng.seed = rng_seed
 	_generate_rooms()
 	var room_mst := _generate_room_mst()
 	var astar := _generate_hallway_astar()
 	var hallway_graph := _generate_hallway_graph(astar, room_mst)
 	_generate_hallways(hallway_graph)
 	
-	for hallway in hallway_graph:
-		_draw_line(_hallway_to_global(hallway) + Vector3(CELL_LENGTH/8, 0, CELL_WIDTH/8), _hallway_to_global(hallway) + Vector3(CELL_LENGTH/8, CELL_HEIGHT/4, CELL_WIDTH/8))
-		_draw_line(_hallway_to_global(hallway) + Vector3(-CELL_LENGTH/8, 0, CELL_WIDTH/8), _hallway_to_global(hallway) + Vector3(-CELL_LENGTH/8, CELL_HEIGHT/4, CELL_WIDTH/8))
-		_draw_line(_hallway_to_global(hallway) + Vector3(CELL_LENGTH/8, 0, -CELL_WIDTH/8), _hallway_to_global(hallway) + Vector3(CELL_LENGTH/8, CELL_HEIGHT/4, -CELL_WIDTH/8))
-		_draw_line(_hallway_to_global(hallway) + Vector3(-CELL_LENGTH/8, 0, -CELL_WIDTH/8), _hallway_to_global(hallway) + Vector3(-CELL_LENGTH/8, CELL_HEIGHT/4, -CELL_WIDTH/8))
-		
-	
-	for room in _tile_map:
-		_draw_line(_cell_to_global(room) + Vector3(CELL_LENGTH/2, 0, CELL_WIDTH/2), _cell_to_global(room) + Vector3(CELL_LENGTH/2, CELL_HEIGHT, CELL_WIDTH/2))
-		_draw_line(_cell_to_global(room) + Vector3(-CELL_LENGTH/2, 0, CELL_WIDTH/2), _cell_to_global(room) + Vector3(-CELL_LENGTH/2, CELL_HEIGHT, CELL_WIDTH/2))
-		_draw_line(_cell_to_global(room) + Vector3(CELL_LENGTH/2, 0, -CELL_WIDTH/2), _cell_to_global(room) + Vector3(CELL_LENGTH/2, CELL_HEIGHT, -CELL_WIDTH/2))
-		_draw_line(_cell_to_global(room) + Vector3(-CELL_LENGTH/2, 0, -CELL_WIDTH/2), _cell_to_global(room) + Vector3(-CELL_LENGTH/2, CELL_HEIGHT, -CELL_WIDTH/2))
-		
+	if Engine.is_editor_hint():
+		_rng = null
+
 
 func _draw_line(start_coords: Vector3, end_coords: Vector3, color := Color.RED):
 		var mesh_instance := MeshInstance3D.new()

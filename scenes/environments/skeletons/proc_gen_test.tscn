@@ -7,7 +7,7 @@
 cells_wide = 4
 cells_long = 8
 cells_tall = 1
-bridge_position = Vector3i(8, 0, 15)
+bridge_position = Vector3i(1, 0, 7)
+engines_position = Vector3i(3, 0, 0)
 max_rooms = 10
 room_types = Array[PackedScene]([ExtResource("2_25kvy")])
-generate_on_ready = true
