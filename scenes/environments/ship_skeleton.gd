@@ -27,12 +27,18 @@ const HALLWAY_OFFSET := -3*Vector3i(CELL_LENGTH, 0, CELL_WIDTH)/8
 @export var minimum_timer := 1200.0
 @export var maximum_timer := 1800.0
 
-@export var generate_hallway := false: 
+@export var generate_ship := false: 
 	set(value):
 		if value:
 			clear()
 			generate()
-		generate_hallway = false
+		generate_ship = false
+
+@export var clear_ship := false:
+	set(value):
+		if value:
+			clear()
+		clear_ship = false
 
 var _rng: RandomNumberGenerator
 var _tile_map: Dictionary
@@ -187,14 +193,14 @@ func _generate_hallway_astar() -> AStar3D:
 					continue
 				if z != 4 * cells_long - 1 and not _hallway_cell_is_in_room(Vector3i(x,y,z+1)):
 					astar.connect_points(id, id+1)
-				if y != 4 * cells_tall - 1:
-					if z != 4 * cells_long - 1 and not _hallway_cell_is_in_room(Vector3i(x, y+1, z+1)):
+				if y != 4 * cells_tall - 1 and not _hallway_cell_is_in_room(Vector3i(x, y+1, z)):
+					if z != 4 * cells_long - 1 and not _hallway_cell_is_in_room(Vector3i(x, y+1, z+1)) and x % 2 == 0:
 						astar.connect_points(id, id + 4 * cells_long + 1)
-					if z != 0 and not _hallway_cell_is_in_room(Vector3i(x,y+1, z-1)):
+					if z != 0 and not _hallway_cell_is_in_room(Vector3i(x,y+1, z-1)) and x % 2 == 1:
 						astar.connect_points(id, id + 4 * cells_long - 1)
-					if x != 4 * cells_wide - 1 and not _hallway_cell_is_in_room(Vector3i(x+1, y+1, z)):
+					if x != 4 * cells_wide - 1 and not _hallway_cell_is_in_room(Vector3i(x+1, y+1, z)) and z % 2 == 0:
 						astar.connect_points(id, id + 4 * cells_long + 16*cells_tall * cells_long)
-					if x != 0 and not _hallway_cell_is_in_room(Vector3i(x-1, y+1, z)):
+					if x != 0 and not _hallway_cell_is_in_room(Vector3i(x-1, y+1, z)) and z % 2 == 1:
 						astar.connect_points(id, id + 4 * cells_long - 16 * cells_tall * cells_long)
 				if x != 4 * cells_wide - 1 and not _hallway_cell_is_in_room(Vector3i(x+1, y, z)):
 					astar.connect_points(id, id + 16 * cells_tall * cells_long)
@@ -252,8 +258,31 @@ func _generate_hallway_graph(astar: AStar3D, room_mst: Dictionary) -> Dictionary
 				#astar.connect_points(id, id + 4 * cells_long + 16*cells_tall * cells_long)
 			#if x != 0 and not _hallway_cell_is_in_room(Vector3i(x-1, y+1, z)):
 				#astar.connect_points(id, id + 4 * cells_long + 16 * cells_tall * cells_long)
+			# snip snip relevant edges
 			if is_equal_approx(point_path[i].y, point_path[i+1].y):
-				pass
+				if not _global_to_hallway(point_path[i]).y == 4*cells_tall - 1:
+					if not _hallway_cell_is_in_room(_global_to_hallway(point_path[i] + Vector3(0,4,0))):
+						astar.disconnect_points(astar.get_closest_point(point_path[i+1]), astar.get_closest_point(point_path[i] + Vector3(0,4,0)))
+					if not _hallway_cell_is_in_room(_global_to_hallway(point_path[i+1] + Vector3(0,4,0))):
+						astar.disconnect_points(astar.get_closest_point(point_path[i]), astar.get_closest_point(point_path[i+1] + Vector3(0,4,0)))
+				if not _global_to_hallway(point_path[i]).y == 0:
+					if not _hallway_cell_is_in_room(_global_to_hallway(point_path[i] - Vector3(0,4,0))):
+						astar.disconnect_points(astar.get_closest_point(point_path[i+1]), astar.get_closest_point(point_path[i] - Vector3(0,4,0)))
+					if not _hallway_cell_is_in_room(_global_to_hallway(point_path[i+1] - Vector3(0,4,0))):
+						astar.disconnect_points(astar.get_closest_point(point_path[i]), astar.get_closest_point(point_path[i+1] - Vector3(0,4,0)))
+			else:
+				var lower := point_path[i] if point_path[i].y < point_path[i+1].y else point_path[i+1]
+				var upper := point_path[i] if point_path[i].y > point_path[i+1].y else point_path[i+1]
+				if _global_to_hallway(lower).y != 4*cells_tall - 1 and not _hallway_cell_is_in_room(_global_to_hallway(lower + Vector3(0,4,0))):
+					astar.disconnect_points(astar.get_closest_point(upper), astar.get_closest_point(lower + Vector3(0,4,0)))
+				if _global_to_hallway(lower).y != 4*cells_tall - 2 and not _hallway_cell_is_in_room(_global_to_hallway(lower + Vector3(0,8,0))):
+					astar.disconnect_points(astar.get_closest_point(upper), astar.get_closest_point(lower + Vector3(0,8,0)))
+				if _global_to_hallway(upper).y != 0 and not _hallway_cell_is_in_room(_global_to_hallway(upper - Vector3(0,4,0))):
+					astar.disconnect_points(astar.get_closest_point(lower), astar.get_closest_point(upper - Vector3(0,4,0)))
+				if _global_to_hallway(upper).y != 2 and not _hallway_cell_is_in_room(_global_to_hallway(upper - Vector3(0,8,0))):
+					astar.disconnect_points(astar.get_closest_point(lower), astar.get_closest_point(upper - Vector3(0,8,0)))
+			_draw_line(point_path[i] + Vector3(0,2,0), point_path[i+1] + Vector3(0,2,0))
+
 	return hallway_graph
 
 
@@ -276,50 +305,60 @@ func _generate_hallways(hallway_graph: Dictionary) -> void:
 				var cap_dir: Vector3i = hallway_vertex - hallway_graph[hallway_vertex][0]
 				hallway.look_at_from_position(Vector3(0,0,0), cap_dir)
 			2:
-				var first_dir: Vector3i = hallway_vertex - hallway_graph[hallway_vertex][0]
-				var second_dir: Vector3i = hallway_vertex - hallway_graph[hallway_vertex][1]
-				if hallway_graph[hallway_vertex][0].y == hallway_graph[hallway_vertex][1].y: 
-					if Vector3(first_dir).dot(Vector3(second_dir)):
+				var first_dir := Vector3(hallway_vertex - hallway_graph[hallway_vertex][0])
+				var second_dir := Vector3(hallway_vertex - hallway_graph[hallway_vertex][1])
+				var projected_first_dir := (first_dir - first_dir.project(Vector3.UP)).normalized()
+				var projected_second_dir := (second_dir - second_dir.project(Vector3.UP)).normalized()
+				var look_dir := projected_first_dir if hallway_graph[hallway_vertex][0].y > hallway_graph[hallway_vertex][1].y else projected_second_dir
+				var other_look_dir := projected_second_dir if hallway_graph[hallway_vertex][0].y > hallway_graph[hallway_vertex][1].y else projected_first_dir
+				var max_y: float = [hallway_vertex.y, hallway_graph[hallway_vertex][0].y, hallway_graph[hallway_vertex][1].y].max()
+				var should_ramp: bool = [hallway_vertex, hallway_graph[hallway_vertex][0], hallway_graph[hallway_vertex][1]].reduce(func(accum, vert): return accum + (1 if is_equal_approx(vert.y, max_y) else 0), 0) == 2
+				should_ramp = should_ramp or not is_equal_approx(hallway_vertex.y, hallway_graph[hallway_vertex][0].y) and not is_equal_approx(hallway_vertex.y, hallway_graph[hallway_vertex][1].y) and not is_equal_approx(hallway_graph[hallway_vertex][1].y, hallway_graph[hallway_vertex][0].y)
+				if is_equal_approx(abs(hallway_graph[hallway_vertex][0].y - hallway_graph[hallway_vertex][1].y), 0) or not should_ramp: 
+					if not is_zero_approx(projected_first_dir.dot(projected_second_dir)):
 						hallway = hallway_i_scene.instantiate()
-						hallway.look_at_from_position(Vector3(0,0,0), first_dir)
+						hallway.look_at_from_position(Vector3(0,0,0), look_dir)
 					else:
 						hallway = hallway_l_scene.instantiate()
-						if Vector3(first_dir).cross(second_dir) > Vector3(0,0,0):
-							hallway.look_at_from_position(Vector3(0,0,0), second_dir)
+						if Vector3(first_dir).cross(second_dir).y > 0:
+							hallway.look_at_from_position(Vector3(0,0,0), projected_second_dir)
 						else:
-							hallway.look_at_from_position(Vector3(0,0,0), first_dir)
+							hallway.look_at_from_position(Vector3(0,0,0), projected_first_dir)
 				else:
-					if Vector3(first_dir).dot(Vector3(second_dir)):
+					if not is_zero_approx(projected_first_dir.dot(projected_second_dir)):
 						hallway = hallway_ramp_scene.instantiate()
-						#hallway.look_at_from_position(Vector3(0,0,0), first_dir)
+						hallway.look_at_from_position(Vector3(0,0,0), look_dir)
 						is_ramp = true
-					elif Vector3(first_dir).cross(Vector3(second_dir)).y > 0:
+					elif look_dir.cross(other_look_dir).y > 0:
 						hallway = hallway_ramp_left_scene.instantiate()
-						hallway.look_at_from_position(Vector3(0,0,0), first_dir)
+						hallway.look_at_from_position(Vector3(0,0,0), other_look_dir)
 						is_ramp = true
 					else:
 						hallway = hallway_ramp_right_scene.instantiate()
-						hallway.look_at_from_position(Vector3(0,0,0), first_dir)
+						hallway.look_at_from_position(Vector3(0,0,0), other_look_dir)
 						is_ramp = true
 			3:
 				hallway = hallway_y_scene.instantiate()
-				var first_dir: Vector3i = hallway_vertex - hallway_graph[hallway_vertex][0]
-				var second_dir: Vector3i = hallway_vertex - hallway_graph[hallway_vertex][1]
-				var third_dir: Vector3i = hallway_vertex - hallway_graph[hallway_vertex][2]
+				var first_dir := Vector3(hallway_vertex - hallway_graph[hallway_vertex][0])
+				var projected_first_dir := (first_dir - first_dir.project(Vector3.UP)).normalized()
+				var second_dir := Vector3(hallway_vertex - hallway_graph[hallway_vertex][1])
+				var projected_second_dir := (second_dir - second_dir.project(Vector3.UP)).normalized()
+				var third_dir := Vector3(hallway_vertex - hallway_graph[hallway_vertex][2])
+				var projected_third_dir := (third_dir - third_dir.project(Vector3.UP)).normalized()
 				var perpindicular_dir: Vector3i
-				if Vector3(first_dir).dot(second_dir):
-					perpindicular_dir = third_dir
-				elif Vector3(first_dir).dot(third_dir):
-					perpindicular_dir = second_dir
+				if Vector3(projected_first_dir).dot(projected_second_dir):
+					perpindicular_dir = projected_third_dir
+				elif Vector3(projected_first_dir).dot(projected_third_dir):
+					perpindicular_dir = projected_second_dir
 				else:
-					perpindicular_dir = first_dir
+					perpindicular_dir = projected_first_dir
 				hallway.look_at_from_position(Vector3(0,0,0), perpindicular_dir)
 			4:
 				hallway = hallway_x_scene.instantiate()
 			_:
 				print('too many vertices')
 		if hallway:
-			hallway.position = _hallway_to_global(hallway_vertex) if is_ramp else _hallway_to_global(hallway_vertex)
+			hallway.position = _hallway_to_global(hallway_vertex) + Vector3(0,0,0) if is_ramp else _hallway_to_global(hallway_vertex)
 			add_child(hallway)
 
 

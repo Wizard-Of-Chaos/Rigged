@@ -25,8 +25,7 @@ const door_hallway_offsets: Array[Vector3i] = [
 func _ready():
 	var box: BoxShape3D = bounding_area.shape
 	box.size = Vector3(cells_x * 32, cells_y * 16, cells_z * 32)
-	bounding_area.position = Vector3(0, box.size.y * 8, 0)
-
+	bounding_area.position = Vector3(0, cells_y * 8, 0)
 func door_global_pos(door_idx: int) -> Vector3:
 	if door_idx == -1:
 		return global_position
