@@ -76,6 +76,7 @@ func _ready():
 			rng_seed = _rng.seed
 		else:
 			_rng.seed = rng_seed
+		generate()
 
 
 
@@ -372,6 +373,10 @@ func generate():
 			_rng.seed = rng_seed
 	_generate_rooms()
 	var room_mst := _generate_room_mst()
+	#for vert in room_mst:
+		#if room_mst[vert] == cell_at_infinity:
+			#continue
+		#_draw_line(_cell_to_global(vert), _cell_to_global(room_mst[vert]), Color.BLUE)
 	var astar := _generate_hallway_astar()
 	var hallway_graph := _generate_hallway_graph(astar, room_mst)
 	_generate_hallways(hallway_graph)

@@ -5,12 +5,15 @@
 [sub_resource type="BoxShape3D" id="BoxShape3D_uqj5h"]
 size = Vector3(32, 16, 32)
 
-[node name="ShipCell" type="Area3D"]
+[node name="NavigationRegion3D" type="NavigationRegion3D"]
 script = ExtResource("1_urgdm")
 
-[node name="Objectives" type="Node3D" parent="."]
+[node name="ShipCell" type="Area3D" parent="."]
+
+[node name="Objectives" type="Node3D" parent="ShipCell"]
 unique_name_in_owner = true
 
-[node name="Box" type="CollisionShape3D" parent="."]
+[node name="Box" type="CollisionShape3D" parent="ShipCell"]
 unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 8, 0)
 shape = SubResource("BoxShape3D_uqj5h")

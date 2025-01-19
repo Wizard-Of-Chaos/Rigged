@@ -1,5 +1,5 @@
 @tool
-extends Area3D
+extends NavigationRegion3D
 class_name ShipCell
 
 @export_range(1, 6) var cells_x := 1

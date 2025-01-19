@@ -6,7 +6,7 @@
 [node name="ShipSkeleton" instance=ExtResource("1_dth83")]
 cells_wide = 4
 cells_long = 8
-cells_tall = 2
+cells_tall = 1
 bridge_position = Vector3i(1, 0, 7)
 engines_position = Vector3i(1, 0, 0)
 max_rooms = 10

@@ -1,6 +1,14 @@
-[gd_scene load_steps=5 format=3 uid="uid://cqxwo13cjlnxa"]
+[gd_scene load_steps=9 format=3 uid="uid://cqxwo13cjlnxa"]
 
 [ext_resource type="PackedScene" uid="uid://byu7ev8daio1p" path="res://assets/environments/corridor_legos/hall_Y.blend" id="1_7f5s2"]
+
+[sub_resource type="NavigationMesh" id="NavigationMesh_gvm8c"]
+vertices = PackedVector3Array(-1.5, 0.5, 3, -1.5, 0.5, 4, 1.5, 0.5, 4, 1.5, 0.5, 3, -3, 0.5, 1.5, 3, 0.5, 1.5, 4, 0.5, -1.5, -4, 0.5, -1.5, 4, 0.5, 1.5, -4, 0.5, 1.5)
+polygons = [PackedInt32Array(3, 2, 0), PackedInt32Array(0, 2, 1), PackedInt32Array(0, 4, 3), PackedInt32Array(3, 4, 5), PackedInt32Array(5, 4, 7), PackedInt32Array(5, 7, 6), PackedInt32Array(6, 8, 5), PackedInt32Array(4, 9, 7)]
+geometry_parsed_geometry_type = 1
+geometry_collision_mask = 2147483648
+border_size = 1.0
+filter_baking_aabb = AABB(-5, 0, -5, 10, 4, 10)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_vtucx"]
 size = Vector3(8, 0.2, 6.3)
@@ -11,26 +19,55 @@ size = Vector3(2, 4, 0.2)
 [sub_resource type="BoxShape3D" id="BoxShape3D_7uf1n"]
 size = Vector3(8, 4, 0.2)
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_4r7be"]
+size = Vector3(3, 0.2, 4.5)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_vk22n"]
+size = Vector3(3, 0.2, 4.5)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_0ehu1"]
+size = Vector3(4.5, 0.2, 3)
+
 [node name="HallY" instance=ExtResource("1_7f5s2")]
 
-[node name="StaticBody3D" type="StaticBody3D" parent="." index="1"]
+[node name="NavigationRegion3D" type="NavigationRegion3D" parent="." index="1"]
+navigation_mesh = SubResource("NavigationMesh_gvm8c")
 
-[node name="Floor" type="CollisionShape3D" parent="StaticBody3D" index="0"]
+[node name="StaticBody3D" type="StaticBody3D" parent="NavigationRegion3D" index="0"]
+collision_layer = 2147483649
+
+[node name="Floor" type="CollisionShape3D" parent="NavigationRegion3D/StaticBody3D" index="0"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0.85)
 shape = SubResource("BoxShape3D_vtucx")
 
-[node name="Ceiling" type="CollisionShape3D" parent="StaticBody3D" index="1"]
+[node name="Ceiling" type="CollisionShape3D" parent="NavigationRegion3D/StaticBody3D" index="1"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.1, 0.85)
 shape = SubResource("BoxShape3D_vtucx")
 
-[node name="FrontLeft" type="CollisionShape3D" parent="StaticBody3D" index="2"]
+[node name="FrontLeft" type="CollisionShape3D" parent="NavigationRegion3D/StaticBody3D" index="2"]
 transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 2.9, 2, 2.9)
 shape = SubResource("BoxShape3D_oaffs")
 
-[node name="FrontRight" type="CollisionShape3D" parent="StaticBody3D" index="3"]
+[node name="FrontRight" type="CollisionShape3D" parent="NavigationRegion3D/StaticBody3D" index="3"]
 transform = Transform3D(0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, 0.707107, -2.9, 2, 2.9)
 shape = SubResource("BoxShape3D_oaffs")
 
-[node name="BackWall" type="CollisionShape3D" parent="StaticBody3D" index="4"]
+[node name="BackWall" type="CollisionShape3D" parent="NavigationRegion3D/StaticBody3D" index="4"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, -2.3)
 shape = SubResource("BoxShape3D_7uf1n")
+
+[node name="StaticBody3D2" type="StaticBody3D" parent="NavigationRegion3D" index="1"]
+collision_layer = 2147483648
+collision_mask = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="NavigationRegion3D/StaticBody3D2" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.5, 0, 0)
+shape = SubResource("BoxShape3D_4r7be")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="NavigationRegion3D/StaticBody3D2" index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.5, 0, 0)
+shape = SubResource("BoxShape3D_vk22n")
+
+[node name="CollisionShape3D3" type="CollisionShape3D" parent="NavigationRegion3D/StaticBody3D2" index="2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 5.5)
+shape = SubResource("BoxShape3D_0ehu1")
