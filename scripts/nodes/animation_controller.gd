@@ -20,6 +20,4 @@ func _on_set_actor_state(actor_state_change: ActorStateChange):
 		aim_tween.kill()
 	aim_tween = anim_tree.create_tween()
 	var blend_factor = 0
-	if actor_state_change.new_state == ActorStateList.weapon_aiming:
-		blend_factor = 1
 	aim_tween.tween_property(anim_tree, "parameters/aim_blend/blend_amount", blend_factor, .15)

@@ -65,28 +65,6 @@ func _input(event: InputEvent):
 		_down_strength = event.get_action_strength("descend")
 	elif event.is_action_pressed("pause_menu") and event.device < -1:
 		SteamInputGlobal.show_binding_panel(event.device)
-	elif event.is_action_pressed("equip_weapon"):
-		if move_controller.current_player_state == ActorStateList.neutral or move_controller.current_player_state == ActorStateList.weapon_aiming:
-			move_controller.set_actor_state(ActorStateList.weapon_equipped)
-			wep_visible = true
-		else:
-			move_controller.set_actor_state(ActorStateList.neutral)
-			wep_visible = false
-	elif event.is_action_pressed("aim"):
-		if wep_visible:
-			if move_controller.current_actor_state == ActorStateList.weapon_equipped:
-				move_controller.set_player_state(ActorStateList.weapon_aiming)
-				camera_root.crosshair.visible = true
-				ik_arm.start()
-			else:
-				move_controller.set_player_state(ActorStateList.weapon_equipped)
-				camera_root.crosshair.visible = false
-				ik_arm.stop()
-				
-	# if event.is_action_pressed("fire") and move_controller.current_player_state == ActorStateList.weapon_aiming:
-		# pistol.firing = true
-	# else:
-		# pistol.firing = false
 	
 	if event.is_action_pressed("interact"):
 		camera_root.aim_ray.force_raycast_update()

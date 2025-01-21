@@ -36,6 +36,8 @@ var _sprinting: bool = false
 var _jumped: bool = false
 var _floating: bool = false
 
+const _gravity_force: float = -9.81
+
 func moving() -> bool:
 	return abs(move_direction.x) > 0 or abs(move_direction.y) > 0 or abs(move_direction.z) > 0
 
@@ -54,6 +56,8 @@ func basic_movement(delta: float):
 		move_controller.set_move_dir(move_direction)
 		if _jumped:
 			anim_controller.anim_tree["parameters/jump/request"] = AnimationNodeOneShot.ONE_SHOT_REQUEST_FIRE
+			if is_on_floor():
+				velocity += Vector3(0, 5, 0)
 		if !is_on_floor():
 			move_controller.set_move_state(MoveStateList.floating if _floating else MoveStateList.jump)
 		else:
@@ -63,11 +67,19 @@ func basic_movement(delta: float):
 		move_controller.set_move_state(MoveStateList.floating if _floating else MoveStateList.idle)
 
 	var target_rotation: float = atan2(move_controller.direction.x, move_controller.direction.z) - rotation.y
-	mesh_root.rotation.y = lerp_angle(mesh_root.rotation.y, target_rotation, move_controller.rotation_speed * delta)
-	velocity = velocity.lerp(move_controller.get_velocity(is_on_floor()), move_controller.acceleration * delta)
-
+	mesh_root.rotation.y = lerp_angle(mesh_root.rotation.y, target_rotation, move_controller.current_move_state.rotation_speed * delta)
+	if move_controller.current_move_state.grounded:
+		#if the state's grounded we need to ignore whatever the player wants to say about Y values, sans jumping
+		#hilariously, as a result of this, the 'jump' state is actually grounded
+		var vel_x: float = lerp(velocity.x, move_controller.get_desired_velocity().x, move_controller.move_state().acceleration * delta)
+		var vel_z: float = lerp(velocity.z, move_controller.get_desired_velocity().z, move_controller.move_state().acceleration * delta)
+		var vel_y: float = velocity.y + (_gravity_force * delta)
+		#where 55 is terminal velocity
+		velocity = Vector3(vel_x, vel_y, vel_z)
+		
+	else:
+		velocity = velocity.lerp(move_controller.get_desired_velocity(), move_controller.current_move_state.acceleration * delta)
 	_jumped = false
-
 	move_and_slide()
 
 func _physics_process(delta: float):
