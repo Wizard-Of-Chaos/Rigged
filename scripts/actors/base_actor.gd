@@ -64,7 +64,7 @@ func basic_movement(delta: float):
 			move_controller.set_move_state(MoveStateList.sprint if _sprinting else MoveStateList.run)
 	else:
 		#move_controller.set_move_dir(Vector3(0,0,0))
-		move_controller.set_move_state(MoveStateList.floating if _floating else MoveStateList.idle)
+		move_controller.set_move_state(MoveStateList.floating_idle if _floating else MoveStateList.idle)
 
 	var target_rotation: float = atan2(move_controller.direction.x, move_controller.direction.z) - rotation.y
 	mesh_root.rotation.y = lerp_angle(mesh_root.rotation.y, target_rotation, move_controller.current_move_state.rotation_speed * delta)
