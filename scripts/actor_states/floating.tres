@@ -4,5 +4,6 @@
 
 [resource]
 script = ExtResource("1_sbskm")
-id = 0
-name = ""
+id = 2
+name = "floating"
+speed_multiplier = 0.8

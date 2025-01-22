@@ -95,7 +95,7 @@ parameters/jump/active = false
 parameters/jump/internal_active = false
 parameters/jump/request = 0
 parameters/move_anim_speed/scale = 1.0
-parameters/move_blend/blend_position = 3.0
+parameters/move_blend/blend_position = Vector2(0, 2)
 
 [node name="AnimController" parent="." index="3" node_paths=PackedStringArray("anim_tree")]
 anim_tree = NodePath("../MeshRoot/AnimationTree")

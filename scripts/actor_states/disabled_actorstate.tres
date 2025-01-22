@@ -6,3 +6,4 @@
 script = ExtResource("1_ecf1j")
 id = 1
 name = "disabled_actorstate"
+speed_multiplier = 0.001

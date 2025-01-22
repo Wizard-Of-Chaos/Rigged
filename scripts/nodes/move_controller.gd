@@ -22,6 +22,9 @@ func get_state_change(new_state: ActorState) -> ActorStateChange:
 func move_state():
 	return current_move_state
 	
+func actor_state():
+	return current_actor_state
+	
 func set_move_state(p_move_state: MoveState):
 	previous_move_state = current_move_state
 	current_move_state = p_move_state
@@ -43,8 +46,8 @@ func get_desired_velocity() -> Vector3:
 	if not res.is_zero_approx() and res.length_squared() > 1:
 		res = res.normalized()
 	if current_move_state.grounded:
-		res.x *= current_move_state.speed
-		res.z *= current_move_state.speed
+		res.x *= current_move_state.speed * current_actor_state.speed_multiplier
+		res.z *= current_move_state.speed * current_actor_state.speed_multiplier
 	else:
-		res *= current_move_state.speed
+		res *= current_move_state.speed * current_actor_state.speed_multiplier
 	return res

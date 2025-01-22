@@ -21,7 +21,6 @@ var yaw: float = 0
 var pitch: float = 0
 
 var move_tween: Tween
-var player_tween: Tween
 
 var devices: Array[int] = []
 
@@ -46,19 +45,6 @@ func _on_set_move_state(move_state: MoveState):
 func _on_set_actor_state(actor_state: ActorStateChange):
 	if actor_state.new_state == actor_state.old_state:
 		return
-	if player_tween:
-		player_tween.kill()
-	player_tween = create_tween()
-	# if actor_state.old_state == ActorStateList.weapon_equipped and actor_state.new_state == ActorStateList.weapon_aiming:
-		# player_tween.tween_property(camera, "position", camera.position + Vector3(0, 0, -.75), .1).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
-		#player_tween.parallel().tween_property(camera, "fov", camera.fov - 60, .1).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
-	# elif actor_state.old_state == ActorStateList.weapon_aiming:
-		# player_tween.tween_property(camera, "position", camera.position + Vector3(0, 0, .75), .1).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
-		# player_tween.parallel().tween_property(camera, "fov", camera.fov + 60, .1).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
-	# else:
-		# player_tween.kill()
-		# printerr("Unknown state combo [%s, %s]" % [actor_state.old_state.name, actor_state.new_state.name])
-
 
 func cam_input(event: InputEventMouseMotion) -> void:
 	yaw += -event.relative.x * yaw_sensitivity

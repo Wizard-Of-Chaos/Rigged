@@ -6,3 +6,4 @@
 script = ExtResource("1_6ebe5")
 id = 3
 name = "crawling"
+speed_multiplier = 0.25

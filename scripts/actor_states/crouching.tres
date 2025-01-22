@@ -4,5 +4,6 @@
 
 [resource]
 script = ExtResource("1_t2nj5")
-id = 2
+id = 0
 name = "crouching"
+speed_multiplier = 0.5
