@@ -10,6 +10,7 @@ var anim_tree: AnimationTree
 @onready var remote_transform: RemoteTransform3D = %RemoteTransform
 @onready var anim_controller: AnimationController = %AnimController
 @onready var move_controller: MoveController = %MoveController
+@onready var collider: CollisionShape3D = %Collider
 
 var move_direction: Vector3: 
 	get:
@@ -57,10 +58,21 @@ func toggle_crouching() -> void:
 	if actor_state != ActorStateList.crouching and actor_state != ActorStateList.floating:
 		move_controller.set_actor_state(ActorStateList.crouching)
 		motion_mode = MotionMode.MOTION_MODE_GROUNDED
+		if collider.shape:
+			if collider.shape is CapsuleShape3D:
+				var cap: CapsuleShape3D = collider.shape
+				cap.height = cap.height / 2
+				collider.position -= Vector3(0, cap.height / 2, 0)
+				print(collider.position)
 	else:
 		move_controller.set_actor_state(ActorStateList.neutral)
 		motion_mode = MotionMode.MOTION_MODE_GROUNDED
-
+		if collider.shape:
+			if collider.shape is CapsuleShape3D:
+				var cap: CapsuleShape3D = collider.shape
+				collider.position += Vector3(0, cap.height / 2, 0)
+				print(collider.position)
+				cap.height = cap.height * 2
 
 func _on_health_changed(old: int, new: int):
 	print("%s took damage - %s to %s" % [name, old, new])

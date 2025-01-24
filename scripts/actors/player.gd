@@ -27,7 +27,7 @@ func _ready():
 				break
 		player_info.player_node = self
 		devices = player_info.devices
-		move_controller.actor_state_set.connect(anim_controller._on_set_actor_state)
+		# move_controller.actor_state_set.connect(anim_controller._on_set_actor_state)
 		# pistol.visible = false
 		ik_arm.stop()
 
