@@ -3,8 +3,8 @@
 [ext_resource type="PackedScene" uid="uid://byu7ev8daio1p" path="res://assets/environments/corridor_legos/hall_Y.blend" id="1_7f5s2"]
 
 [sub_resource type="NavigationMesh" id="NavigationMesh_gvm8c"]
-vertices = PackedVector3Array(-1.5, 0.5, 3, -1.5, 0.5, 4, 1.5, 0.5, 4, 1.5, 0.5, 3, -3, 0.5, 1.5, 3, 0.5, 1.5, 4, 0.5, -1.5, -4, 0.5, -1.5, 4, 0.5, 1.5, -4, 0.5, 1.5)
-polygons = [PackedInt32Array(3, 2, 0), PackedInt32Array(0, 2, 1), PackedInt32Array(0, 4, 3), PackedInt32Array(3, 4, 5), PackedInt32Array(5, 4, 7), PackedInt32Array(5, 7, 6), PackedInt32Array(6, 8, 5), PackedInt32Array(4, 9, 7)]
+vertices = PackedVector3Array(-3.5, 0.5, -0.5, -3.5, 0.5, 0.5, -2.5, 0.5, 0.75, -0.75, 0.5, 2.5, -0.5, 0.5, 3.5, 0.5, 0.5, 3.5, 0.75, 0.5, 2.5, 2.5, 0.5, 0.75, 3.5, 0.5, -0.5, 3.5, 0.5, 0.5)
+polygons = [PackedInt32Array(2, 1, 0), PackedInt32Array(4, 3, 5), PackedInt32Array(5, 3, 6), PackedInt32Array(3, 2, 6), PackedInt32Array(6, 2, 0), PackedInt32Array(6, 0, 7), PackedInt32Array(7, 0, 8), PackedInt32Array(8, 9, 7)]
 geometry_parsed_geometry_type = 1
 geometry_collision_mask = 2147483648
 border_size = 1.0

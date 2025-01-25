@@ -40,6 +40,9 @@ const HALLWAY_OFFSET := -3*Vector3i(CELL_LENGTH, 0, CELL_WIDTH)/8
 			clear()
 		clear_ship = false
 
+@onready var rooms: Node3D = $Rooms
+@onready var hallways: Node3D = $Hallways
+
 var _rng: RandomNumberGenerator
 var _tile_map: Dictionary
 var cell_at_infinity: Vector3i
@@ -62,7 +65,12 @@ class ShipAStar3D extends AStar3D:
 		return dist.x + dist.y + dist.z
 
 func clear() -> void:
-	for child in get_children():
+	for room in rooms.get_children():
+		if not room is ShipCell:
+			push_error("Room isn't a ShipCell!")
+		if not room.is_prespawn:
+			room.queue_free()
+	for child in hallways.get_children():
 		child.queue_free()
 	_tile_map = {}
 	_rng = null

@@ -60,7 +60,7 @@ version_control/autoload_on_startup=true
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/fmod/plugin.cfg")
+enabled=PackedStringArray("res://addons/clickable_ball/plugin.cfg", "res://addons/fmod/plugin.cfg")
 
 [file_customization]
 
@@ -72,6 +72,7 @@ folder_colors={
 [global_group]
 
 main="mainNode"
+navigation_mesh_source_group=""
 
 [gui]
 
@@ -156,4 +157,5 @@ take_damage={
 
 [layer_names]
 
+3d_physics/layer_31="editor_only"
 3d_physics/layer_32="nav baking"

@@ -3,17 +3,33 @@
 [ext_resource type="Script" path="res://scenes/environments/ship_cell.gd" id="1_urgdm"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_uqj5h"]
+resource_local_to_scene = true
 size = Vector3(32, 16, 32)
 
-[node name="NavigationRegion3D" type="NavigationRegion3D"]
+[node name="ShipCell" type="Area3D" groups=["navigation_mesh_source_group"]]
 script = ExtResource("1_urgdm")
+is_prespawn = false
 
-[node name="ShipCell" type="Area3D" parent="."]
-
-[node name="Objectives" type="Node3D" parent="ShipCell"]
+[node name="Objectives" type="Node3D" parent="."]
 unique_name_in_owner = true
 
-[node name="Box" type="CollisionShape3D" parent="ShipCell"]
+[node name="Box" type="CollisionShape3D" parent="."]
 unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 8, 0)
 shape = SubResource("BoxShape3D_uqj5h")
+
+[node name="MediumAgentNavRegion" type="NavigationRegion3D" parent="."]
+unique_name_in_owner = true
+
+[node name="LargeAgentNavRegion" type="NavigationRegion3D" parent="."]
+unique_name_in_owner = true
+navigation_layers = 2
+
+[node name="SmallAgentNavRegion" type="NavigationRegion3D" parent="."]
+unique_name_in_owner = true
+navigation_layers = 4
+
+[node name="ExtraNavGeometry" type="StaticBody3D" parent="."]
+unique_name_in_owner = true
+collision_layer = 2147483648
+collision_mask = 0

@@ -1,8 +1,9 @@
-[gd_scene load_steps=11 format=3 uid="uid://ctj8ksn3cdjxo"]
+[gd_scene load_steps=12 format=3 uid="uid://ctj8ksn3cdjxo"]
 
 [ext_resource type="PackedScene" uid="uid://drgx362yg0d2f" path="res://scenes/actors/basic_actor.tscn" id="1_fsqf5"]
 [ext_resource type="Script" path="res://scripts/actors/ai/basic_ai.gd" id="2_xi3if"]
 [ext_resource type="PackedScene" uid="uid://0n5kcw8f6ntr" path="res://assets/actors/crabbo/crabbo.blend" id="3_7a55l"]
+[ext_resource type="Script" path="res://scripts/nodes/ai_controller.gd" id="4_q8r5d"]
 
 [sub_resource type="AnimationNodeTimeScale" id="AnimationNodeTimeScale_2ega0"]
 
@@ -78,5 +79,9 @@ shape = SubResource("CapsuleShape3D_wq1fm")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="DetectionRadius" index="0"]
 shape = SubResource("SphereShape3D_d6aex")
+
+[node name="AIController" type="Node" parent="." index="10"]
+unique_name_in_owner = true
+script = ExtResource("4_q8r5d")
 
 [editable path="MeshRoot"]

@@ -1,0 +1,27 @@
+[gd_scene load_steps=5 format=3 uid="uid://bv53g0yr0srje"]
+
+[ext_resource type="Script" path="res://addons/clickable_ball/clickable_ball.gd" id="1_52htu"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_tfh7d"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_nq5ck"]
+transparency = 1
+no_depth_test = true
+albedo_color = Color(1, 0, 0, 0.427451)
+emission = Color(1, 0, 0, 1)
+emission_energy_multiplier = 0.0
+
+[sub_resource type="SphereMesh" id="SphereMesh_qmgyq"]
+material = SubResource("StandardMaterial3D_nq5ck")
+
+[node name="ClickableBall" type="Area3D"]
+collision_layer = 1073741824
+collision_mask = 0
+script = ExtResource("1_52htu")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("SphereShape3D_tfh7d")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+unique_name_in_owner = true
+mesh = SubResource("SphereMesh_qmgyq")

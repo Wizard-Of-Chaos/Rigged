@@ -7,8 +7,8 @@ vertices = PackedVector3Array(-4, 0.5, -1.5, -4, 0.5, 1.5, -3, 0.5, 1.5, -3, 0.5
 polygons = [PackedInt32Array(3, 2, 0), PackedInt32Array(0, 2, 1), PackedInt32Array(6, 5, 4), PackedInt32Array(10, 9, 7), PackedInt32Array(7, 9, 8), PackedInt32Array(2, 3, 6), PackedInt32Array(4, 13, 11), PackedInt32Array(11, 13, 12), PackedInt32Array(11, 10, 4), PackedInt32Array(4, 10, 7), PackedInt32Array(4, 7, 2), PackedInt32Array(4, 2, 6), PackedInt32Array(6, 15, 5), PackedInt32Array(5, 15, 14)]
 geometry_parsed_geometry_type = 1
 geometry_collision_mask = 2147483648
-border_size = 1.0
-filter_baking_aabb = AABB(-5, 0, -5, 10, 4, 10)
+border_size = 2.0
+filter_baking_aabb = AABB(-6, 0, -6, 12, 4, 12)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_b0teg"]
 size = Vector3(8, 0.2, 8)
@@ -31,7 +31,7 @@ size = Vector3(3, 0.2, 4.5)
 [node name="HallX" instance=ExtResource("1_y4ufd")]
 
 [node name="NavigationRegion3D" type="NavigationRegion3D" parent="." index="1"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00396633, 0, -0.0193157)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0277195, -0.010006, -0.0223264)
 navigation_mesh = SubResource("NavigationMesh_orkqk")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="NavigationRegion3D" index="0"]

@@ -1,6 +1,7 @@
 extends BaseActor
 class_name BasicAI
 
+@onready var ai_controller: AIController = %AIController
 @export var ai_states: Dictionary
 @export var current_ai_state: AIState
 var _pursuit_target: CharacterBody3D
