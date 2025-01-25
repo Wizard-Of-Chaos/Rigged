@@ -6,7 +6,7 @@
 script = ExtResource("1_61pff")
 id = 1
 speed = 5.0
-acceleration = 3.0
+acceleration = 4.0
 rotation_speed = 7.0
 fov = 85.0
 animation_speed = 1.0

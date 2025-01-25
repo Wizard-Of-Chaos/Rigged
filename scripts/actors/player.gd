@@ -27,7 +27,7 @@ func _ready():
 				break
 		player_info.player_node = self
 		devices = player_info.devices
-		move_controller.actor_state_set.connect(anim_controller._on_set_actor_state)
+		# move_controller.actor_state_set.connect(anim_controller._on_set_actor_state)
 		# pistol.visible = false
 		ik_arm.stop()
 
@@ -57,36 +57,16 @@ func _input(event: InputEvent):
 		_left_strength = event.get_action_strength("move_left")
 	elif event.is_action("sprint"):
 		_sprinting = event.is_action_pressed("sprint", true)
-	elif event.is_action_pressed("jump") and is_on_floor() and not _floating:
+	elif event.is_action_pressed("jump") and is_on_floor() and actor_state != ActorStateList.floating:
 		_jumped = event.is_action_pressed("jump")
-	elif event.is_action("jump") and _floating:
+	elif event.is_action("jump") and actor_state == ActorStateList.floating:
 		_up_strength = event.get_action_strength("jump")
-	elif event.is_action("descend") and _floating:
+	elif event.is_action("descend") and actor_state == ActorStateList.floating:
 		_down_strength = event.get_action_strength("descend")
 	elif event.is_action_pressed("pause_menu") and event.device < -1:
 		SteamInputGlobal.show_binding_panel(event.device)
-	elif event.is_action_pressed("equip_weapon"):
-		if move_controller.current_player_state == ActorStateList.neutral or move_controller.current_player_state == ActorStateList.weapon_aiming:
-			move_controller.set_actor_state(ActorStateList.weapon_equipped)
-			wep_visible = true
-		else:
-			move_controller.set_actor_state(ActorStateList.neutral)
-			wep_visible = false
-	elif event.is_action_pressed("aim"):
-		if wep_visible:
-			if move_controller.current_actor_state == ActorStateList.weapon_equipped:
-				move_controller.set_player_state(ActorStateList.weapon_aiming)
-				camera_root.crosshair.visible = true
-				ik_arm.start()
-			else:
-				move_controller.set_player_state(ActorStateList.weapon_equipped)
-				camera_root.crosshair.visible = false
-				ik_arm.stop()
-				
-	# if event.is_action_pressed("fire") and move_controller.current_player_state == ActorStateList.weapon_aiming:
-		# pistol.firing = true
-	# else:
-		# pistol.firing = false
+	elif event.is_action_pressed("roll"):
+		toggle_crouching()
 	
 	if event.is_action_pressed("interact"):
 		camera_root.aim_ray.force_raycast_update()
@@ -102,7 +82,7 @@ func _input(event: InputEvent):
 			print("Nothing to hit or interact with")
 	
 	if event.is_action_pressed("debug_float_toggle"):
-		set_floating(not _floating)
+		toggle_floating()
 	if event.is_action_pressed("take_damage"):
 		health_node.damage(50)  # Call the take_damage function, reduce 50 HP for testing
 

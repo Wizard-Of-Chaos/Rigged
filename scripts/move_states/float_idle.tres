@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="MoveState" load_steps=2 format=3 uid="uid://8cx4nnwlp36j"]
+
+[ext_resource type="Script" path="res://scripts/move_states/move_state.gd" id="1_rjqn0"]
+
+[resource]
+script = ExtResource("1_rjqn0")
+id = 6
+speed = 0.0
+acceleration = 4.0
+rotation_speed = 8.0
+fov = 80.0
+animation_speed = 1.0
+grounded = false
+controllable = true

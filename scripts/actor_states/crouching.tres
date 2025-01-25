@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="ActorState" load_steps=2 format=3 uid="uid://rhp0ioldasv0"]
+
+[ext_resource type="Script" path="res://scripts/actor_states/actor_state.gd" id="1_t2nj5"]
+
+[resource]
+script = ExtResource("1_t2nj5")
+id = 0
+name = "crouching"
+speed_multiplier = 0.5

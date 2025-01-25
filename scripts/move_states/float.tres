@@ -10,5 +10,5 @@ acceleration = 3.0
 rotation_speed = 4.0
 fov = 85.0
 animation_speed = 1.0
-grounded = true
+grounded = false
 controllable = true

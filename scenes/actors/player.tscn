@@ -11,11 +11,7 @@ height = 2.2
 [node name="Player" instance=ExtResource("1_usr57")]
 script = ExtResource("1_83kd4")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="." index="0"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.10392, 0)
-shape = SubResource("CapsuleShape3D_52xqs")
-
-[node name="MeshRoot" parent="." index="1" instance=ExtResource("2_ltr6a")]
+[node name="MeshRoot" parent="." index="0" instance=ExtResource("2_ltr6a")]
 unique_name_in_owner = true
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
 
@@ -95,20 +91,20 @@ parameters/jump/active = false
 parameters/jump/internal_active = false
 parameters/jump/request = 0
 parameters/move_anim_speed/scale = 1.0
-parameters/move_blend/blend_position = 3.0
+parameters/move_blend/blend_position = Vector2(0, 1)
 
-[node name="AnimController" parent="." index="3" node_paths=PackedStringArray("anim_tree")]
+[node name="AnimController" parent="." index="2" node_paths=PackedStringArray("anim_tree")]
 anim_tree = NodePath("../MeshRoot/AnimationTree")
 
-[node name="RemoteTransform" parent="." index="5"]
+[node name="RemoteTransform" parent="." index="4"]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 2.2, 0)
 
-[node name="FmodListener3D" type="FmodListener3D" parent="." index="7"]
+[node name="FmodListener3D" type="FmodListener3D" parent="." index="6"]
 
-[node name="FmodBankLoader" type="FmodBankLoader" parent="." index="8"]
+[node name="FmodBankLoader" type="FmodBankLoader" parent="." index="7"]
 bank_paths = ["res://assets/audio/Build/Desktop/player_body.bank", "res://assets/audio/Build/Desktop/weapon.bank"]
 
-[node name="IKTarget" type="Marker3D" parent="." index="9"]
+[node name="IKTarget" type="Marker3D" parent="." index="8"]
 unique_name_in_owner = true
 transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, 2.5, 0)
 
@@ -118,5 +114,8 @@ transform = Transform3D(-1, -8.74228e-08, -3.82137e-15, 0, -4.37114e-08, 1, -8.7
 
 [node name="NavigationAgent3D" parent="." index="12"]
 avoidance_enabled = false
+[node name="Collider" parent="." index="11"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.15, 0)
+shape = SubResource("CapsuleShape3D_52xqs")
 
 [editable path="MeshRoot"]

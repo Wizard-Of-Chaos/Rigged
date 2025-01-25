@@ -40,3 +40,5 @@ script = ExtResource("6_cy5uw")
 
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
 avoidance_enabled = true
+[node name="Collider" type="CollisionShape3D" parent="."]
+unique_name_in_owner = true

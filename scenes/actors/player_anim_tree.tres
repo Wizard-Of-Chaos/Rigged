@@ -1,4 +1,4 @@
-[gd_resource type="AnimationNodeBlendTree" load_steps=12 format=3 uid="uid://ce6bvshi5lig2"]
+[gd_resource type="AnimationNodeBlendTree" load_steps=15 format=3 uid="uid://ce6bvshi5lig2"]
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_16x0u"]
 animation = &"pistol_aim"
@@ -14,48 +14,64 @@ animation = &"jump"
 
 [sub_resource type="AnimationNodeTimeScale" id="AnimationNodeTimeScale_5mmdg"]
 
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_82c46"]
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_bvq5a"]
 animation = &"Idle"
 
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_3cdtk"]
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_em1sx"]
 animation = &"Run"
 
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_x44nc"]
-animation = &"Armature|pistol_run"
-
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_4rwq0"]
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_eoyoo"]
 animation = &"sprint"
 
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_p1pbk"]
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_k16cn"]
+animation = &"jump"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_ggujd"]
+animation = &"crouch-idle"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_mqsle"]
 animation = &"float"
 
-[sub_resource type="AnimationNodeBlendSpace1D" id="AnimationNodeBlendSpace1D_ybe7i"]
-blend_point_0/node = SubResource("AnimationNodeAnimation_82c46")
-blend_point_0/pos = 0.0
-blend_point_1/node = SubResource("AnimationNodeAnimation_3cdtk")
-blend_point_1/pos = 1.0
-blend_point_2/node = SubResource("AnimationNodeAnimation_x44nc")
-blend_point_2/pos = 1.0
-blend_point_3/node = SubResource("AnimationNodeAnimation_4rwq0")
-blend_point_3/pos = 2.0
-blend_point_4/node = SubResource("AnimationNodeAnimation_p1pbk")
-blend_point_4/pos = 3.0
-min_space = 0.0
-max_space = 3.0
-snap = 1.0
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_2c2oy"]
+animation = &"float_forward"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_m33qp"]
+animation = &"crouch-walk"
+
+[sub_resource type="AnimationNodeBlendSpace2D" id="AnimationNodeBlendSpace2D_os81d"]
+blend_point_0/node = SubResource("AnimationNodeAnimation_bvq5a")
+blend_point_0/pos = Vector2(0, 1)
+blend_point_1/node = SubResource("AnimationNodeAnimation_em1sx")
+blend_point_1/pos = Vector2(1, 1)
+blend_point_2/node = SubResource("AnimationNodeAnimation_eoyoo")
+blend_point_2/pos = Vector2(2, 1)
+blend_point_3/node = SubResource("AnimationNodeAnimation_k16cn")
+blend_point_3/pos = Vector2(3, 1)
+blend_point_4/node = SubResource("AnimationNodeAnimation_ggujd")
+blend_point_4/pos = Vector2(0, 0)
+blend_point_5/node = SubResource("AnimationNodeAnimation_mqsle")
+blend_point_5/pos = Vector2(0, 2)
+blend_point_6/node = SubResource("AnimationNodeAnimation_2c2oy")
+blend_point_6/pos = Vector2(1, 2)
+blend_point_7/node = SubResource("AnimationNodeAnimation_m33qp")
+blend_point_7/pos = Vector2(1, 0)
+min_space = Vector2(0, 0)
+max_space = Vector2(4, 2)
+snap = Vector2(1, 1)
 
 [resource]
+graph_offset = Vector2(-612.165, -40.3728)
 nodes/Animation/node = SubResource("AnimationNodeAnimation_16x0u")
-nodes/Animation/position = Vector2(-340, 220)
+nodes/Animation/position = Vector2(60, 160)
 nodes/aim_blend/node = SubResource("AnimationNodeBlend2_q1gx6")
-nodes/aim_blend/position = Vector2(-40, 100)
+nodes/aim_blend/position = Vector2(240, -20)
 nodes/jump/node = SubResource("AnimationNodeOneShot_hqtc3")
-nodes/jump/position = Vector2(520, 60)
+nodes/jump/position = Vector2(560, -20)
 nodes/jump_anim/node = SubResource("AnimationNodeAnimation_v5tjp")
-nodes/jump_anim/position = Vector2(400, 160)
+nodes/jump_anim/position = Vector2(420, 120)
 nodes/move_anim_speed/node = SubResource("AnimationNodeTimeScale_5mmdg")
-nodes/move_anim_speed/position = Vector2(160, 80)
-nodes/move_blend/node = SubResource("AnimationNodeBlendSpace1D_ybe7i")
-nodes/move_blend/position = Vector2(-280, 40)
-nodes/output/position = Vector2(720, 100)
+nodes/move_anim_speed/position = Vector2(380, -20)
+nodes/move_blend/node = SubResource("AnimationNodeBlendSpace2D_os81d")
+nodes/move_blend/position = Vector2(-60, -40)
+nodes/output/position = Vector2(680, -20)
 node_connections = [&"aim_blend", 0, &"move_blend", &"aim_blend", 1, &"Animation", &"jump", 0, &"move_anim_speed", &"jump", 1, &"jump_anim", &"move_anim_speed", 0, &"aim_blend", &"output", 0, &"jump"]

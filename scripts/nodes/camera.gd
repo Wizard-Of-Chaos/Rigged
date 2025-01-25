@@ -21,10 +21,12 @@ var yaw: float = 0
 var pitch: float = 0
 
 var move_tween: Tween
-var player_tween: Tween
+var actor_tween: Tween
 
 var devices: Array[int] = []
 
+const _crouch_offset: Vector3 = Vector3(0,.5,0)
+const _float_offset: Vector3 = Vector3(0,.25,0)
 
 func _ready():
 	if 0 in devices:
@@ -42,24 +44,25 @@ func _on_set_move_state(move_state: MoveState):
 	move_tween = create_tween() #BUT NOT ENOUGH TO STOP THEIR EXISTENCE
 	move_tween.tween_property(camera, "fov", move_state.fov, .5).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
 
-
 func _on_set_actor_state(actor_state: ActorStateChange):
 	if actor_state.new_state == actor_state.old_state:
 		return
-	if player_tween:
-		player_tween.kill()
-	player_tween = create_tween()
-	if actor_state.old_state == ActorStateList.weapon_equipped and actor_state.new_state == ActorStateList.weapon_aiming:
-		player_tween.tween_property(camera, "position", camera.position + Vector3(0, 0, -.75), .1).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
-		#player_tween.parallel().tween_property(camera, "fov", camera.fov - 60, .1).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
-	elif actor_state.old_state == ActorStateList.weapon_aiming:
-		player_tween.tween_property(camera, "position", camera.position + Vector3(0, 0, .75), .1).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
-		#player_tween.parallel().tween_property(camera, "fov", camera.fov + 60, .1).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
-	else:
-		player_tween.kill()
-		printerr("Unknown state combo [%s, %s]" % [actor_state.old_state.name, actor_state.new_state.name])
-
-
+	if actor_tween:
+		actor_tween.kill()
+	var offset: Vector3 = Vector3(0,0,0)
+	if actor_state.old_state == ActorStateList.crouching:
+		offset += _crouch_offset
+	elif actor_state.new_state == ActorStateList.crouching:
+		offset -= _crouch_offset
+		
+	if actor_state.old_state == ActorStateList.floating:
+		offset -= _float_offset
+	elif actor_state.new_state == ActorStateList.floating:
+		offset += _float_offset
+		
+	actor_tween = create_tween()
+	actor_tween.tween_property(camera, "position", camera.position + offset, .15).set_trans(Tween.TRANS_SINE)
+	
 func cam_input(event: InputEventMouseMotion) -> void:
 	yaw += -event.relative.x * yaw_sensitivity
 	pitch += -event.relative.y * pitch_sensitivity 
