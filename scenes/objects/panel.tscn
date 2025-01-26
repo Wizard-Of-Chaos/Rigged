@@ -7,8 +7,8 @@ radius = 1.0
 
 [node name="Panel" instance=ExtResource("1_ge4cb")]
 
-[node name="Body" type="RigidBody3D" parent="." index="1"]
-freeze = true
+[node name="Body" type="StaticBody3D" parent="." index="1"]
+collision_layer = 2147483649
 
 [node name="Collider" type="CollisionShape3D" parent="Body" index="0"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.949399, 0)

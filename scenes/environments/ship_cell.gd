@@ -7,16 +7,21 @@ class_name ShipCell
 		cells_x = value
 		if is_node_ready():
 			_calculate_box_size()
+			_setup_nav_regions()
+
 @export_range(1, 6) var cells_y := 1:
 	set(value):
 		cells_y = value
 		if is_node_ready():
 			_calculate_box_size()
+			_setup_nav_regions()
+
 @export_range(1, 6) var cells_z := 1:
 	set(value):
 		cells_z = value
 		if is_node_ready():
 			_calculate_box_size()
+			_setup_nav_regions()
 
 var is_prespawn := false
 
@@ -42,20 +47,29 @@ const door_hallway_offsets: Array[Vector3i] = [
 	Vector3i(-1, 0, 0), Vector3i(-1, 0, 0), Vector3i(-1, 0, 0), Vector3i(-1, 0, 0)
 ]
 
+func get_door_hallway_offset(hallway_offset_idx: int) -> Vector3i:
+	var offset := Vector3(door_hallway_offsets[hallway_offset_idx]).rotated(Vector3.UP, rotation.y)
+	return Vector3i(offset)
+	
+
 var editor_bubbles: Node3D
 
 func _ready():
 	if Engine.is_editor_hint():
 		_calculate_box_size()
+		_setup_nav_regions()
 
-func door_global_pos(door_idx: int) -> Vector3:
-	if door_idx == -1:
-		return global_position
-	return global_position + door_offsets[door_idx]
+
+func door_global_pos(cell_index: Vector3, door_idx: int) -> Vector3:
+	if door_idx == -1 or cell_index.is_equal_approx(Vector3(-1, -1, -1)):
+		return get_global_center()
+	return global_position + (cell_index * Vector3(32, 16, 32) + door_offsets[door_idx]).rotated(Vector3.UP, rotation.y)
+
+func get_global_center() -> Vector3:
+	return global_position + (Vector3(cells_x-1, cells_y-1, cells_z-1) * Vector3(16, 8, 16)).rotated(Vector3.UP, rotation.y)
 
 func is_valid_door_pos(cell_coord: Vector3i, door_idx: int) -> bool:
 	var offset := door_offsets[door_idx]
-	var cell_pos = Vector3((cell_coord.x-1)*32,cell_coord.y*8,(cell_coord.z-1)*32) + Vector3(32, 0, 32)
 	var x_invalid := offset.x > 12 and cell_coord.x != cells_x - 1 or offset.x < -12 and cell_coord.x != 0
 	var z_invalid := offset.z > 12 and cell_coord.z != cells_z - 1 or offset.z < -12 and cell_coord.z != 0
 	return not x_invalid and not z_invalid
@@ -64,14 +78,12 @@ func is_valid_door_pos(cell_coord: Vector3i, door_idx: int) -> bool:
 func _calculate_box_size():
 	if not bounding_area:
 		print('box is nil???')
-	_setup_nav_regions()
 	var box: BoxShape3D = bounding_area.shape
 	box.size = Vector3(cells_x * 32, cells_y * 16, cells_z * 32)
 	bounding_area.position = Vector3((cells_x-1)*16, cells_y * 8, (cells_z-1)*16)
 	var doors_to_remove := []
 	for cell in doors:
 		for door in doors[cell]:
-			print(cell,' ', door.offset_idx)
 			if not is_valid_door_pos(cell, door.offset_idx):
 				doors_to_remove.push_back({'cell': cell, 'offset_idx': door.offset_idx})
 	for door in doors_to_remove:
@@ -84,6 +96,8 @@ func _validate_property(property: Dictionary) -> void:
 		property.usage = PROPERTY_USAGE_STORAGE
 
 func _setup_nav_regions() -> void:
+	if get_tree().edited_scene_root != self:
+		return
 	for nav in [small_nav, medium_nav, large_nav]:
 		if not nav.navigation_mesh:
 			var new_mesh := NavigationMesh.new()

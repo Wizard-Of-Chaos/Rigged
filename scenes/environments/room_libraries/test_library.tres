@@ -1,0 +1,48 @@
+[gd_resource type="Resource" script_class="RoomLibrary" load_steps=11 format=3 uid="uid://dxhi3tdjpmx3b"]
+
+[ext_resource type="Script" path="res://scenes/environments/room_libraries/room_spawn_metadata.gd" id="1_5hald"]
+[ext_resource type="PackedScene" uid="uid://mewsdmxnjj07" path="res://scenes/environments/cells/bridge_test.tscn" id="2_816gc"]
+[ext_resource type="Script" path="res://scenes/environments/room_libraries/room_library.gd" id="2_amywg"]
+[ext_resource type="PackedScene" uid="uid://bcwlupfy4s8sf" path="res://scenes/environments/cells/oxygen_test.tscn" id="2_u0hjt"]
+[ext_resource type="PackedScene" uid="uid://itbwpfugyuhq" path="res://scenes/environments/cells/engine_test.tscn" id="3_7fu5c"]
+[ext_resource type="PackedScene" uid="uid://l1sxxvsqpd8s" path="res://scenes/environments/cells/airlock_test.tscn" id="5_jdawd"]
+
+[sub_resource type="Resource" id="Resource_o0rv8"]
+script = ExtResource("1_5hald")
+room = ExtResource("3_7fu5c")
+can_random_spawn = true
+spawn_weight = 1.0
+max_instances = 0
+sector_spawn_type = 0
+cell_size = Vector3i(2, 1, 1)
+
+[sub_resource type="Resource" id="Resource_3um6x"]
+script = ExtResource("1_5hald")
+room = ExtResource("2_816gc")
+can_random_spawn = true
+spawn_weight = 1.0
+max_instances = 0
+sector_spawn_type = 0
+cell_size = Vector3i(2, 1, 1)
+
+[sub_resource type="Resource" id="Resource_pmvv5"]
+script = ExtResource("1_5hald")
+room = ExtResource("2_u0hjt")
+can_random_spawn = true
+spawn_weight = 1.0
+max_instances = 0
+sector_spawn_type = 0
+cell_size = Vector3i(1, 1, 1)
+
+[sub_resource type="Resource" id="Resource_n5b18"]
+script = ExtResource("1_5hald")
+room = ExtResource("5_jdawd")
+can_random_spawn = true
+spawn_weight = 1.0
+max_instances = 0
+sector_spawn_type = 0
+cell_size = Vector3i(1, 1, 1)
+
+[resource]
+script = ExtResource("2_amywg")
+rooms = Array[ExtResource("1_5hald")]([SubResource("Resource_o0rv8"), SubResource("Resource_3um6x"), SubResource("Resource_pmvv5"), SubResource("Resource_n5b18")])

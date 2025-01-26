@@ -2,6 +2,13 @@
 extends Node3D
 class_name ShipSkeleton
 
+enum TileRotation {
+	ZERO,
+	NINETY,
+	ONE_EIGHTY,
+	TWO_SEVENTY
+}
+
 const MAX_ROOM_PLACEMENT_ATTEMPTS := 5
 const CELL_LENGTH := 32
 const CELL_WIDTH := 32
@@ -12,20 +19,15 @@ const HALLWAY_OFFSET := -3*Vector3i(CELL_LENGTH, 0, CELL_WIDTH)/8
 @export_range(1, 64) var cells_long := 64
 @export_range(1, 8) var cells_tall := 8
 
-@export var bridge_position: Vector3i = Vector3i(0,0,0)
-
-@export var engines_position := Vector3i(5,0,0)
-
-@export var oxygen_position := Vector3i(0,0,3)
-@export var airlock_positions: Dictionary
-
 @export var max_rooms: int
-@export var room_types: Array[PackedScene]
 
 @export var rng_seed: int
 
 @export var minimum_timer := 1200.0
 @export var maximum_timer := 1800.0
+
+@export var hallway_library: HallwayLibrary
+@export var room_library: RoomLibrary
 
 @export var generate_ship := false: 
 	set(value):
@@ -46,6 +48,7 @@ const HALLWAY_OFFSET := -3*Vector3i(CELL_LENGTH, 0, CELL_WIDTH)/8
 var _rng: RandomNumberGenerator
 var _tile_map: Dictionary
 var cell_at_infinity: Vector3i
+
 
 class ShipAStar3D extends AStar3D:
 	func _compute_cost(from_id: int, to_id: int) -> float:
@@ -104,7 +107,8 @@ static func _hallway_to_global(pos: Vector3i) -> Vector3:
 	return pos * CELL_DIMENSIONS/4 + HALLWAY_OFFSET
 
 
-func _add_room(p_tile: PackedScene, p_position: Vector3i) -> int:
+func _add_room(p_tile: RoomSpawnMetadata, p_position: Vector3i, tile_rotation: TileRotation = TileRotation.ZERO) -> int:
+	# TODO: change this to 
 	if _tile_map.has(p_position) \
 	or _tile_map.has(p_position + Vector3i(1,0,0)) \
 	or _tile_map.has(p_position + Vector3i(-1,0,0)) \
@@ -115,34 +119,32 @@ func _add_room(p_tile: PackedScene, p_position: Vector3i) -> int:
 	or _tile_map.has(p_position + Vector3i(-1,0,-1)) \
 	or _tile_map.has(p_position + Vector3i(-1,0,1)):
 		return ERR_ALREADY_IN_USE
-	var instantiated_tile := p_tile.instantiate()
+	var instantiated_tile: ShipCell = p_tile.room.instantiate()
 	instantiated_tile.position = _cell_to_global(p_position)
-	add_child(instantiated_tile)
-	_tile_map[p_position] = instantiated_tile
-	return OK
-
-func _remove_room(p_position: Vector3i) -> int:
-	if not _tile_map.has(p_position):
-		return ERR_DOES_NOT_EXIST
-	_tile_map.erase(p_position)
+	var angle: float = 0
+	match tile_rotation:
+		TileRotation.ZERO:
+			angle = 0
+		TileRotation.NINETY:
+			angle = PI/2
+		TileRotation.ONE_EIGHTY:
+			angle=PI
+		TileRotation.TWO_SEVENTY:
+			angle = -PI/2
+	instantiated_tile.rotation = Vector3(0,angle,0)
+	rooms.add_child(instantiated_tile)
+	print('Tile location: %s Tile size: %s' % [p_position, p_tile.cell_size])
+	for x in p_tile.cell_size.x:
+		for y in p_tile.cell_size.y:
+			for z in p_tile.cell_size.z:
+				_tile_map[p_position + Vector3i(Vector3(x,y,z).rotated(Vector3.UP,angle))] = instantiated_tile
 	return OK
 
 func _generate_rooms() -> void:
-	var bridge_tile := preload("res://scenes/environments/cells/bridge_test.tscn")
-	_add_room(bridge_tile, bridge_position)
-	var engine_tile := preload("res://scenes/environments/cells/engine_test.tscn")
-	_add_room(engine_tile, engines_position)
-	var oxygen_tile := preload("res://scenes/environments/cells/oxygen_test.tscn")
-	_add_room(oxygen_tile, oxygen_position)
-	
-	var airlock_tile := preload("res://scenes/environments/cells/airlock_test.tscn")
-	for airlock_key in airlock_positions:
-		var airlock_position: Vector3i = airlock_positions[airlock_key]
-		_add_room(airlock_tile, airlock_position)
-	
+	# TODO: add the in editor rooms into the map
 	for i in max_rooms:
 		for attempt in MAX_ROOM_PLACEMENT_ATTEMPTS:
-			var room_tile := room_types[_rng.randi_range(0, room_types.size() - 1)]
+			var room_tile := room_library.rooms[_rng.randi_range(0, room_library.rooms.size() - 1)]
 			var y_coord := _rng.randi_range(0, cells_tall - 1)
 			var x_coord := _rng.randi_range(0, cells_wide - 1)
 			var z_coord := _rng.randi_range(0, cells_long - 1)
@@ -216,19 +218,23 @@ func _generate_hallway_astar() -> AStar3D:
 				id += 1
 	return astar
 
-
-func _pick_door(from_cell: ShipCell, to_cell: ShipCell) -> int:
-	if from_cell.doors_in_use.size() == 0:
-		return -1
+## Finds the door in from_cell whose vector most closely aligns with from_cell
+func _pick_door(from_cell: ShipCell, to_cell: ShipCell) -> Dictionary:
+	if from_cell.doors.size() == 0:
+		return {'cell_offset': Vector3(-1, -1, -1), 'door_idx': -1}
 	var room_dir := (to_cell.global_position - from_cell.global_position).normalized()
 	var best_door_idx := -1
+	var best_cell_offset := Vector3(-1, -1, -1)
 	var best_door_alignment := -2.0
-	for door_idx in from_cell.doors_in_use:
-		var door_dir := ShipCell.door_offsets[door_idx].normalized()
-		if door_dir.dot(room_dir) > best_door_alignment:
-			best_door_idx = door_idx
-			best_door_alignment = door_dir.dot(room_dir)
-	return best_door_idx
+	for cell_offset in from_cell.doors:
+		for door in from_cell.doors[cell_offset]:
+			var door_idx: int = door.offset_idx
+			var door_dir := (from_cell.door_global_pos(cell_offset, door_idx) - from_cell.get_global_center()).normalized()
+			if door_dir.dot(room_dir) > best_door_alignment:
+				best_door_idx = door_idx
+				best_cell_offset = cell_offset
+				best_door_alignment = door_dir.dot(room_dir)
+	return {'cell_offset': best_cell_offset, 'door_idx': best_door_idx}
 
 
 func _generate_hallway_graph(astar: AStar3D, room_mst: Dictionary) -> Dictionary:
@@ -241,8 +247,8 @@ func _generate_hallway_graph(astar: AStar3D, room_mst: Dictionary) -> Dictionary
 		var to_cell := _tile_map[room_mst[vert]] as ShipCell
 		var from_door := _pick_door(from_cell, to_cell)
 		var to_door := _pick_door(to_cell, from_cell)
-		var from := astar.get_closest_point(from_cell.door_global_pos(from_door))
-		var to := astar.get_closest_point(to_cell.door_global_pos(to_door))
+		var from := astar.get_closest_point(from_cell.door_global_pos(from_door.cell_offset, from_door.door_idx))
+		var to := astar.get_closest_point(to_cell.door_global_pos(to_door.cell_offset, to_door.door_idx))
 		var point_path := astar.get_point_path(from, to)
 		for i in point_path.size()-1:
 			var hallway_from := _global_to_hallway(point_path[i])
@@ -255,10 +261,10 @@ func _generate_hallway_graph(astar: AStar3D, room_mst: Dictionary) -> Dictionary
 				hallway_graph[hallway_from].append(hallway_to)
 			if not hallway_from in hallway_graph[hallway_to]:
 				hallway_graph[hallway_to].append(hallway_from)
-			if i == 0 and from_door != -1 and not hallway_graph[hallway_from].has(hallway_from + ShipCell.door_hallway_offsets[from_door]):
-				hallway_graph[hallway_from].append(hallway_from + ShipCell.door_hallway_offsets[from_door])
-			elif i == point_path.size() - 2 and not hallway_graph[hallway_to].has(hallway_to + ShipCell.door_hallway_offsets[to_door]):
-				hallway_graph[hallway_to].append(hallway_to + ShipCell.door_hallway_offsets[to_door])
+			if i == 0 and from_door.door_idx != -1 and not hallway_graph[hallway_from].has(hallway_from + from_cell.get_door_hallway_offset(from_door.door_idx)):
+				hallway_graph[hallway_from].append(hallway_from + from_cell.get_door_hallway_offset(from_door.door_idx))
+			elif i == point_path.size() - 2 and not hallway_graph[hallway_to].has(hallway_to + to_cell.get_door_hallway_offset(to_door.door_idx)):
+				hallway_graph[hallway_to].append(hallway_to + to_cell.get_door_hallway_offset(to_door.door_idx))
 			#if z != 4 * cells_long - 1 and not _hallway_cell_is_in_room(Vector3i(x, y+1, z+1)):
 				#astar.connect_points(id, id + 4 * cells_long + 1)
 			#if z != 0 and not _hallway_cell_is_in_room(Vector3i(x,y+1, z-1)):
@@ -290,27 +296,19 @@ func _generate_hallway_graph(astar: AStar3D, room_mst: Dictionary) -> Dictionary
 					astar.disconnect_points(astar.get_closest_point(lower), astar.get_closest_point(upper - Vector3(0,4,0)))
 				if _global_to_hallway(upper).y != 2 and not _hallway_cell_is_in_room(_global_to_hallway(upper - Vector3(0,8,0))):
 					astar.disconnect_points(astar.get_closest_point(lower), astar.get_closest_point(upper - Vector3(0,8,0)))
-			_draw_line(point_path[i] + Vector3(0,2,0), point_path[i+1] + Vector3(0,2,0))
+			#_draw_line(point_path[i] + Vector3(0,2,0), point_path[i+1] + Vector3(0,2,0))
 
 	return hallway_graph
 
 
 func _generate_hallways(hallway_graph: Dictionary) -> void:
 	#print(hallway_graph)
-	var hallway_i_scene := preload('res://scenes/environments/corridor_legos/hall_i.tscn')
-	var hallway_l_scene := preload('res://scenes/environments/corridor_legos/hall_l.tscn')
-	var hallway_cap_scene := preload('res://scenes/environments/corridor_legos/hall_cap.tscn')
-	var hallway_y_scene := preload('res://scenes/environments/corridor_legos/hall_y.tscn')
-	var hallway_x_scene := preload('res://scenes/environments/corridor_legos/hall_x.tscn')
-	var hallway_ramp_scene := preload('res://scenes/environments/corridor_legos/hall_ramp.tscn')
-	var hallway_ramp_left_scene := preload('res://scenes/environments/corridor_legos/hall_l_curve_left.tscn')
-	var hallway_ramp_right_scene := preload('res://scenes/environments/corridor_legos/hall_l_curve_right.tscn')
 	for hallway_vertex in hallway_graph:
 		var hallway: Node3D = null
 		var is_ramp := false
 		match hallway_graph[hallway_vertex].size():
 			1:
-				hallway = hallway_cap_scene.instantiate()
+				hallway = hallway_library.cap.instantiate()
 				var cap_dir: Vector3i = hallway_vertex - hallway_graph[hallway_vertex][0]
 				hallway.look_at_from_position(Vector3(0,0,0), cap_dir)
 			2:
@@ -325,29 +323,29 @@ func _generate_hallways(hallway_graph: Dictionary) -> void:
 				should_ramp = should_ramp or not is_equal_approx(hallway_vertex.y, hallway_graph[hallway_vertex][0].y) and not is_equal_approx(hallway_vertex.y, hallway_graph[hallway_vertex][1].y) and not is_equal_approx(hallway_graph[hallway_vertex][1].y, hallway_graph[hallway_vertex][0].y)
 				if is_equal_approx(abs(hallway_graph[hallway_vertex][0].y - hallway_graph[hallway_vertex][1].y), 0) or not should_ramp: 
 					if not is_zero_approx(projected_first_dir.dot(projected_second_dir)):
-						hallway = hallway_i_scene.instantiate()
+						hallway = hallway_library.straight.instantiate()
 						hallway.look_at_from_position(Vector3(0,0,0), look_dir)
 					else:
-						hallway = hallway_l_scene.instantiate()
+						hallway = hallway_library.turn.instantiate()
 						if Vector3(first_dir).cross(second_dir).y > 0:
 							hallway.look_at_from_position(Vector3(0,0,0), projected_second_dir)
 						else:
 							hallway.look_at_from_position(Vector3(0,0,0), projected_first_dir)
 				else:
 					if not is_zero_approx(projected_first_dir.dot(projected_second_dir)):
-						hallway = hallway_ramp_scene.instantiate()
+						hallway = hallway_library.straight.instantiate()
 						hallway.look_at_from_position(Vector3(0,0,0), look_dir)
 						is_ramp = true
 					elif look_dir.cross(other_look_dir).y > 0:
-						hallway = hallway_ramp_left_scene.instantiate()
+						hallway = hallway_library.turn.instantiate()
 						hallway.look_at_from_position(Vector3(0,0,0), other_look_dir)
 						is_ramp = true
 					else:
-						hallway = hallway_ramp_right_scene.instantiate()
+						hallway = hallway_library.turn.instantiate()
 						hallway.look_at_from_position(Vector3(0,0,0), other_look_dir)
 						is_ramp = true
 			3:
-				hallway = hallway_y_scene.instantiate()
+				hallway = hallway_library.three_way.instantiate()
 				var first_dir := Vector3(hallway_vertex - hallway_graph[hallway_vertex][0])
 				var projected_first_dir := (first_dir - first_dir.project(Vector3.UP)).normalized()
 				var second_dir := Vector3(hallway_vertex - hallway_graph[hallway_vertex][1])
@@ -363,12 +361,12 @@ func _generate_hallways(hallway_graph: Dictionary) -> void:
 					perpindicular_dir = projected_first_dir
 				hallway.look_at_from_position(Vector3(0,0,0), perpindicular_dir)
 			4:
-				hallway = hallway_x_scene.instantiate()
+				hallway = hallway_library.four_way.instantiate()
 			_:
 				print('too many vertices')
 		if hallway:
 			hallway.position = _hallway_to_global(hallway_vertex) + Vector3(0,0,0) if is_ramp else _hallway_to_global(hallway_vertex)
-			add_child(hallway)
+			hallways.add_child(hallway)
 
 
 func generate():

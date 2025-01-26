@@ -5,3 +5,13 @@
 [node name="ShipSkeleton" type="Node3D"]
 script = ExtResource("1_vyora")
 metadata/_editor_floor_ = Vector3(0, 0, 0)
+
+[node name="Rooms" type="Node3D" parent="."]
+
+[node name="Hallways" type="Node3D" parent="."]
+
+[node name="RoomSpawner" type="MultiplayerSpawner" parent="."]
+spawn_path = NodePath("../Rooms")
+
+[node name="HallwaySpawner" type="MultiplayerSpawner" parent="."]
+spawn_path = NodePath("../Hallways")

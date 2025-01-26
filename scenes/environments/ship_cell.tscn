@@ -1,10 +1,33 @@
-[gd_scene load_steps=3 format=3 uid="uid://bcaeq3clth6ce"]
+[gd_scene load_steps=6 format=3 uid="uid://bcaeq3clth6ce"]
 
 [ext_resource type="Script" path="res://scenes/environments/ship_cell.gd" id="1_urgdm"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_uqj5h"]
 resource_local_to_scene = true
 size = Vector3(32, 16, 32)
+
+[sub_resource type="NavigationMesh" id="NavigationMesh_6sncw"]
+geometry_parsed_geometry_type = 1
+geometry_collision_mask = 2147483648
+geometry_source_geometry_mode = 1
+border_size = 2.0
+agent_radius = 1.0
+filter_baking_aabb = AABB(-18, 0, -18, 40, 16, 36)
+
+[sub_resource type="NavigationMesh" id="NavigationMesh_swmsg"]
+geometry_parsed_geometry_type = 1
+geometry_collision_mask = 2147483648
+geometry_source_geometry_mode = 1
+border_size = 2.0
+agent_radius = 1.5
+filter_baking_aabb = AABB(-18, 0, -18, 40, 16, 36)
+
+[sub_resource type="NavigationMesh" id="NavigationMesh_lir14"]
+geometry_parsed_geometry_type = 1
+geometry_collision_mask = 2147483648
+geometry_source_geometry_mode = 1
+border_size = 2.0
+filter_baking_aabb = AABB(-18, 0, -18, 40, 16, 36)
 
 [node name="ShipCell" type="Area3D" groups=["navigation_mesh_source_group"]]
 script = ExtResource("1_urgdm")
@@ -20,13 +43,16 @@ shape = SubResource("BoxShape3D_uqj5h")
 
 [node name="MediumAgentNavRegion" type="NavigationRegion3D" parent="."]
 unique_name_in_owner = true
+navigation_mesh = SubResource("NavigationMesh_6sncw")
 
 [node name="LargeAgentNavRegion" type="NavigationRegion3D" parent="."]
 unique_name_in_owner = true
+navigation_mesh = SubResource("NavigationMesh_swmsg")
 navigation_layers = 2
 
 [node name="SmallAgentNavRegion" type="NavigationRegion3D" parent="."]
 unique_name_in_owner = true
+navigation_mesh = SubResource("NavigationMesh_lir14")
 navigation_layers = 4
 
 [node name="ExtraNavGeometry" type="StaticBody3D" parent="."]
