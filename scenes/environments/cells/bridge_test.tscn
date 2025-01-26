@@ -92,7 +92,7 @@ filter_baking_aabb = AABB(-18, 0, -18, 72, 16, 36)
 [sub_resource type="BoxShape3D" id="BoxShape3D_rwkw0"]
 size = Vector3(4.5, 0.2, 4.5)
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_s8bh3"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_frlvv"]
 size = Vector3(4.5, 0.2, 4.5)
 
 [node name="BridgeCell" instance=ExtResource("1_p6tgl")]
@@ -319,4 +319,4 @@ shape = SubResource("BoxShape3D_rwkw0")
 
 [node name="DoorFloor" type="CollisionShape3D" parent="ExtraNavGeometry" index="1"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 28, 0, -18.25)
-shape = SubResource("BoxShape3D_s8bh3")
+shape = SubResource("BoxShape3D_frlvv")
