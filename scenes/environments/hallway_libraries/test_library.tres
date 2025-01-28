@@ -1,16 +1,16 @@
 [gd_resource type="Resource" script_class="HallwayLibrary" load_steps=7 format=3 uid="uid://dlxckqtpm4kso"]
 
-[ext_resource type="PackedScene" uid="uid://un1cptbdvcb" path="res://scenes/environments/corridor_legos/hall_cap.tscn" id="1_8yckd"]
-[ext_resource type="Script" path="res://scenes/environments/hallway_libraries/hallway_library.gd" id="1_wp4ny"]
-[ext_resource type="PackedScene" uid="uid://cs0762h7hti4n" path="res://scenes/environments/corridor_legos/hall_x.tscn" id="2_kj28k"]
-[ext_resource type="PackedScene" uid="uid://bffsktg0tx72a" path="res://scenes/environments/corridor_legos/hall_i.tscn" id="4_j8g3f"]
-[ext_resource type="PackedScene" uid="uid://cqxwo13cjlnxa" path="res://scenes/environments/corridor_legos/hall_y.tscn" id="5_e3wy0"]
-[ext_resource type="PackedScene" uid="uid://cp4lq4xfkkp6t" path="res://scenes/environments/corridor_legos/hall_l.tscn" id="6_57ctu"]
+[ext_resource type="PackedScene" uid="uid://un1cptbdvcb" path="res://scenes/environments/corridor_legos/hall_cap.tscn" id="1_vl7qs"]
+[ext_resource type="PackedScene" uid="uid://cs0762h7hti4n" path="res://scenes/environments/corridor_legos/hall_x.tscn" id="2_vsj4u"]
+[ext_resource type="Script" path="res://scenes/environments/hallway_libraries/hallway_library.gd" id="3_keinp"]
+[ext_resource type="PackedScene" uid="uid://bffsktg0tx72a" path="res://scenes/environments/corridor_legos/hall_i.tscn" id="4_fmplp"]
+[ext_resource type="PackedScene" uid="uid://cqxwo13cjlnxa" path="res://scenes/environments/corridor_legos/hall_y.tscn" id="5_ig12b"]
+[ext_resource type="PackedScene" uid="uid://cp4lq4xfkkp6t" path="res://scenes/environments/corridor_legos/hall_l.tscn" id="6_561oa"]
 
 [resource]
-script = ExtResource("1_wp4ny")
-cap = ExtResource("1_8yckd")
-straight = ExtResource("4_j8g3f")
-turn = ExtResource("6_57ctu")
-three_way = ExtResource("5_e3wy0")
-four_way = ExtResource("2_kj28k")
+script = ExtResource("3_keinp")
+cap = ExtResource("1_vl7qs")
+straight = ExtResource("4_fmplp")
+turn = ExtResource("6_561oa")
+three_way = ExtResource("5_ig12b")
+four_way = ExtResource("2_vsj4u")

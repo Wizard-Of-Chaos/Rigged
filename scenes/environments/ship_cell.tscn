@@ -44,16 +44,16 @@ shape = SubResource("BoxShape3D_uqj5h")
 [node name="MediumAgentNavRegion" type="NavigationRegion3D" parent="."]
 unique_name_in_owner = true
 navigation_mesh = SubResource("NavigationMesh_6sncw")
+navigation_layers = 2
 
 [node name="LargeAgentNavRegion" type="NavigationRegion3D" parent="."]
 unique_name_in_owner = true
 navigation_mesh = SubResource("NavigationMesh_swmsg")
-navigation_layers = 2
+navigation_layers = 4
 
 [node name="SmallAgentNavRegion" type="NavigationRegion3D" parent="."]
 unique_name_in_owner = true
 navigation_mesh = SubResource("NavigationMesh_lir14")
-navigation_layers = 4
 
 [node name="ExtraNavGeometry" type="StaticBody3D" parent="."]
 unique_name_in_owner = true

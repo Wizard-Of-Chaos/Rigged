@@ -108,7 +108,7 @@ static func _hallway_to_global(pos: Vector3i) -> Vector3:
 
 
 func _add_room(p_tile: RoomSpawnMetadata, p_position: Vector3i, tile_rotation: TileRotation = TileRotation.ZERO) -> int:
-	# TODO: change this to 
+	# TODO: Change
 	if _tile_map.has(p_position) \
 	or _tile_map.has(p_position + Vector3i(1,0,0)) \
 	or _tile_map.has(p_position + Vector3i(-1,0,0)) \
