@@ -45,9 +45,8 @@ func get_desired_velocity() -> Vector3:
 	var res: Vector3 = direction
 	if not res.is_zero_approx() and res.length_squared() > 1:
 		res = res.normalized()
-	if current_move_state.grounded:
-		res.x *= current_move_state.speed * current_actor_state.speed_multiplier
-		res.z *= current_move_state.speed * current_actor_state.speed_multiplier
-	else:
-		res *= current_move_state.speed * current_actor_state.speed_multiplier
+	if current_actor_state == ActorStateList.floating:
+		res.y *= current_move_state.speed * current_actor_state.speed_multiplier
+	res.x *= current_move_state.speed * current_actor_state.speed_multiplier
+	res.z *= current_move_state.speed * current_actor_state.speed_multiplier
 	return res
