@@ -72,6 +72,7 @@ func _input(event: InputEvent):
 		camera_root.aim_ray.force_raycast_update()
 		if camera_root.aim_ray.is_colliding():
 			var collider: Node3D = camera_root.aim_ray.get_collider()
+			print(collider.name)
 			if collider.has_node("%Interactable"):
 				var interact: Interactable = collider.get_node("%Interactable")
 				interact._interact(self)

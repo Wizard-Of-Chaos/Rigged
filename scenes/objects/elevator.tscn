@@ -1,0 +1,40 @@
+[gd_scene load_steps=6 format=3 uid="uid://1msj4t7yi6uy"]
+
+[ext_resource type="Material" uid="uid://1dtlb2e3ypc6" path="res://assets/materials/material_resources/metal_tiles.tres" id="1_mmgd3"]
+[ext_resource type="PackedScene" uid="uid://f2ady0lub6h4" path="res://assets/objects/panel/panel.blend" id="2_7site"]
+[ext_resource type="Script" path="res://scripts/nodes/elevator_interact.gd" id="3_ffawb"]
+[ext_resource type="Texture2D" uid="uid://dcb7o7i7tutq1" path="res://assets/exshock_imports/aim.png" id="4_wnoyn"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_j734r"]
+radius = 1.0
+
+[node name="Elevator" type="Node3D"]
+
+[node name="Floor" type="CSGBox3D" parent="."]
+unique_name_in_owner = true
+material_override = ExtResource("1_mmgd3")
+use_collision = true
+size = Vector3(5.76, 0.2, 7.2)
+
+[node name="Panel" parent="Floor" instance=ExtResource("2_7site")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -3)
+
+[node name="InteractSprite" type="Sprite3D" parent="Floor/Panel"]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 2.2, 0)
+visibility_range_end = 10.0
+visibility_range_end_margin = 5.0
+visibility_range_fade_mode = 1
+billboard = 1
+texture = ExtResource("4_wnoyn")
+
+[node name="Interactable" type="Node" parent="Floor/Panel"]
+unique_name_in_owner = true
+script = ExtResource("3_ffawb")
+
+[node name="Body" type="RigidBody3D" parent="Floor/Panel"]
+collision_layer = 2147483649
+freeze = true
+
+[node name="Collider" type="CollisionShape3D" parent="Floor/Panel/Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.949399, 0)
+shape = SubResource("CapsuleShape3D_j734r")

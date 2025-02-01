@@ -1,10 +1,8 @@
-[gd_scene load_steps=10 format=3 uid="uid://m4b85dh6ed2c"]
+[gd_scene load_steps=8 format=3 uid="uid://m4b85dh6ed2c"]
 
 [ext_resource type="PackedScene" uid="uid://bcaeq3clth6ce" path="res://scenes/environments/ship_cell.tscn" id="1_2jse5"]
 [ext_resource type="PackedScene" uid="uid://dxbhy2quyps1r" path="res://assets/environments/elevator_bits/elevator_bottom.blend" id="2_etw8p"]
-[ext_resource type="Material" uid="uid://1dtlb2e3ypc6" path="res://assets/materials/material_resources/metal_tiles.tres" id="3_xi24n"]
-[ext_resource type="PackedScene" uid="uid://d2alkgfjssua2" path="res://scenes/objects/panel.tscn" id="4_igaff"]
-[ext_resource type="Script" path="res://scripts/nodes/elevator_interact.gd" id="5_nwk1y"]
+[ext_resource type="PackedScene" uid="uid://1msj4t7yi6uy" path="res://scenes/objects/elevator.tscn" id="3_c71ca"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_dsm0f"]
 resource_local_to_scene = true
@@ -48,15 +46,7 @@ shape = SubResource("BoxShape3D_fuxp8")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" index="0"]
 shape = SubResource("ConcavePolygonShape3D_3cjjw")
 
-[node name="Elevator" type="CSGBox3D" parent="." index="8"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.8, 0.1, 0)
-material_override = ExtResource("3_xi24n")
-use_collision = true
-size = Vector3(5.76, 0.2, 7.2)
-
-[node name="Panel" parent="Elevator" index="0" instance=ExtResource("4_igaff")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -3)
-script = ExtResource("5_nwk1y")
+[node name="Elevator" parent="." index="8" instance=ExtResource("3_c71ca")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.8, 0.2, 0)
 
 [editable path="ElevatorBottom"]
-[editable path="Elevator/Panel"]
