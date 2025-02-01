@@ -111,7 +111,7 @@ func _add_room(p_tile: RoomSpawnMetadata, p_position: Vector3i, tile_rotation: T
 	if _tile_map.has(p_position):
 		return ERR_ALREADY_IN_USE
 	print('Tile location: %s Tile size: %s' % [p_position, p_tile.cell_size])
-	var tile_cell_size = p_tile.get_cell_size()
+	var tile_cell_size := p_tile.get_cell_size()
 	var angle: float = 0
 	match tile_rotation:
 		TileRotation.ZERO:
@@ -135,7 +135,63 @@ func _add_room(p_tile: RoomSpawnMetadata, p_position: Vector3i, tile_rotation: T
 				return ERR_CANT_CREATE
 			elif _tile_map.has(door_location_cell):
 				return ERR_CANT_CREATE
-
+	var corner := Vector3i(Vector3(tile_cell_size).rotated(Vector3.UP, angle))
+	var lower_x := mini(0, corner.x)
+	var upper_x := maxi(0, corner.x)
+	var lower_z := mini(0, corner.z)
+	var upper_z := maxi(0,corner.z)
+	# CHECK ALL ADJACENT CELLS FOR DOORS POINTING INTO OUR CELLS
+	for x in tile_cell_size.x:
+		for y in tile_cell_size.y:
+			var location_to_check := p_position + Vector3i(Vector3(x,y,-1).rotated(Vector3.UP, angle))
+			# if cell in location_to_check and that cell has a door pointing at us
+			if _tile_map.has(location_to_check):
+				var cell: ShipCell = _tile_map[location_to_check]
+				for cell_coord in cell.doors:
+					for door in cell.doors[cell_coord]:
+						var door_location := cell.position + (_cell_to_global(cell_coord) + ShipCell.door_offsets[door.offset_idx]).rotated(Vector3.UP, cell.rotation.y)
+						var door_location_cell := Vector3i((door_location / Vector3(CELL_DIMENSIONS)).round())
+						var rel_location := door_location_cell - p_position
+						
+						if rel_location.x > lower_x and rel_location.x < upper_x and rel_location.y > 0 and rel_location.y < corner.y and rel_location.z > lower_z and rel_location.z < upper_z:
+							return ERR_CANT_CREATE
+						# is this location inside our potential room?
+			location_to_check = p_position + Vector3i(Vector3(x,y,tile_cell_size.z).rotated(Vector3.UP, angle))
+			if _tile_map.has(location_to_check):
+				var cell: ShipCell = _tile_map[location_to_check]
+				for cell_coord in cell.doors:
+					for door in cell.doors[cell_coord]:
+						var door_location := cell.position + (_cell_to_global(cell_coord) + ShipCell.door_offsets[door.offset_idx]).rotated(Vector3.UP, cell.rotation.y)
+						var door_location_cell := Vector3i((door_location / Vector3(CELL_DIMENSIONS)).round())
+						var rel_location := door_location_cell - p_position
+						
+						if rel_location.x > lower_x and rel_location.x < upper_x and rel_location.y > 0 and rel_location.y < corner.y and rel_location.z > lower_z and rel_location.z < upper_z:
+							return ERR_CANT_CREATE
+		for z in tile_cell_size.z:
+			for y in tile_cell_size.y:
+				var location_to_check := p_position + Vector3i(Vector3(-1, y, z).rotated(Vector3.UP, angle))
+				if _tile_map.has(location_to_check):
+					var cell: ShipCell = _tile_map[location_to_check]
+					for cell_coord in cell.doors:
+						for door in cell.doors[cell_coord]:
+							var door_location := cell.position + (_cell_to_global(cell_coord) + ShipCell.door_offsets[door.offset_idx]).rotated(Vector3.UP, cell.rotation.y)
+							var door_location_cell := Vector3i((door_location / Vector3(CELL_DIMENSIONS)).round())
+							var rel_location := door_location_cell - p_position
+							
+							if rel_location.x > lower_x and rel_location.x < upper_x and rel_location.y > 0 and rel_location.y < corner.y and rel_location.z > lower_z and rel_location.z < upper_z:
+								return ERR_CANT_CREATE
+							# is this location inside our potential room?
+				location_to_check = p_position + Vector3i(Vector3(tile_cell_size.x,y,z).rotated(Vector3.UP, angle))
+				if _tile_map.has(location_to_check):
+					var cell: ShipCell = _tile_map[location_to_check]
+					for cell_coord in cell.doors:
+						for door in cell.doors[cell_coord]:
+							var door_location := cell.position + (_cell_to_global(cell_coord) + ShipCell.door_offsets[door.offset_idx]).rotated(Vector3.UP, cell.rotation.y)
+							var door_location_cell := Vector3i((door_location / Vector3(CELL_DIMENSIONS)).round())
+							var rel_location := door_location_cell - p_position
+							
+							if rel_location.x > lower_x and rel_location.x < upper_x and rel_location.y > 0 and rel_location.y < corner.y and rel_location.z > lower_z and rel_location.z < upper_z:
+								return ERR_CANT_CREATE
 
 	var instantiated_tile: ShipCell = p_tile.room.instantiate()
 	instantiated_tile.position = _cell_to_global(p_position)
