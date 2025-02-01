@@ -13,8 +13,8 @@ const MAX_ROOM_PLACEMENT_ATTEMPTS := 5
 const CELL_LENGTH := 32
 const CELL_WIDTH := 32
 const CELL_HEIGHT := 16
-const CELL_DIMENSIONS := Vector3i(CELL_LENGTH, CELL_HEIGHT, CELL_WIDTH)
-const HALLWAY_OFFSET := -3*Vector3i(CELL_LENGTH, 0, CELL_WIDTH)/8
+const CELL_DIMENSIONS := Vector3i(CELL_WIDTH, CELL_HEIGHT, CELL_LENGTH)
+const HALLWAY_OFFSET := -3*Vector3i(CELL_WIDTH, 0, CELL_LENGTH)/8
 @export_range(1, 32) var cells_wide := 32
 @export_range(1, 64) var cells_long := 64
 @export_range(1, 8) var cells_tall := 8
@@ -79,7 +79,7 @@ func clear() -> void:
 	_rng = null
 
 func _ready():
-	cell_at_infinity = Vector3i(cells_long + 1, cells_tall + 1, cells_wide + 1)
+	cell_at_infinity = Vector3i(cells_wide + 1, cells_tall + 1, cells_long + 1)
 	if not Engine.is_editor_hint():
 		_rng = RandomNumberGenerator.new()
 		if rng_seed == 0:
@@ -108,19 +108,10 @@ static func _hallway_to_global(pos: Vector3i) -> Vector3:
 
 
 func _add_room(p_tile: RoomSpawnMetadata, p_position: Vector3i, tile_rotation: TileRotation = TileRotation.ZERO) -> Error:
-	# TODO: Change
-	if _tile_map.has(p_position) \
-	or _tile_map.has(p_position + Vector3i(1,0,0)) \
-	or _tile_map.has(p_position + Vector3i(-1,0,0)) \
-	or _tile_map.has(p_position + Vector3i(0,0,1)) \
-	or _tile_map.has(p_position + Vector3i(0,0,-1)) \
-	or _tile_map.has(p_position + Vector3i(1,0,-1)) \
-	or _tile_map.has(p_position + Vector3i(1,0,1)) \
-	or _tile_map.has(p_position + Vector3i(-1,0,-1)) \
-	or _tile_map.has(p_position + Vector3i(-1,0,1)):
+	if _tile_map.has(p_position):
 		return ERR_ALREADY_IN_USE
-	var instantiated_tile: ShipCell = p_tile.room.instantiate()
-	instantiated_tile.position = _cell_to_global(p_position)
+	print('Tile location: %s Tile size: %s' % [p_position, p_tile.cell_size])
+	var tile_cell_size = p_tile.get_cell_size()
 	var angle: float = 0
 	match tile_rotation:
 		TileRotation.ZERO:
@@ -131,13 +122,31 @@ func _add_room(p_tile: RoomSpawnMetadata, p_position: Vector3i, tile_rotation: T
 			angle=PI
 		TileRotation.TWO_SEVENTY:
 			angle = -PI/2
+	var tile_doors := p_tile.get_cell_doors()
+	for cell_coord: Vector3i in tile_doors:
+#		cell_index * Vector3(32, 16, 32) + door_offsets[door_idx]
+		for door in tile_doors[cell_coord]:
+			var door_location := _cell_to_global(p_position) + (_cell_to_global(cell_coord) + ShipCell.door_offsets[door.offset_idx]).rotated(Vector3.UP, angle)
+			var door_location_cell := Vector3i((door_location / Vector3(CELL_DIMENSIONS)).round()) # get cell that this door opens into
+			print('\tdoor: %s, door_location: %s, door_location_cell: %s' % [door, door_location, door_location_cell])
+			if door_location_cell.x < 0 or door_location_cell.y < 0 or door_location_cell.z < 0:
+				return ERR_CANT_CREATE
+			elif door_location_cell.x >= cells_wide or door_location_cell.y >= cells_tall or door_location_cell.z >= cells_long:
+				return ERR_CANT_CREATE
+			elif _tile_map.has(door_location_cell):
+				return ERR_CANT_CREATE
+
+
+	var instantiated_tile: ShipCell = p_tile.room.instantiate()
+	instantiated_tile.position = _cell_to_global(p_position)
+
 	instantiated_tile.rotation = Vector3(0,angle,0)
 	rooms.add_child(instantiated_tile)
-	print('Tile location: %s Tile size: %s' % [p_position, p_tile.cell_size])
-	for x in p_tile.cell_size.x:
-		for y in p_tile.cell_size.y:
-			for z in p_tile.cell_size.z:
+	for x in tile_cell_size.x:
+		for y in tile_cell_size.y:
+			for z in tile_cell_size.z:
 				_tile_map[p_position + Vector3i(Vector3(x,y,z).rotated(Vector3.UP,angle))] = instantiated_tile
+				print('\tTile room going at: %s' % [p_position + Vector3i(Vector3(x,y,z).rotated(Vector3.UP,angle))])
 	return OK
 
 func _is_box_valid(box_location: Vector3i, box_size: Vector3i) -> bool:
@@ -145,7 +154,7 @@ func _is_box_valid(box_location: Vector3i, box_size: Vector3i) -> bool:
 		for y in box_size.y:
 			for z in box_size.z:
 				var test_location := box_location + Vector3i(x,y,z)
-				if _tile_map.has(test_location) or test_location.x >= cells_wide or test_location.y >= cells_tall or test_location.z >= cells_long:
+				if _tile_map.has(test_location) or test_location.x >= cells_wide or test_location.y >= cells_tall or test_location.z >= cells_long or test_location.x < 0 or test_location.y < 0 or test_location.z < 0:
 					return false
 	return true
 
@@ -187,7 +196,7 @@ func _generate_rooms() -> void:
 				# TODO: There's definitely a bug here but I'm not quite sure I can sniff it out without more varied tile sizes
 				match room_rotation:
 					TileRotation.NINETY:
-						rot_correction.z += cell_size.z - 1
+						rot_correction.z += cell_size.x - 1
 					TileRotation.ONE_EIGHTY:
 						rot_correction.x += cell_size.x - 1
 						rot_correction.z += cell_size.z - 1

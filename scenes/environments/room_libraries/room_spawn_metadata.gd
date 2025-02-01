@@ -70,3 +70,14 @@ func get_cell_size() -> Vector3i:
 		elif prop_name == 'cells_z':
 			result.z = packed_state.get_node_property_value(0, node_prop_idx)
 	return result
+
+func get_cell_doors() -> Dictionary:
+	if room == null:
+		return {}
+	var packed_state := room.get_state()
+	var res := {}
+	for node_prop_idx in packed_state.get_node_property_count(0):
+		var prop_name := packed_state.get_node_property_name(0, node_prop_idx)
+		if prop_name == 'doors':
+			res = packed_state.get_node_property_value(0, node_prop_idx)
+	return res

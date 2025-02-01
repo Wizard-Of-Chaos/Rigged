@@ -5,9 +5,9 @@
 [ext_resource type="Resource" uid="uid://dlxckqtpm4kso" path="res://scenes/environments/hallway_libraries/test_library.tres" id="3_s6jic"]
 
 [node name="ShipSkeleton" instance=ExtResource("1_dth83")]
-cells_wide = 4
+cells_wide = 5
 cells_long = 8
-cells_tall = 3
+cells_tall = 1
 max_rooms = 10
 hallway_library = ExtResource("3_s6jic")
 room_library = ExtResource("3_02f57")
