@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://m4b85dh6ed2c"]
+[gd_scene load_steps=11 format=3 uid="uid://m4b85dh6ed2c"]
 
 [ext_resource type="PackedScene" uid="uid://bcaeq3clth6ce" path="res://scenes/environments/ship_cell.tscn" id="1_2jse5"]
 [ext_resource type="PackedScene" uid="uid://dxbhy2quyps1r" path="res://assets/environments/elevator_bits/elevator_bottom.blend" id="2_etw8p"]
@@ -8,10 +8,33 @@
 resource_local_to_scene = true
 size = Vector3(32, 16, 32)
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_ure4u"]
-size = Vector3(4.5, 0.2, 4.5)
+[sub_resource type="NavigationMesh" id="NavigationMesh_trl4k"]
+geometry_parsed_geometry_type = 1
+geometry_collision_mask = 2147483648
+geometry_source_geometry_mode = 1
+border_size = 2.0
+agent_radius = 1.0
+filter_baking_aabb = AABB(-18, 0, -18, 40, 16, 36)
+
+[sub_resource type="NavigationMesh" id="NavigationMesh_bebi8"]
+geometry_parsed_geometry_type = 1
+geometry_collision_mask = 2147483648
+geometry_source_geometry_mode = 1
+border_size = 2.0
+agent_radius = 1.5
+filter_baking_aabb = AABB(-18, 0, -18, 40, 16, 36)
+
+[sub_resource type="NavigationMesh" id="NavigationMesh_qkx6q"]
+geometry_parsed_geometry_type = 1
+geometry_collision_mask = 2147483648
+geometry_source_geometry_mode = 1
+border_size = 2.0
+filter_baking_aabb = AABB(-18, 0, -18, 40, 16, 36)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_fuxp8"]
+size = Vector3(4.5, 0.2, 4.5)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_w6xl2"]
 size = Vector3(4.5, 0.2, 4.5)
 
 [sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_3cjjw"]
@@ -20,28 +43,38 @@ data = PackedVector3Array(11.9999, 0, -12.0004, 14, 0, -14.0005, 16, 0, -12.0004
 [node name="ShipCell" instance=ExtResource("1_2jse5")]
 doors = {
 Vector3i(0, 0, 0): [{
-"collider": NodePath("ExtraNavGeometry/DoorFloor"),
-"offset_idx": 2
-}, {
 "collider": NodePath("ExtraNavGeometry/DoorFloor2"),
 "offset_idx": 9
+}, {
+"collider": NodePath("ExtraNavGeometry/DoorFloor"),
+"offset_idx": 2
 }]
 }
 
 [node name="Box" parent="." index="1"]
 shape = SubResource("BoxShape3D_dsm0f")
 
-[node name="DoorFloor" type="CollisionShape3D" parent="ExtraNavGeometry" index="0"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, 18.25)
-shape = SubResource("BoxShape3D_ure4u")
+[node name="MediumAgentNavRegion" parent="." index="2"]
+navigation_mesh = SubResource("NavigationMesh_trl4k")
 
-[node name="DoorFloor2" type="CollisionShape3D" parent="ExtraNavGeometry" index="1"]
+[node name="LargeAgentNavRegion" parent="." index="3"]
+navigation_mesh = SubResource("NavigationMesh_bebi8")
+
+[node name="SmallAgentNavRegion" parent="." index="4"]
+navigation_mesh = SubResource("NavigationMesh_qkx6q")
+
+[node name="DoorFloor2" type="CollisionShape3D" parent="ExtraNavGeometry" index="0"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, -18.25)
 shape = SubResource("BoxShape3D_fuxp8")
+
+[node name="DoorFloor" type="CollisionShape3D" parent="ExtraNavGeometry" index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, 18.25)
+shape = SubResource("BoxShape3D_w6xl2")
 
 [node name="ElevatorBottom" parent="." index="6" instance=ExtResource("2_etw8p")]
 
 [node name="StaticBody3D" type="StaticBody3D" parent="." index="7"]
+collision_layer = 2147483649
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" index="0"]
 shape = SubResource("ConcavePolygonShape3D_3cjjw")

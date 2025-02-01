@@ -7,7 +7,7 @@
 [node name="ShipSkeleton" instance=ExtResource("1_dth83")]
 cells_wide = 4
 cells_long = 8
-cells_tall = 1
+cells_tall = 3
 max_rooms = 10
 hallway_library = ExtResource("3_s6jic")
 room_library = ExtResource("3_02f57")

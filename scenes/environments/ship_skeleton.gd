@@ -107,7 +107,7 @@ static func _hallway_to_global(pos: Vector3i) -> Vector3:
 	return pos * CELL_DIMENSIONS/4 + HALLWAY_OFFSET
 
 
-func _add_room(p_tile: RoomSpawnMetadata, p_position: Vector3i, tile_rotation: TileRotation = TileRotation.ZERO) -> int:
+func _add_room(p_tile: RoomSpawnMetadata, p_position: Vector3i, tile_rotation: TileRotation = TileRotation.ZERO) -> Error:
 	# TODO: Change
 	if _tile_map.has(p_position) \
 	or _tile_map.has(p_position + Vector3i(1,0,0)) \
@@ -140,15 +140,72 @@ func _add_room(p_tile: RoomSpawnMetadata, p_position: Vector3i, tile_rotation: T
 				_tile_map[p_position + Vector3i(Vector3(x,y,z).rotated(Vector3.UP,angle))] = instantiated_tile
 	return OK
 
+func _is_box_valid(box_location: Vector3i, box_size: Vector3i) -> bool:
+	for x in box_size.x:
+		for y in box_size.y:
+			for z in box_size.z:
+				var test_location := box_location + Vector3i(x,y,z)
+				if _tile_map.has(test_location) or test_location.x >= cells_wide or test_location.y >= cells_tall or test_location.z >= cells_long:
+					return false
+	return true
+
+func _compute_coords_array(room_size: Vector3i) -> Array[Vector3i]:
+	var res: Array[Vector3i] = []
+	for x in cells_wide:
+		for y in cells_tall:
+			for z in cells_long:
+				if _is_box_valid(Vector3i(x,y,z), room_size):
+					res.append(Vector3i(x,y,z))
+	return res
+
 func _generate_rooms() -> void:
 	# TODO: add the in editor rooms into the map
 	for i in max_rooms:
-		for attempt in MAX_ROOM_PLACEMENT_ATTEMPTS:
-			var room_tile := room_library.rooms[_rng.randi_range(0, room_library.rooms.size() - 1)]
-			var y_coord := _rng.randi_range(0, cells_tall - 1)
-			var x_coord := _rng.randi_range(0, cells_wide - 1)
-			var z_coord := _rng.randi_range(0, cells_long - 1)
-			var add_room_err := _add_room(room_tile, Vector3i(x_coord, y_coord, z_coord))
+		var room_tile := room_library.rooms[_rng.randi_range(0, room_library.rooms.size() - 1)]
+		var cell_size := room_tile.get_cell_size()
+		var possible_coords := _compute_coords_array(cell_size)
+		var other_possible_coords := _compute_coords_array(Vector3i(cell_size.z, cell_size.y, cell_size.x))
+		var weights: PackedFloat32Array = PackedFloat32Array()
+		weights.resize(possible_coords.size() + other_possible_coords.size())
+		weights.fill(1.0)
+		var attempt := 0
+		while attempt < weights.size():
+			attempt += 1
+			var chosen_coord_idx := _rng.rand_weighted(weights)
+			weights[chosen_coord_idx] = 0.0
+			var chosen_coord: Vector3i
+			var room_rotation: TileRotation
+			if chosen_coord_idx < possible_coords.size():
+				chosen_coord = possible_coords[chosen_coord_idx]
+				room_rotation = TileRotation.ZERO if _rng.randf() < 0.5 else TileRotation.ONE_EIGHTY
+			else:
+				chosen_coord = other_possible_coords[chosen_coord_idx - possible_coords.size()]
+				room_rotation = TileRotation.NINETY if _rng.randf() < 0.5 else TileRotation.TWO_SEVENTY
+			var add_room_err: int
+			for j in 2:
+				var rot_correction := Vector3i(0,0,0)
+				# TODO: There's definitely a bug here but I'm not quite sure I can sniff it out without more varied tile sizes
+				match room_rotation:
+					TileRotation.NINETY:
+						rot_correction.z += cell_size.z - 1
+					TileRotation.ONE_EIGHTY:
+						rot_correction.x += cell_size.x - 1
+						rot_correction.z += cell_size.z - 1
+					TileRotation.TWO_SEVENTY:
+						pass
+						#rot_correction.x += cell_size.x - 1
+				add_room_err = _add_room(room_tile, chosen_coord + rot_correction, room_rotation)
+				if add_room_err == OK:
+					break
+				match room_rotation:
+					TileRotation.ZERO:
+						room_rotation = TileRotation.ONE_EIGHTY
+					TileRotation.NINETY:
+						room_rotation = TileRotation.TWO_SEVENTY
+					TileRotation.ONE_EIGHTY:
+						room_rotation = TileRotation.ZERO
+					TileRotation.TWO_SEVENTY:
+						room_rotation = TileRotation.NINETY
 			if add_room_err == OK:
 				break
 
