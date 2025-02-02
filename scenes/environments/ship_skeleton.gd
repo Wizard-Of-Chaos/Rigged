@@ -106,11 +106,30 @@ static func _cell_to_global(pos: Vector3i) -> Vector3:
 static func _hallway_to_global(pos: Vector3i) -> Vector3:
 	return pos * CELL_DIMENSIONS/4 + HALLWAY_OFFSET
 
+func _build_cell_astar() -> ShipAStar3D:
+	var res := ShipAStar3D.new()
+	var id := 0
+	for x in cells_wide:
+		for y in cells_tall:
+			for z in cells_long:
+				res.add_point(id, Vector3(x,y,z))
+				id += 1
+	# TODO: don't connect to cells that are disabled
+	for x in cells_wide:
+		for y in cells_tall:
+			for z in cells_long:
+				if x != cells_wide-1:
+					res.connect_points(res.get_closest_point(Vector3(x+1,y,z)), res.get_closest_point(Vector3(x,y,z)))
+				if y != cells_tall-1:
+					res.connect_points(res.get_closest_point(Vector3(x,y+1,z)), res.get_closest_point(Vector3(x,y,z)))
+				if z != cells_long-1:
+					res.connect_points(res.get_closest_point(Vector3(x,y,z+1)), res.get_closest_point(Vector3(x,y,z)))
+	return res
 
-func _add_room(p_tile: RoomSpawnMetadata, p_position: Vector3i, tile_rotation: TileRotation = TileRotation.ZERO) -> Error:
+
+func _add_room(p_tile: RoomSpawnMetadata, p_position: Vector3i, tile_rotation: TileRotation, cell_connectivity_graph: ShipAStar3D) -> Error:
 	if _tile_map.has(p_position):
 		return ERR_ALREADY_IN_USE
-	print('Tile location: %s Tile size: %s' % [p_position, p_tile.cell_size])
 	var tile_cell_size := p_tile.get_cell_size()
 	var angle: float = 0
 	match tile_rotation:
@@ -123,76 +142,193 @@ func _add_room(p_tile: RoomSpawnMetadata, p_position: Vector3i, tile_rotation: T
 		TileRotation.TWO_SEVENTY:
 			angle = -PI/2
 	var tile_doors := p_tile.get_cell_doors()
+	# check if cell's doors would be blocked
 	for cell_coord: Vector3i in tile_doors:
 #		cell_index * Vector3(32, 16, 32) + door_offsets[door_idx]
 		for door in tile_doors[cell_coord]:
 			var door_location := _cell_to_global(p_position) + (_cell_to_global(cell_coord) + ShipCell.door_offsets[door.offset_idx]).rotated(Vector3.UP, angle)
 			var door_location_cell := Vector3i((door_location / Vector3(CELL_DIMENSIONS)).round()) # get cell that this door opens into
-			print('\tdoor: %s, door_location: %s, door_location_cell: %s' % [door, door_location, door_location_cell])
+			#print('\tdoor: %s, door_location: %s, door_location_cell: %s' % [door, door_location, door_location_cell])
 			if door_location_cell.x < 0 or door_location_cell.y < 0 or door_location_cell.z < 0:
 				return ERR_CANT_CREATE
 			elif door_location_cell.x >= cells_wide or door_location_cell.y >= cells_tall or door_location_cell.z >= cells_long:
 				return ERR_CANT_CREATE
 			elif _tile_map.has(door_location_cell):
 				return ERR_CANT_CREATE
-	var corner := Vector3i(Vector3(tile_cell_size).rotated(Vector3.UP, angle))
+	var corner := Vector3i(Vector3(tile_cell_size - Vector3i(1,1,1)).rotated(Vector3.UP, angle).round())
 	var lower_x := mini(0, corner.x)
 	var upper_x := maxi(0, corner.x)
 	var lower_z := mini(0, corner.z)
 	var upper_z := maxi(0,corner.z)
+	#print('\tlower: %s upper: %s' % [Vector2(lower_x, lower_z), Vector2(upper_x, upper_z)])
 	# CHECK ALL ADJACENT CELLS FOR DOORS POINTING INTO OUR CELLS
 	for x in tile_cell_size.x:
 		for y in tile_cell_size.y:
-			var location_to_check := p_position + Vector3i(Vector3(x,y,-1).rotated(Vector3.UP, angle))
+			var location_to_check := p_position + Vector3i(Vector3(x,y,-1).rotated(Vector3.UP, angle).round())
+			#print('\tchecking adjacent location: %s' % location_to_check)
 			# if cell in location_to_check and that cell has a door pointing at us
 			if _tile_map.has(location_to_check):
+				#print('\ttile at adjacent location!')
 				var cell: ShipCell = _tile_map[location_to_check]
 				for cell_coord in cell.doors:
 					for door in cell.doors[cell_coord]:
 						var door_location := cell.position + (_cell_to_global(cell_coord) + ShipCell.door_offsets[door.offset_idx]).rotated(Vector3.UP, cell.rotation.y)
+						#print('\tdoor at %s' % door_location)
 						var door_location_cell := Vector3i((door_location / Vector3(CELL_DIMENSIONS)).round())
+						#print('\tdoor_location_cell: %s' % door_location_cell)
 						var rel_location := door_location_cell - p_position
 						
-						if rel_location.x > lower_x and rel_location.x < upper_x and rel_location.y > 0 and rel_location.y < corner.y and rel_location.z > lower_z and rel_location.z < upper_z:
+						if rel_location.x >= lower_x and rel_location.x <= upper_x and rel_location.y >= 0 and rel_location.y <= corner.y and rel_location.z >= lower_z and rel_location.z <= upper_z:
 							return ERR_CANT_CREATE
 						# is this location inside our potential room?
-			location_to_check = p_position + Vector3i(Vector3(x,y,tile_cell_size.z).rotated(Vector3.UP, angle))
+			location_to_check = p_position + Vector3i(Vector3(x,y,tile_cell_size.z).rotated(Vector3.UP, angle).round())
+			#print('\tchecking adjacent location: %s' % location_to_check)
 			if _tile_map.has(location_to_check):
+				#print('\ttile at adjacent location!')
 				var cell: ShipCell = _tile_map[location_to_check]
 				for cell_coord in cell.doors:
 					for door in cell.doors[cell_coord]:
 						var door_location := cell.position + (_cell_to_global(cell_coord) + ShipCell.door_offsets[door.offset_idx]).rotated(Vector3.UP, cell.rotation.y)
+						#print('\tdoor at %s' % door_location)
 						var door_location_cell := Vector3i((door_location / Vector3(CELL_DIMENSIONS)).round())
+						#print('\tdoor_location_cell: %s' % door_location_cell)
 						var rel_location := door_location_cell - p_position
 						
-						if rel_location.x > lower_x and rel_location.x < upper_x and rel_location.y > 0 and rel_location.y < corner.y and rel_location.z > lower_z and rel_location.z < upper_z:
+						if rel_location.x >= lower_x and rel_location.x <= upper_x and rel_location.y >= 0 and rel_location.y <= corner.y and rel_location.z >= lower_z and rel_location.z <= upper_z:
 							return ERR_CANT_CREATE
-		for z in tile_cell_size.z:
-			for y in tile_cell_size.y:
-				var location_to_check := p_position + Vector3i(Vector3(-1, y, z).rotated(Vector3.UP, angle))
-				if _tile_map.has(location_to_check):
-					var cell: ShipCell = _tile_map[location_to_check]
-					for cell_coord in cell.doors:
-						for door in cell.doors[cell_coord]:
-							var door_location := cell.position + (_cell_to_global(cell_coord) + ShipCell.door_offsets[door.offset_idx]).rotated(Vector3.UP, cell.rotation.y)
-							var door_location_cell := Vector3i((door_location / Vector3(CELL_DIMENSIONS)).round())
-							var rel_location := door_location_cell - p_position
-							
-							if rel_location.x > lower_x and rel_location.x < upper_x and rel_location.y > 0 and rel_location.y < corner.y and rel_location.z > lower_z and rel_location.z < upper_z:
-								return ERR_CANT_CREATE
-							# is this location inside our potential room?
-				location_to_check = p_position + Vector3i(Vector3(tile_cell_size.x,y,z).rotated(Vector3.UP, angle))
-				if _tile_map.has(location_to_check):
-					var cell: ShipCell = _tile_map[location_to_check]
-					for cell_coord in cell.doors:
-						for door in cell.doors[cell_coord]:
-							var door_location := cell.position + (_cell_to_global(cell_coord) + ShipCell.door_offsets[door.offset_idx]).rotated(Vector3.UP, cell.rotation.y)
-							var door_location_cell := Vector3i((door_location / Vector3(CELL_DIMENSIONS)).round())
-							var rel_location := door_location_cell - p_position
-							
-							if rel_location.x > lower_x and rel_location.x < upper_x and rel_location.y > 0 and rel_location.y < corner.y and rel_location.z > lower_z and rel_location.z < upper_z:
-								return ERR_CANT_CREATE
+	for z in tile_cell_size.z:
+		for y in tile_cell_size.y:
+			var location_to_check := p_position + Vector3i(Vector3(-1, y, z).rotated(Vector3.UP, angle).round())
+			#print('\tchecking adjacent location: %s' % location_to_check)
+			if _tile_map.has(location_to_check):
+				#print('\ttile at adjacent location!')
 
+				var cell: ShipCell = _tile_map[location_to_check]
+				for cell_coord in cell.doors:
+					for door in cell.doors[cell_coord]:
+						var door_location := cell.position + (_cell_to_global(cell_coord) + ShipCell.door_offsets[door.offset_idx]).rotated(Vector3.UP, cell.rotation.y)
+						#print('\tdoor at %s' % door_location)
+						var door_location_cell := Vector3i((door_location / Vector3(CELL_DIMENSIONS)).round())
+						#print('\tdoor_location_cell: %s' % door_location_cell)
+						var rel_location := door_location_cell - p_position
+						
+						if rel_location.x >= lower_x and rel_location.x <= upper_x and rel_location.y >= 0 and rel_location.y <= corner.y and rel_location.z >= lower_z and rel_location.z <= upper_z:
+							return ERR_CANT_CREATE
+						# is this location inside our potential room?
+			location_to_check = p_position + Vector3i(Vector3(tile_cell_size.x,y,z).rotated(Vector3.UP, angle).round())
+			#print('\tchecking adjacent location: %s' % location_to_check)
+
+			if _tile_map.has(location_to_check):
+				#print('\ttile at adjacent location!')
+
+				var cell: ShipCell = _tile_map[location_to_check]
+				for cell_coord in cell.doors:
+					for door in cell.doors[cell_coord]:
+						var door_location := cell.position + (_cell_to_global(cell_coord) + ShipCell.door_offsets[door.offset_idx]).rotated(Vector3.UP, cell.rotation.y)
+						#print('\tdoor at %s' % door_location)
+
+						var door_location_cell := Vector3i((door_location / Vector3(CELL_DIMENSIONS)).round())
+						#print('\tdoor_location_cell: %s' % door_location_cell)
+
+						var rel_location := door_location_cell - p_position
+						
+						if rel_location.x >= lower_x and rel_location.x <= upper_x and rel_location.y >= 0 and rel_location.y <= corner.y and rel_location.z >= lower_z and rel_location.z <= upper_z:
+							return ERR_CANT_CREATE
+	# check if cell graph would become disconnected by placing this tile
+	print('Tile location: %s Tile size: %s' % [p_position, p_tile.cell_size])
+
+	var edges_to_cut: Array[Array] = []
+	for x in tile_cell_size.x:
+		for y in tile_cell_size.y:
+			var location_to_check := p_position + Vector3i(Vector3(x,y,-1).rotated(Vector3.UP, angle).round())
+			if not (location_to_check.x < 0 or location_to_check.x >= cells_wide or location_to_check.z < 0 or location_to_check.z >= cells_long):
+				var door_found := false
+				if Vector3i(x,y,0) in tile_doors:
+					for door in tile_doors[Vector3i(x,y,0)]:
+						var door_location := _cell_to_global(p_position) + (_cell_to_global(Vector3i(x,y,0)) + ShipCell.door_offsets[door.offset_idx]).rotated(Vector3.UP, angle)
+						var door_location_cell := Vector3i((door_location / Vector3(CELL_DIMENSIONS)).round()) # get cell that this door opens into
+						if door_location_cell == location_to_check:
+							door_found = true
+							print("\tdoor found!: loc to check: %s, door location cell: %s" % [location_to_check, door_location_cell])
+							break
+				if not door_found:
+					var room_cell_to_cut := p_position + Vector3i(Vector3(x,y,0).rotated(Vector3.UP, angle).round())
+					var room_cell_to_cut_id := cell_connectivity_graph.get_closest_point(room_cell_to_cut)
+					var location_to_check_id := cell_connectivity_graph.get_closest_point(location_to_check)
+					if cell_connectivity_graph.are_points_connected(room_cell_to_cut_id, location_to_check_id):
+						edges_to_cut.push_back([location_to_check_id, room_cell_to_cut_id])
+				
+			location_to_check = p_position + Vector3i(Vector3(x,y,tile_cell_size.z).rotated(Vector3.UP, angle).round())
+			if not (location_to_check.x < 0 or location_to_check.x >= cells_wide or location_to_check.z < 0 or location_to_check.z >= cells_long):
+				var door_found := false
+				if Vector3i(x,y,tile_cell_size.z-1) in tile_doors:
+					for door in tile_doors[Vector3i(x,y,tile_cell_size.z-1)]:
+						var door_location := _cell_to_global(p_position) + (_cell_to_global(Vector3i(x,y,tile_cell_size.z-1)) + ShipCell.door_offsets[door.offset_idx]).rotated(Vector3.UP, angle)
+						var door_location_cell := Vector3i((door_location / Vector3(CELL_DIMENSIONS)).round()) # get cell that this door opens into
+						if door_location_cell == location_to_check:
+							door_found = true
+							print("\tdoor found!: loc to check: %s, door location cell: %s" % [location_to_check, door_location_cell])
+							break
+				if not door_found:
+					var room_cell_to_cut := p_position + Vector3i(Vector3(x,y,tile_cell_size.z-1).rotated(Vector3.UP, angle).round())
+					var room_cell_to_cut_id := cell_connectivity_graph.get_closest_point(room_cell_to_cut)
+					var location_to_check_id := cell_connectivity_graph.get_closest_point(location_to_check)
+					if cell_connectivity_graph.are_points_connected(room_cell_to_cut_id, location_to_check_id):
+						edges_to_cut.push_back([location_to_check_id, room_cell_to_cut_id])
+	
+	for z in tile_cell_size.z:
+		for y in tile_cell_size.y:
+			var location_to_check := p_position + Vector3i(Vector3(-1,y,z).rotated(Vector3.UP, angle).round())
+			if not (location_to_check.x < 0 or location_to_check.x >= cells_wide or location_to_check.z < 0 or location_to_check.z >= cells_long):
+				var door_found := false
+				if Vector3i(0,y,z) in tile_doors:
+					for door in tile_doors[Vector3i(0,y,z)]:
+						var door_location := _cell_to_global(p_position) + (_cell_to_global(Vector3i(0,y,z)) + ShipCell.door_offsets[door.offset_idx]).rotated(Vector3.UP, angle)
+						var door_location_cell := Vector3i((door_location / Vector3(CELL_DIMENSIONS)).round()) # get cell that this door opens into
+						if door_location_cell == location_to_check:
+							door_found = true
+							print("\tdoor found!: loc to check: %s, door location cell: %s" % [location_to_check, door_location_cell])
+							break
+				if not door_found:
+					var room_cell_to_cut := p_position + Vector3i(Vector3(0,y,z).rotated(Vector3.UP, angle).round())
+					var room_cell_to_cut_id := cell_connectivity_graph.get_closest_point(room_cell_to_cut)
+					var location_to_check_id := cell_connectivity_graph.get_closest_point(location_to_check)
+					if cell_connectivity_graph.are_points_connected(room_cell_to_cut_id, location_to_check_id):
+						edges_to_cut.push_back([location_to_check_id, room_cell_to_cut_id])
+				
+			location_to_check = p_position + Vector3i(Vector3(tile_cell_size.x,y,z).rotated(Vector3.UP, angle).round())
+			if not (location_to_check.x < 0 or location_to_check.x >= cells_wide or location_to_check.z < 0 or location_to_check.z >= cells_long):
+				var door_found = false
+				if Vector3i(tile_cell_size.x-1,y,z) in tile_doors:
+					for door in tile_doors[Vector3i(tile_cell_size.x-1,y,z)]:
+						var door_location := _cell_to_global(p_position) + (_cell_to_global(Vector3i(tile_cell_size.x-1,y,z)) + ShipCell.door_offsets[door.offset_idx]).rotated(Vector3.UP, angle)
+						var door_location_cell := Vector3i((door_location / Vector3(CELL_DIMENSIONS)).round()) # get cell that this door opens into
+						if door_location_cell == location_to_check:
+							door_found = true
+							print("\tdoor found!: loc to check: %s, door location cell: %s" % [location_to_check, door_location_cell])
+							break
+				if not door_found:
+					var room_cell_to_cut := p_position + Vector3i(Vector3(tile_cell_size.x-1,y,z).rotated(Vector3.UP, angle).round())
+					var room_cell_to_cut_id := cell_connectivity_graph.get_closest_point(room_cell_to_cut)
+					var location_to_check_id := cell_connectivity_graph.get_closest_point(location_to_check)
+					if cell_connectivity_graph.are_points_connected(room_cell_to_cut_id, location_to_check_id):
+						edges_to_cut.push_back([location_to_check_id, room_cell_to_cut_id])
+	for edge in edges_to_cut:
+		print('\tedge to cut: [%s, %s]' % [cell_connectivity_graph.get_point_position(edge[0]), cell_connectivity_graph.get_point_position(edge[1])])
+	for edge in edges_to_cut:
+		cell_connectivity_graph.disconnect_points(edge[0], edge[1])
+	var valid_cuts := true
+	for edge in edges_to_cut:
+		var id_path := cell_connectivity_graph.get_id_path(edge[0], edge[1])
+		print(id_path)
+		if id_path.is_empty():
+			valid_cuts = false
+			break
+	if not valid_cuts:
+		for edge in edges_to_cut:
+			cell_connectivity_graph.connect_points(edge[0], edge[1])
+		return ERR_CANT_CREATE
+	
 	var instantiated_tile: ShipCell = p_tile.room.instantiate()
 	instantiated_tile.position = _cell_to_global(p_position)
 
@@ -224,6 +360,7 @@ func _compute_coords_array(room_size: Vector3i) -> Array[Vector3i]:
 	return res
 
 func _generate_rooms() -> void:
+	var cell_connectivity_graph := _build_cell_astar()
 	# TODO: add the in editor rooms into the map
 	for i in max_rooms:
 		var room_tile := room_library.rooms[_rng.randi_range(0, room_library.rooms.size() - 1)]
@@ -259,7 +396,7 @@ func _generate_rooms() -> void:
 					TileRotation.TWO_SEVENTY:
 						pass
 						#rot_correction.x += cell_size.x - 1
-				add_room_err = _add_room(room_tile, chosen_coord + rot_correction, room_rotation)
+				add_room_err = _add_room(room_tile, chosen_coord + rot_correction, room_rotation, cell_connectivity_graph)
 				if add_room_err == OK:
 					break
 				match room_rotation:

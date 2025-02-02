@@ -11,3 +11,6 @@ cells_tall = 1
 max_rooms = 10
 hallway_library = ExtResource("3_s6jic")
 room_library = ExtResource("3_02f57")
+
+[node name="Marker3D" type="Marker3D" parent="." index="4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 60, 0, 12)

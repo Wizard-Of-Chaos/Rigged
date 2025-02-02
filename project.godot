@@ -1,3 +1,11 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
 config_version=5
 
 [Fmod]
@@ -33,6 +41,7 @@ SteamInputGlobal="*res://scripts/input/steam_input_global.gd"
 SteamLobbyGlobal="*res://scripts/multiplayer/steam_lobby_global.gd"
 FmodManager="*res://addons/fmod/FmodManager.gd"
 MasterBank="*res://scenes/utilities/master_bank.tscn"
+RiggedGlobals="*res://scenes/utilities/rigged_globals.gd"
 
 [debug]
 

@@ -55,6 +55,8 @@ func get_door_hallway_offset(hallway_offset_idx: int) -> Vector3i:
 var editor_bubbles: Node3D
 
 func _ready():
+	small_nav.set_navigation_map(RiggedGlobals.small_map_rid)
+	large_nav.set_navigation_map(RiggedGlobals.large_map_rid)
 	if Engine.is_editor_hint():
 		_calculate_box_size()
 		_setup_nav_regions()
