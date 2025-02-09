@@ -2,7 +2,7 @@
 
 [ext_resource type="Material" uid="uid://1dtlb2e3ypc6" path="res://assets/materials/material_resources/metal_tiles.tres" id="1_ep42j"]
 [ext_resource type="Material" uid="uid://ddqx00k2h33qj" path="res://assets/materials/material_resources/metal.tres" id="1_gh8jh"]
-[ext_resource type="Material" uid="uid://dx7w1fbamu83" path="res://assets/materials/material_resources/metal_walls.tres" id="2_mgu4d"]
+[ext_resource type="Material" uid="uid://dmnuk314mqfu" path="res://assets/materials/material_resources/metal_walls.tres" id="2_mgu4d"]
 
 [node name="TestHallwayPath" type="Node3D"]
 transform = Transform3D(0.999646, 0, 0, 0, 0.999646, 0, 0, 0, 0.999646, 0, 0, 0)

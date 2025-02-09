@@ -5,7 +5,7 @@
 [ext_resource type="Script" path="res://scripts/nodes/animation_controller.gd" id="3_7fuhn"]
 [ext_resource type="Script" path="res://scripts/nodes/health.gd" id="4_lw3ko"]
 [ext_resource type="Script" path="res://scripts/actors/equipment.gd" id="5_wmoxt"]
-[ext_resource type="Script" path="res://scripts/actors/inventory.gd" id="6_cy5uw"]
+[ext_resource type="Script" path="res://scenes/actors/inventory/inventory.gd" id="6_cy5uw"]
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_mbaou"]
 

@@ -48,6 +48,7 @@ bones/20/rotation = Quaternion(0.0861247, 0.0485451, 0.819987, 0.563779)
 bones/21/rotation = Quaternion(-0.0915251, 0.0635692, 0.387472, 0.915122)
 bones/21/scale = Vector3(1, 1, 1)
 bones/22/rotation = Quaternion(0.141589, 0.00135365, 0.0152784, 0.989807)
+bones/22/scale = Vector3(1, 1, 1)
 bones/23/rotation = Quaternion(-0.0645376, -0.0114437, -0.0673979, 0.995571)
 bones/24/position = Vector3(0.0106521, 0.31089, 0.0283733)
 bones/24/rotation = Quaternion(-0.0607039, -4.3634e-05, 0.0172216, 0.998007)
@@ -112,9 +113,10 @@ transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, 2.5
 unique_name_in_owner = true
 transform = Transform3D(-1, -8.74228e-08, -3.82137e-15, 0, -4.37114e-08, 1, -8.74228e-08, 1, 4.37114e-08, 0, 0, 10)
 
-[node name="NavigationAgent3D" parent="." index="12"]
+[node name="NavigationAgent3D" parent="." index="11"]
 avoidance_enabled = false
-[node name="Collider" parent="." index="11"]
+
+[node name="Collider" parent="." index="12"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.15, 0)
 shape = SubResource("CapsuleShape3D_52xqs")
 

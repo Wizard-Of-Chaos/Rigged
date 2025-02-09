@@ -6,11 +6,15 @@ class_name BaseActor
 
 #set this by each individual actor
 var anim_tree: AnimationTree
+const EquipmentSystem = preload("res://scripts/actors/equipment.gd")
+const Inventory = preload("res://scenes/actors/inventory/inventory.gd")
 
 @onready var remote_transform: RemoteTransform3D = %RemoteTransform
 @onready var anim_controller: AnimationController = %AnimController
 @onready var move_controller: MoveController = %MoveController
 @onready var collider: CollisionShape3D = %Collider
+@onready var equipment_system: EquipmentSystem = EquipmentSystem.new()
+@onready var inventory: Inventory = Inventory.new()
 
 var move_direction: Vector3: 
 	get:
@@ -111,5 +115,80 @@ func basic_movement(delta: float):
 	_jumped = false
 	move_and_slide()
 
-func _physics_process(delta: float):
-	basic_movement(delta)
+func drop_equipment():
+	for slot in equipment_system.equipped_items.keys():
+		var item = equipment_system.unequip(slot)
+		if item:
+			print("Dropped Equipment:", item.name)
+
+func drop_inventory():
+	for row in inventory.grid:
+		for cell in row:
+			if cell.item:
+				print("Dropped Item:", cell.item.name)
+				cell.item = null
+
+func show_inventory_debug():
+	var display_text = "\n=== PLAYER INVENTORY & EQUIPMENT ===\n"
+
+	display_text += "\n--- Equipped Items ---\n"
+	var slot_names = {
+		0: "Head",
+		1: "Chest",
+		2: "Arms",
+		3: "Legs",
+		4: "Back",
+		5: "Primary Weapon",
+		6: "Secondary Weapon"
+	}
+
+	for slot_id in slot_names.keys():
+		var item = equipment_system.equipped_items.get(slot_id, null)
+		display_text += slot_names[slot_id] + ": " + (item.name if item else "Empty") + "\n"
+
+	display_text += "\n--- Inventory Items ---\n"
+	var empty_slots = 3
+	var item_count = 0
+
+
+	for row in inventory.grid:
+		for cell in row:
+			if cell.item:
+				display_text += "- " + cell.item.name + " (x" + str(cell.quantity) + ")\n"
+				item_count += 1
+
+
+	for i in range(empty_slots - item_count):
+		display_text += "- Empty Slot\n"
+
+	print(display_text)
+	show_centered_text(display_text)
+
+
+func show_centered_text(text: String):
+	var label = Label.new()
+	label.text = text
+	label.set("theme_override_colors/font_color", Color(1, 1, 1))
+	label.set("theme_override_font_sizes/font_size", 24)
+	label.set_anchors_preset(Control.PRESET_CENTER)
+	label.set_size(Vector2(600, 400))
+	label.add_theme_color_override("font_color", Color(1, 1, 1))
+	
+	for child in get_tree().root.get_children():
+		if child.name == "DebugInventoryUI":
+			child.queue_free()
+
+	var container = Control.new()
+	container.name = "DebugInventoryUI"
+	container.set_anchors_preset(Control.PRESET_CENTER)
+	container.set_size(Vector2(600, 400))
+	
+	container.add_child(label)
+	get_tree().root.add_child(container)
+
+
+	get_tree().create_timer(5).timeout.connect(container.queue_free)
+
+func _on_death():
+	drop_equipment()
+	drop_inventory()

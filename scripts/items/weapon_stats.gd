@@ -1,10 +1,13 @@
 extends Resource
 class_name WeaponStats
 
+enum DamageType { PHYSICAL, ENERGY, FIRE, ICE, EXPLOSIVE }
+
 @export var id: int
 @export var name: String
-@export var firing_speed: float
 @export var damage: int
+@export var damage_type: DamageType = DamageType.PHYSICAL
+@export var firing_speed: float
 @export var weapon_range: float = 20
 @export var hitscan: bool = true
 @export var projectile_speed: float = 1000

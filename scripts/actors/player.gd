@@ -17,6 +17,14 @@ func _ready():
 	move_controller.set_actor_state(ActorStateList.neutral)
 	move_controller.move_state_set.connect(anim_controller._on_set_move_state)
 	anim_controller.set_tree(anim_tree)
+
+	var test_inventory = PlayerTestInventory.new()
+	for item in test_inventory.get_starting_inventory():
+		inventory.add_item(item)
+
+	var test_equipment = test_inventory.get_starting_equipment()
+	for slot in test_equipment.keys():
+		equipment_system.equipped_items[slot] = test_equipment[slot] 
 	# pistol.visible = false
 	if get_multiplayer_authority() == multiplayer.get_unique_id():
 		var player_info
@@ -44,7 +52,7 @@ func set_up(player_info: Dictionary) -> void:
 func _input(event: InputEvent):
 	if not is_multiplayer_authority() or not event.device in devices:
 		return
-	# pistol.firing = false
+
 	if event is InputEventMouseMotion:
 		camera_root.cam_input(event)
 	elif event.is_action("move_forward"):
@@ -81,11 +89,15 @@ func _input(event: InputEvent):
 				print("I hit something, but can't interact with it")
 		else:
 			print("Nothing to hit or interact with")
-	
+
 	if event.is_action_pressed("debug_float_toggle"):
 		toggle_floating()
 	if event.is_action_pressed("take_damage"):
 		health_node.damage(50)  # Call the take_damage function, reduce 50 HP for testing
+
+	if event.is_action_pressed("inventory_debug"):
+		print("Inventory key pressed!!!")
+		show_inventory_debug()
 
 func _physics_process(delta: float):
 	basic_movement(delta)

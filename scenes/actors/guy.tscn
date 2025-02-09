@@ -3,8 +3,8 @@
 [ext_resource type="PackedScene" uid="uid://bladxbm1iobyy" path="res://assets/actors/guy/guy.blend" id="1_km4ds"]
 [ext_resource type="PackedScene" uid="uid://drvnuio0k0tea" path="res://assets/weapons/pistol/pistol.blend" id="2_pon6j"]
 [ext_resource type="Script" path="res://scripts/ik_skeltal.gd" id="3_mu5i5"]
-[ext_resource type="Script" path="res://scripts/guns/pistol.gd" id="3_xvjds"]
-[ext_resource type="Resource" uid="uid://btikd3me5udvr" path="res://scripts/guns/chorus_6s.tres" id="4_eppp4"]
+[ext_resource type="Script" path="res://scripts/items/pistol.gd" id="3_xvjds"]
+[ext_resource type="Resource" uid="uid://btikd3me5udvr" path="res://scripts/items/chorus_6s.tres" id="4_eppp4"]
 [ext_resource type="AnimationNodeBlendTree" uid="uid://ce6bvshi5lig2" path="res://scenes/actors/player_anim_tree.tres" id="4_p38ux"]
 
 [node name="Guy" instance=ExtResource("1_km4ds")]
@@ -52,6 +52,7 @@ bones/20/scale = Vector3(1, 1, 1)
 bones/21/rotation = Quaternion(-0.0915251, 0.0635692, 0.387472, 0.915122)
 bones/21/scale = Vector3(1, 1, 1)
 bones/22/rotation = Quaternion(0.141589, 0.00135365, 0.0152784, 0.989807)
+bones/22/scale = Vector3(1, 1, 1)
 bones/23/rotation = Quaternion(-0.0645376, -0.0114437, -0.0673979, 0.995571)
 bones/23/scale = Vector3(1, 1, 1)
 bones/24/position = Vector3(0.0106521, 0.31089, 0.0283733)
@@ -96,7 +97,7 @@ bones/43/rotation = Quaternion(0.00803014, -0.00844163, 0.722212, 0.691574)
 bones/43/scale = Vector3(1, 1, 1)
 
 [node name="GunAttachment" type="BoneAttachment3D" parent="Armature/Skeleton3D" index="6"]
-transform = Transform3D(-0.821195, -0.476413, 0.314135, 0.552261, -0.524827, 0.647747, -0.143727, 0.705408, 0.694086, -1.24349, 1.30529, 0.134046)
+transform = Transform3D(-0.903414, -0.124234, 0.410376, 0.251541, -0.928659, 0.272615, 0.347232, 0.349511, 0.870214, -0.948465, -1.10298, 0.346759)
 bone_name = "Hand.r"
 bone_idx = 23
 
