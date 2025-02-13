@@ -36,6 +36,9 @@ _subresources={
 "PATH:Armature/Skeleton3D/Stock": {
 "import/skip_import": true
 },
+"PATH:Armature/Skeleton3D/Stock_001": {
+"import/skip_import": true
+},
 "PATH:HAND": {
 "import/skip_import": true
 },
